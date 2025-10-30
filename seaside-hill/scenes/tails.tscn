@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://cdcjpwqjw2nar"]
+[gd_scene load_steps=61 format=3 uid="uid://cdcjpwqjw2nar"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_fo6i8"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_r0q7k"]
@@ -338,10 +338,15 @@ animations = [{
 height = 32.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7u2c3"]
-radius = 11.0
-height = 34.0
+height = 32.0
 
-[node name="tails" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_r0q7k"]
+radius = 10.049875
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0bhdd"]
+radius = 179.22612
+
+[node name="tails" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_r0q7k")
 
@@ -355,11 +360,12 @@ position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_nm0c2")
 
 [node name="hurtbox" parent="." instance=ExtResource("6_iyk3m")]
+position = Vector2(0, -2)
 collision_layer = 4
 collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2(0, -5)
+position = Vector2(0, -3)
 shape = SubResource("CapsuleShape2D_7u2c3")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
@@ -383,22 +389,20 @@ change_dir_state = NodePath("../change_direction")
 action_state = NodePath("../thunder_shoot")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state", "action_state")]
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state")]
 script = ExtResource("10_o5pt2")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
 change_dir_state = NodePath("../change_direction")
-action_state = NodePath("../thunder_shoot")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state")]
 script = ExtResource("11_23iso")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../fly")
-action_state = NodePath("../thunder_shoot")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state")]
@@ -420,10 +424,29 @@ friction = 50.0
 acc = 30.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="thunder_shoot" type="Node" parent="StateMachine"]
+[node name="thunder_shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state")]
 script = ExtResource("15_r0q7k")
+idle_state = NodePath("../idle")
+run_state = NodePath("../run")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="hitbox" type="Area2D" parent="StateMachine/thunder_shoot"]
+collision_layer = 8
+collision_mask = 16
+
+[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/thunder_shoot/hitbox"]
+shape = SubResource("CircleShape2D_r0q7k")
+disabled = true
+
+[node name="radius" type="Area2D" parent="StateMachine/thunder_shoot"]
+collision_mask = 2
+
+[node name="range" type="CollisionShape2D" parent="StateMachine/thunder_shoot/radius"]
+shape = SubResource("CircleShape2D_0bhdd")
+disabled = true
 
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7
 one_shot = true
+
+[connection signal="area_entered" from="StateMachine/thunder_shoot/hitbox" to="StateMachine/thunder_shoot" method="_on_hitbox_area_entered"]

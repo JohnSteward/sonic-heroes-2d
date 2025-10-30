@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://bdhyd4atmlgnw"]
+[gd_scene load_steps=63 format=3 uid="uid://bdhyd4atmlgnw"]
 
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_35lpn"]
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="2_hpha1"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://xlf26l5inv2j" path="res://scripts/CharacterStates/change_dir_state.gd" id="9_qm650"]
 [ext_resource type="Script" uid="uid://ciyuweuecypq" path="res://scripts/CharacterStates/SonicStates/rocket_accel.gd" id="10_rocmk"]
 [ext_resource type="Script" uid="uid://4aytnk07ni42" path="res://scripts/CharacterStates/SonicStates/homing_state.gd" id="16_hgjo6"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="17_qrl6y"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("2_hpha1")
@@ -339,28 +340,30 @@ animations = [{
 height = 32.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6utbv"]
-radius = 11.0
-height = 34.0
+height = 24.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgjo6"]
 radius = 183.00273
 
-[node name="Sonic" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_m14wf"]
+radius = 15.0
+
+[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("idle_state") groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_35lpn")
+idle_state = NodePath("StateMachine/fall")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_ba3y2")
-animation = &"sprint"
-frame = 3
-frame_progress = 0.036288466
+animation = &"idle"
 
 [node name="physics_box" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_mce4r")
 
 [node name="hurtbox" parent="." instance=ExtResource("7_m14wf")]
+visible = false
 collision_layer = 4
 collision_mask = 32
 
@@ -437,20 +440,35 @@ friction = 30.0
 acc = 100.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="homing" type="Node" parent="StateMachine"]
+[node name="homing" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "jump_state", "run_state")]
 script = ExtResource("16_hgjo6")
+idle_state = NodePath("../idle")
+jump_state = NodePath("../jump")
+run_state = NodePath("../run")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="radius" type="Area2D" parent="StateMachine/homing"]
+collision_mask = 2
 
 [node name="range" type="CollisionShape2D" parent="StateMachine/homing/radius"]
 shape = SubResource("CircleShape2D_hgjo6")
 disabled = true
 
+[node name="hitbox" parent="StateMachine/homing" instance=ExtResource("17_qrl6y")]
+collision_layer = 8
+collision_mask = 16
+script = null
+
+[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/homing/hitbox"]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_m14wf")
+disabled = true
+
 [node name="i-frames" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.7
 one_shot = true
 
 [connection signal="body_entered" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_entered"]
 [connection signal="body_exited" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_exited"]
+[connection signal="area_entered" from="StateMachine/homing/hitbox" to="StateMachine/homing" method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="i-frames" to="." method="_on_iframes_timeout"]

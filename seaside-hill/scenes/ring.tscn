@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://ctppqqs3ogg4e"]
+
+[ext_resource type="Texture2D" uid="uid://bjlqxjq8gua0j" path="res://assets/new-sprites/ring.png" id="1_03kdj"]
+[ext_resource type="Script" uid="uid://cdrosix55t2k0" path="res://scripts/ring.gd" id="1_f7lrs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7lrs"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d05vm"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fh10o"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ro388"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25iib"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqk64"]
+atlas = ExtResource("1_03kdj")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rgaii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7lrs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d05vm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fh10o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ro388")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25iib")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqk64")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8fq2r"]
+radius = 9.0
+
+[node name="ring" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_f7lrs")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rgaii")
+autoplay = "default"
+frame = 3
+frame_progress = 0.40745637
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8fq2r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

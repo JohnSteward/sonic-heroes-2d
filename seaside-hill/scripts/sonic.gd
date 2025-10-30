@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var state_machine: Node = $StateMachine
 @onready var i_frames: Timer = $"i-frames"
 @onready var hurtbox: Area2D = $hurtbox
+@export var idle_state: State
 
 var speed: int = 0
 var damage: int = 1
@@ -27,6 +28,7 @@ func knockback():
 	print(velocity.x)
 	velocity.y = -400
 	move_and_slide()
+	state_machine.change_state(idle_state)
 
 func _physics_process(delta: float) -> void:
 	state_machine.process_input()

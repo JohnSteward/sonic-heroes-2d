@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="2_md0e3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c4w8v"]
-size = Vector2(15, 19)
+size = Vector2(13, 18)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7p1mj"]
 size = Vector2(13, 18)
@@ -27,9 +27,9 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4ra3w"]
-size = Vector2(15, 19)
+size = Vector2(13, 18)
 
-[node name="enemy" type="CharacterBody2D"]
+[node name="enemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
 script = ExtResource("1_4ra3w")
 
@@ -38,7 +38,7 @@ collision_layer = 16
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2(-0.5, -9.5)
+position = Vector2(-0.5, -9)
 shape = SubResource("RectangleShape2D_c4w8v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -54,5 +54,5 @@ collision_layer = 32
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
-position = Vector2(-0.5, -9.5)
+position = Vector2(-0.5, -9)
 shape = SubResource("RectangleShape2D_4ra3w")

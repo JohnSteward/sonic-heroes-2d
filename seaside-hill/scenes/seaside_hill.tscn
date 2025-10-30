@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=8 format=4 uid="uid://5oja1aeqsqg7"]
 
 [ext_resource type="Texture2D" uid="uid://dw6spjk6ljqga" path="res://assets/sprites/green-hill-cut.png" id="2_56hce"]
 [ext_resource type="PackedScene" uid="uid://chf50o0g8iy0n" path="res://scenes/death_plane.tscn" id="3_56hce"]
 [ext_resource type="PackedScene" uid="uid://bdhyd4atmlgnw" path="res://scenes/sonic.tscn" id="4_e80yk"]
 [ext_resource type="PackedScene" uid="uid://bl1sbg37ug2k2" path="res://scenes/enemy.tscn" id="4_mxsot"]
+[ext_resource type="PackedScene" uid="uid://ctppqqs3ogg4e" path="res://scenes/ring.tscn" id="5_e80yk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mxsot"]
 texture = ExtResource("2_56hce")
@@ -1165,9 +1166,21 @@ tile_set = SubResource("TileSet_e80yk")
 position = Vector2(-1, 162)
 
 [node name="enemy" parent="." instance=ExtResource("4_mxsot")]
-position = Vector2(-63, -25)
+position = Vector2(-73, -122)
 hp = 2
 
 [node name="Sonic" parent="." instance=ExtResource("4_e80yk")]
+position = Vector2(-4, -23)
 
 [node name="Camera2D" type="Camera2D" parent="Sonic"]
+
+[node name="rings" type="Node" parent="."]
+
+[node name="ring" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(95, 2)
+
+[node name="ring2" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(117, 2)
+
+[node name="ring3" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(138, 2)

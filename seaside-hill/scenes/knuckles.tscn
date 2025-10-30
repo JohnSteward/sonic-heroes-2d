@@ -526,7 +526,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mkea8"]
 
-[node name="knuckles" type="CharacterBody2D"]
+[node name="knuckles" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_x6f1m")
 
