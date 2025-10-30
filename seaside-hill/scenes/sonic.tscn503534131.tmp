@@ -1,0 +1,138 @@
+[gd_scene load_steps=19 format=3 uid="uid://bdhyd4atmlgnw"]
+
+[ext_resource type="Texture2D" uid="uid://cdtyngmkfs4tp" path="res://assets/sprites/knight.png" id="1_7cicp"]
+[ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_35lpn"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/SonicStates/state_machine.gd" id="3_3fri6"]
+[ext_resource type="Script" uid="uid://bmonvo42c5n76" path="res://scripts/SonicStates/idle.gd" id="4_7gxf2"]
+[ext_resource type="Script" uid="uid://06dlgl4pa6cu" path="res://scripts/SonicStates/run_state.gd" id="5_ht774"]
+[ext_resource type="Script" uid="uid://cuytp0cykth8e" path="res://scripts/SonicStates/jump_state.gd" id="6_a5tbb"]
+[ext_resource type="Script" uid="uid://76tusmrtk52s" path="res://scripts/SonicStates/fall_state.gd" id="7_qm650"]
+[ext_resource type="Script" uid="uid://bqip6adavkkgk" path="res://scripts/SonicStates/roll_state.gd" id="8_a5tbb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35lpn"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fri6"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gxf2"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bllou"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qm650"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(64, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rocmk"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(96, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mce4r"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(128, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irsdo"]
+atlas = ExtResource("1_7cicp")
+region = Rect2(160, 160, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ba3y2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35lpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fri6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7gxf2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bllou")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qm650")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rocmk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mce4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_irsdo")
+}],
+"loop": true,
+"name": &"roll",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ht774"]
+radius = 5.0990195
+
+[node name="Sonic" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_35lpn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ba3y2")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("CircleShape2D_ht774")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("3_3fri6")
+start_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state")]
+script = ExtResource("4_7gxf2")
+run_state = NodePath("../run")
+jump_state = NodePath("../jump")
+fall_state = NodePath("../fall")
+anim_name = "idle"
+
+[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "roll_state")]
+script = ExtResource("5_ht774")
+fall_state = NodePath("../fall")
+idle_state = NodePath("../idle")
+jump_state = NodePath("../jump")
+roll_state = NodePath("../roll")
+MAX_SPEED = 200.0
+friction = 0.5
+
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state")]
+script = ExtResource("6_a5tbb")
+idle_state = NodePath("../idle")
+run_state = NodePath("../run")
+fall_state = NodePath("../fall")
+jump_vel = 500.0
+
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state")]
+script = ExtResource("7_qm650")
+idle_state = NodePath("../idle")
+run_state = NodePath("../run")
+
+[node name="roll" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "fall_state")]
+script = ExtResource("8_a5tbb")
+idle_state = NodePath("../idle")
+run_state = NodePath("../run")
+jump_state = NodePath("../jump")
+fall_state = NodePath("../fall")
+anim_name = "roll"
+MAX_SPEED = null
+friction = 0.5
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
