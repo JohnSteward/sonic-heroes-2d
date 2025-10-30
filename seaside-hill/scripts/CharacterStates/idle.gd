@@ -14,7 +14,7 @@ func enter() -> void:
 	parent.speed = 0
 
 func process_input() -> State:
-	if Input.is_action_pressed("action"):
+	if Input.is_action_just_pressed("action"):
 		return action_state
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
 		return jump_state

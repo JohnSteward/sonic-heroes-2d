@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://cdcjpwqjw2nar"]
+[gd_scene load_steps=64 format=3 uid="uid://cdcjpwqjw2nar"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_fo6i8"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_r0q7k"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://xlf26l5inv2j" path="res://scripts/CharacterStates/change_dir_state.gd" id="13_cslaw"]
 [ext_resource type="Script" uid="uid://dfdi4mjrkeoxf" path="res://scripts/CharacterStates/TailsStates/fly_state.gd" id="14_wm8an"]
 [ext_resource type="Script" uid="uid://cbosfixpqr4cg" path="res://scripts/CharacterStates/TailsStates/thunder_shoot_state.gd" id="15_r0q7k"]
+[ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="16_0bhdd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("1_fo6i8")
@@ -343,6 +344,21 @@ height = 32.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_r0q7k"]
 radius = 10.049875
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_422et"]
+atlas = ExtResource("16_0bhdd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_311sm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_422et")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_0bhdd"]
 radius = 179.22612
 
@@ -378,6 +394,7 @@ run_state = NodePath("../run")
 jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 action_state = NodePath("../thunder_shoot")
+anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state")]
@@ -387,6 +404,7 @@ idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
 change_dir_state = NodePath("../change_direction")
 action_state = NodePath("../thunder_shoot")
+anim_name = "run"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state")]
@@ -395,6 +413,8 @@ idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
 change_dir_state = NodePath("../change_direction")
+jump_vel = 500.0
+anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state")]
@@ -403,6 +423,7 @@ idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../fly")
+anim_name = "fall"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state")]
@@ -412,6 +433,7 @@ idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 fly_state = NodePath("../fly")
+anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="fly" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
@@ -419,6 +441,7 @@ script = ExtResource("14_wm8an")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
 flight_duration = 500.0
+anim_name = "jump"
 MAX_SPEED = 400.0
 friction = 50.0
 acc = 30.0
@@ -428,6 +451,7 @@ metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 script = ExtResource("15_r0q7k")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
+anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="hitbox" type="Area2D" parent="StateMachine/thunder_shoot"]
@@ -437,6 +461,10 @@ collision_mask = 16
 [node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/thunder_shoot/hitbox"]
 shape = SubResource("CircleShape2D_r0q7k")
 disabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/thunder_shoot/hitbox"]
+visible = false
+sprite_frames = SubResource("SpriteFrames_311sm")
 
 [node name="radius" type="Area2D" parent="StateMachine/thunder_shoot"]
 collision_mask = 2
@@ -450,3 +478,4 @@ wait_time = 0.7
 one_shot = true
 
 [connection signal="area_entered" from="StateMachine/thunder_shoot/hitbox" to="StateMachine/thunder_shoot" method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="StateMachine/thunder_shoot/radius" to="StateMachine/thunder_shoot" method="_on_radius_body_entered"]
