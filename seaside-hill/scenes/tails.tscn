@@ -362,9 +362,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0bhdd"]
 radius = 179.22612
 
-[node name="tails" type="CharacterBody2D" groups=["player"]]
+[node name="tails" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state") groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_r0q7k")
+knockback_state = NodePath("StateMachine/fall")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
@@ -417,12 +418,13 @@ jump_vel = 500.0
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state")]
 script = ExtResource("11_23iso")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../fly")
+action_state = NodePath("../thunder_shoot")
 anim_name = "fall"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
@@ -436,10 +438,11 @@ fly_state = NodePath("../fly")
 anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="fly" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state")]
+[node name="fly" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "action_state")]
 script = ExtResource("14_wm8an")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
+action_state = NodePath("../thunder_shoot")
 flight_duration = 500.0
 anim_name = "jump"
 MAX_SPEED = 400.0
@@ -465,6 +468,10 @@ disabled = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/thunder_shoot/hitbox"]
 visible = false
 sprite_frames = SubResource("SpriteFrames_311sm")
+
+[node name="cooldown" type="Timer" parent="StateMachine/thunder_shoot/hitbox"]
+wait_time = 0.05
+one_shot = true
 
 [node name="radius" type="Area2D" parent="StateMachine/thunder_shoot"]
 collision_mask = 2

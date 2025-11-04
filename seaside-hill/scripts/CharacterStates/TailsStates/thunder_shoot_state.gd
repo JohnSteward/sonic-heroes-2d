@@ -8,9 +8,11 @@ var checked: bool = false
 var hit: bool = false
 var start_pos_x: float
 var start_pos_y: float
+var backlog = []
 @onready var hitbox: Area2D = $hitbox
 @onready var radius: Area2D = $radius
 @onready var animated_sprite_2d: AnimatedSprite2D = $hitbox/AnimatedSprite2D
+@onready var cooldown: Timer = $hitbox/cooldown
 
 @export var idle_state: State
 @export var run_state: State
@@ -30,19 +32,20 @@ var start_pos_y: float
 		
 func enter() -> void:
 	hit = false
+	parent.velocity.x = 0
 	hitbox.get_node("hitbox_shape").disabled = false
 	radius.get_node("range").disabled = false
 	animated_sprite_2d.visible = true
 	super()
 	hitbox.position = parent.position
-	start_pos_x = hitbox.position.x
-	start_pos_y = hitbox.position.y
+	start_pos_x = parent.position.x
+	start_pos_y = parent.position.y
 	if parent.animated_sprite_2d.flip_h:
 		direction = -1
 	else:
 		direction = 1
 	radius.position = parent.position
-	parent.velocity = Vector2(0,0)
+	
 	closest_enemy = null
 	
 	
@@ -52,6 +55,7 @@ func exit() -> void:
 	closest_enemy = null
 	hit = false
 	hitbox.get_node("hitbox_shape").disabled = true
+	backlog = []
 	
 	
 #func process_input() -> State:
@@ -64,23 +68,26 @@ func exit() -> void:
 	#return null
 	
 func process_physics(delta: float) -> State:
-	#Horrible if statement to check whether the player is facing the enemy
+	parent.velocity.y += gravity * delta
 	if hit:
-		if closest_enemy:
-			hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, x_distance/10)
-			hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, y_distance/10)
+		if closest_enemy and cooldown.is_stopped():
+			hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, 15)
+			hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, 15)
+		elif !cooldown.is_stopped():
+			pass
 		else:
 			hitbox.position.x = move_toward(hitbox.position.x, parent.position.x, 30)
 			hitbox.position.y = move_toward(hitbox.position.y, parent.position.y, 30)
 			if hitbox.position == parent.position:
 				return idle_state
 	elif closest_enemy:
-		parent.velocity = Vector2(0,0)
-		hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, x_distance/10)
-		hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, y_distance/10)
+		hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, 15)
+		hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, 15)
 	else:
-		hitbox.position.x = move_toward(hitbox.position.x, ((start_pos_x + 180)*direction), 50)
-		if hitbox.position.x == ((start_pos_x + 180)*direction):
+		hitbox.position.x = move_toward(hitbox.position.x, (start_pos_x + (190*direction)), 50)
+		if hitbox.position.x >= (start_pos_x + (180*direction)) and direction == 1:
+			hit = true
+		elif hitbox.position.x <= (start_pos_x + (180*direction)) and direction == -1:
 			hit = true
 	parent.move_and_slide()
 	return null
@@ -90,19 +97,27 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	start_pos_x = hitbox.position.x
 	start_pos_y = hitbox.position.y
 	radius.position = area.get_parent().position
+	hitbox.position.x = area.get_parent().position.x
 	area.get_parent().is_damaged(parent.damage)
+	area.get_parent().stunned = true
 	hit = true
-	closest_enemy = null
-	#radius.get_node("range").disabled = true
-	#radius.get_node("range").disabled = false
+	cooldown.start()
+	if backlog != []:
+		backlog.sort_custom(func(a, b): return abs(a.global_position - radius.global_position) < abs(b.global_position - radius.global_position))
+		closest_enemy = backlog[0]
+		backlog.remove_at(0)
+	else:
+		closest_enemy = null
 
 func _on_radius_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy") and body.position != radius.position:
-		if !closest_enemy and (radius.position.y < body.position.y) and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
+		if !closest_enemy and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
-		elif closest_enemy and (abs(body.global_position - radius.global_position) < abs(closest_enemy.global_position - radius.global_position)) and (radius.position.y < body.position.y) and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
+		elif closest_enemy and (abs(body.global_position - radius.global_position) < abs(closest_enemy.global_position - radius.global_position)) and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
+		else:
+			backlog.append(body)

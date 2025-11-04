@@ -4,6 +4,7 @@ extends State
 @export var run_state: State
 @export var change_dir_state: State
 @export var fly_state: State
+@export var action_state: State
 
 var direction
 var movement
@@ -14,6 +15,8 @@ func process_input() -> State:
 		return change_dir_state
 	if Input.is_action_just_pressed("jump"):
 		return fly_state
+	if Input.is_action_just_pressed("action"):
+		return action_state
 	return null
 	
 func process_physics(delta: float) -> State:

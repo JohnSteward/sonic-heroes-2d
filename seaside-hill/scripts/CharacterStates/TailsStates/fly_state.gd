@@ -2,6 +2,7 @@ extends State
 
 @export var fall_state: State
 @export var idle_state: State
+@export var action_state: State
 @export var flight_duration: float
 var boost: bool = false
 
@@ -17,6 +18,11 @@ func exit() -> void:
 		#parent.velocity.y = -500
 		#boost = true
 	#return null
+	
+func process_input() -> State:
+	if Input.is_action_just_pressed("action"):
+		return action_state
+	return null
 
 func process_physics(delta: float) -> State:
 	var direction = Input.get_axis("move_left","move_right")
@@ -32,6 +38,10 @@ func process_physics(delta: float) -> State:
 	else:
 		parent.velocity.y += gravity * delta
 	if direction:
+		if direction == -1:
+			parent.animated_sprite_2d.flip_h = true
+		else:
+			parent.animated_sprite_2d.flip_h = false
 		if (direction == -1 and parent.velocity.x > 0) or (direction == 1 and parent.velocity.x < 0):
 			parent.speed = move_toward(parent.speed, 0, friction)
 			parent.velocity.x = parent.speed * direction * -1

@@ -54,7 +54,14 @@ func process_physics(delta: float) -> State:
 	else:
 		punch_3_left.position.x = parent.position.x
 		punch_3_right.position.x = parent.position.x
-		parent.velocity.x = 120 * direction
+		if input:
+			if input == 1:
+				parent.animated_sprite_2d.flip_h = false
+			else:
+				parent.animated_sprite_2d.flip_h = true
+			parent.velocity.x = 120 * input
+		else:
+			parent.velocity.x = 120 * direction
 		left_anim.visible = false
 		right_anim.visible = false
 	if end_combo and !input:

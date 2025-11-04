@@ -14,18 +14,28 @@ var input: int
 
 func enter() -> void:
 	super()
+	var input = Input.get_axis("move_left", "move_right")
 	end_combo = false
 	punch_start.start()
 	punch_2.get_node("hitbox").disabled = false
+	if input:
+		direction = input
+		punch_2.position.x = parent.position.x + (10*direction)
+		if direction == 1:
+			parent.animated_sprite_2d.flip_h = false
+			animated_sprite_2d.flip_h = false
+		else:
+			parent.animated_sprite_2d.flip_h = true
+			animated_sprite_2d.flip_h = true
 	if parent.animated_sprite_2d.flip_h:
-		punch_2.position.x = parent.position.x - 15
+		punch_2.position.x = parent.position.x - 10
 		animated_sprite_2d.flip_h = true
 		direction = -1
 	else:
 		direction = 1
-		punch_2.position.x = parent.position.x + 15
+		punch_2.position.x = parent.position.x + 10
 		animated_sprite_2d.flip_h = false
-	punch_2.position.y = parent.position.y
+	punch_2.position.y = parent.position.y - 5
 	animated_sprite_2d.visible = true
 	animated_sprite_2d.play("punch")
 	
@@ -42,8 +52,8 @@ func process_input() -> State:
 	
 func process_physics(delta: float) -> State:
 	input = Input.get_axis("move_left", "move_right")
-	parent.velocity.x = 360 * direction
-	punch_2.position.x += 6  * direction
+	parent.velocity.x = 60 * direction
+	punch_2.position.x += 1  * direction
 	if end_combo and !input:
 		return idle_state
 	elif end_combo and input:

@@ -16,19 +16,29 @@ var input: int
 
 func enter() -> void:
 	super()
+	var input = Input.get_axis("move_left", "move_right")
 	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	end_combo = false
 	punch_start.start()
 	punch_1.get_node("hitbox").disabled = false
-	if parent.animated_sprite_2d.flip_h:
-		punch_1.position.x = parent.position.x - 15
+	if input:
+		direction = input
+		punch_1.position.x = parent.position.x + (10*direction)
+		if direction == 1:
+			parent.animated_sprite_2d.flip_h = false
+			animated_sprite_2d.flip_h = false
+		elif direction == -1:
+			parent.animated_sprite_2d.flip_h = true
+			animated_sprite_2d.flip_h = true
+	elif parent.animated_sprite_2d.flip_h:
+		punch_1.position.x = parent.position.x - 10
 		animated_sprite_2d.flip_h = true
 		direction = -1
 	else:
 		direction = 1
-		punch_1.position.x = parent.position.x + 15
+		punch_1.position.x = parent.position.x + 10
 		animated_sprite_2d.flip_h = false
-	punch_1.position.y = parent.position.y
+	punch_1.position.y = parent.position.y - 5
 	animated_sprite_2d.visible = true
 	animated_sprite_2d.play("punch")
 	

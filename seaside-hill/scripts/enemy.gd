@@ -1,10 +1,12 @@
 extends CharacterBody2D
 
 @export var hp: int
+@export var id: String
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var stunned: float
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	stunned = false
 
 func is_damaged(damage):
 	hp -= damage
