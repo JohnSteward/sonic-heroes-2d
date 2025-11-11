@@ -3,6 +3,7 @@ extends State
 @export var fall_state: State
 @export var idle_state: State
 @export var action_state: State
+@export var cannon_state: State
 @export var flight_duration: float
 var boost: bool = false
 
@@ -22,6 +23,11 @@ func exit() -> void:
 func process_input() -> State:
 	if Input.is_action_just_pressed("action"):
 		return action_state
+	return null
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
 	return null
 
 func process_physics(delta: float) -> State:

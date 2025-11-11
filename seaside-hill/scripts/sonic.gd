@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var hurtbox: Area2D = $hurtbox
 @export var knockback_state: State
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
+@onready var remote_transform_2d: RemoteTransform2D = %RemoteTransform2D
 
 var speed: int = 0
 var damage: int = 1
@@ -15,6 +16,10 @@ var rings: int = 3
 var can_fly: bool = false
 var start_fly_x: float
 var start_fly_y: float
+var is_in_cannon: bool = false
+var out_cannon: bool = false
+var light_dash: bool = false
+var ring_position
 
 func _ready() -> void:
 	state_machine.init(self)
@@ -49,5 +54,12 @@ func is_damaged() -> void:
 			i_frames.start()
 
 
-func _on_iframes_timeout() -> void:
-	print("no i frames")
+func _on_light_dash_radius_area_entered(area: Area2D) -> void:
+	if area.is_in_group("ring"):
+		light_dash = true
+		ring_position = area.position
+
+
+func _on_light_dash_radius_area_exited(area: Area2D) -> void:
+	if area.is_in_group("ring") and area.position == ring_position:
+		light_dash = false

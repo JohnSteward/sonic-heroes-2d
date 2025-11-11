@@ -5,6 +5,7 @@ extends State
 @export var jump_state: State
 @export var fall_state: State
 @export var change_dir_state: State
+@export var cannon_state: State
 
 var direction: int
 
@@ -21,6 +22,11 @@ func process_input() -> State:
 		return jump_state
 	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
 		friction = 10
+	return null
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
 	return null
 
 func process_physics(delta) -> State:

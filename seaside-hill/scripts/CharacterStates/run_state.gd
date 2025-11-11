@@ -6,6 +6,7 @@ extends State
 @export var roll_state: State
 @export var change_dir_state: State
 @export var action_state: State
+@export var cannon_state: State
 
 var movement: float
 var direction;
@@ -33,6 +34,8 @@ func process_input() -> State:
 func process_frame(delta: float) -> State:
 	if parent.speed >= MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
 		parent.animated_sprite_2d.play("sprint")
+	if parent.is_in_cannon:
+		return cannon_state
 	return null
 	
 func process_physics(delta: float) -> State:

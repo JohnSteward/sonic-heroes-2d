@@ -3,6 +3,7 @@ extends State
 @export var combo_3_state: State
 @export var run_state: State
 @export var idle_state: State
+@export var cannon_state: State
 
 @onready var punch_start: Timer = $punch_start
 @onready var punch_end: Timer = $punch_end
@@ -49,7 +50,12 @@ func process_input() -> State:
 	if Input.is_action_just_pressed("action") and punch_start.is_stopped() and !punch_end.is_stopped():
 		return combo_3_state
 	return null
-	
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
+
 func process_physics(delta: float) -> State:
 	input = Input.get_axis("move_left", "move_right")
 	parent.velocity.x = 60 * direction

@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://cdcjpwqjw2nar"]
+[gd_scene load_steps=67 format=3 uid="uid://cdcjpwqjw2nar"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_fo6i8"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_r0q7k"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dfdi4mjrkeoxf" path="res://scripts/CharacterStates/TailsStates/fly_state.gd" id="14_wm8an"]
 [ext_resource type="Script" uid="uid://cbosfixpqr4cg" path="res://scripts/CharacterStates/TailsStates/thunder_shoot_state.gd" id="15_r0q7k"]
 [ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="16_0bhdd"]
+[ext_resource type="Script" uid="uid://c2tmafe3vr7v0" path="res://scripts/CharacterStates/cannon.gd" id="17_311sm"]
 [ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="17_422et"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
@@ -345,6 +346,11 @@ height = 32.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_r0q7k"]
 radius = 10.049875
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0bhdd"]
+radius = 179.22612
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_422et"]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_422et"]
 atlas = ExtResource("16_0bhdd")
 region = Rect2(0, 0, 32, 32)
@@ -359,9 +365,6 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_0bhdd"]
-radius = 179.22612
 
 [node name="tails" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state") groups=["player"]]
 collision_layer = 2
@@ -390,61 +393,69 @@ shape = SubResource("CapsuleShape2D_7u2c3")
 script = ExtResource("7_jvq4g")
 start_state = NodePath("idle")
 
-[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state")]
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state")]
 script = ExtResource("8_gvof2")
 run_state = NodePath("../run")
 jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 action_state = NodePath("../thunder_shoot")
+cannon_state = NodePath("../cannon")
 anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state")]
+[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state", "cannon_state")]
 script = ExtResource("9_1d487")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
 change_dir_state = NodePath("../change_direction")
 action_state = NodePath("../thunder_shoot")
+cannon_state = NodePath("../cannon")
 anim_name = "run"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state")]
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state", "cannon_state")]
 script = ExtResource("10_o5pt2")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
 action_state = NodePath("../thunder_shoot")
 change_dir_state = NodePath("../change_direction")
+cannon_state = NodePath("../cannon")
 jump_vel = 500.0
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state", "cannon_state")]
 script = ExtResource("11_23iso")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../fly")
 action_state = NodePath("../thunder_shoot")
+cannon_state = NodePath("../cannon")
 anim_name = "fall"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state")]
+[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state", "action_state", "air_action_state", "cannon_state")]
 script = ExtResource("13_cslaw")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 fly_state = NodePath("../fly")
+action_state = NodePath("../thunder_shoot")
+air_action_state = NodePath("../thunder_shoot")
+cannon_state = NodePath("../cannon")
 anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="fly" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "action_state")]
+[node name="fly" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "action_state", "cannon_state")]
 script = ExtResource("14_wm8an")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
 action_state = NodePath("../thunder_shoot")
+cannon_state = NodePath("../cannon")
 flight_duration = 500.0
 anim_name = "jump"
 MAX_SPEED = 400.0
@@ -452,36 +463,54 @@ friction = 50.0
 acc = 30.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="thunder_shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state")]
+[node name="thunder_shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "cannon_state")]
 script = ExtResource("15_r0q7k")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
+cannon_state = NodePath("../cannon")
 anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="hitbox" type="Area2D" parent="StateMachine/thunder_shoot"]
+[node name="cooldown" type="Timer" parent="StateMachine/thunder_shoot"]
+wait_time = 0.05
+one_shot = true
+
+[node name="ball" type="RigidBody2D" parent="StateMachine/thunder_shoot"]
+z_index = 1
+collision_layer = 2
+
+[node name="hitbox" type="Area2D" parent="StateMachine/thunder_shoot/ball"]
 z_index = 1
 collision_layer = 8
 collision_mask = 16
 
-[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/thunder_shoot/hitbox"]
+[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/thunder_shoot/ball/hitbox"]
 shape = SubResource("CircleShape2D_r0q7k")
 disabled = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/thunder_shoot/hitbox"]
+[node name="radius" type="Area2D" parent="StateMachine/thunder_shoot/ball"]
+collision_mask = 2
+
+[node name="range" type="CollisionShape2D" parent="StateMachine/thunder_shoot/ball/radius"]
+shape = SubResource("CircleShape2D_0bhdd")
+disabled = true
+
+[node name="collision" type="CollisionShape2D" parent="StateMachine/thunder_shoot/ball"]
+shape = SubResource("CircleShape2D_422et")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/thunder_shoot/ball"]
 visible = false
 sprite_frames = SubResource("SpriteFrames_311sm")
 
-[node name="cooldown" type="Timer" parent="StateMachine/thunder_shoot/hitbox"]
-wait_time = 0.05
-one_shot = true
+[node name="cannon" type="Node" parent="StateMachine"]
+script = ExtResource("17_311sm")
+anim_name = "jump"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="radius" type="Area2D" parent="StateMachine/thunder_shoot"]
-collision_mask = 2
-
-[node name="range" type="CollisionShape2D" parent="StateMachine/thunder_shoot/radius"]
-shape = SubResource("CircleShape2D_0bhdd")
-disabled = true
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="StateMachine/cannon"]
+unique_name_in_owner = true
+update_rotation = false
+update_scale = false
 
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7
@@ -491,5 +520,5 @@ one_shot = true
 stream = ExtResource("17_422et")
 bus = &"SFX"
 
-[connection signal="area_entered" from="StateMachine/thunder_shoot/hitbox" to="StateMachine/thunder_shoot" method="_on_hitbox_area_entered"]
-[connection signal="body_entered" from="StateMachine/thunder_shoot/radius" to="StateMachine/thunder_shoot" method="_on_radius_body_entered"]
+[connection signal="area_entered" from="StateMachine/thunder_shoot/ball/hitbox" to="StateMachine/thunder_shoot" method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="StateMachine/thunder_shoot/ball/radius" to="StateMachine/thunder_shoot" method="_on_radius_body_entered"]

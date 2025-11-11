@@ -2,6 +2,7 @@ extends State
 
 @export var run_state: State
 @export var idle_state: State
+@export var cannon_state: State
 
 @onready var punch_start: Timer = $punch_start
 @onready var punch_end: Timer = $punch_end
@@ -37,7 +38,11 @@ func exit() -> void:
 	right_anim.visible = false
 	parent.hurtbox.get_node("CollisionShape2D").disabled = false
 
-	
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
+
 func process_physics(delta: float) -> State:
 	input = Input.get_axis("move_left", "move_right")
 	parent.velocity.y += gravity * delta

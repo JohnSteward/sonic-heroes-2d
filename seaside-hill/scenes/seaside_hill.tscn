@@ -1,12 +1,14 @@
-[gd_scene load_steps=12 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=16 format=4 uid="uid://5oja1aeqsqg7"]
 
-[ext_resource type="PackedScene" uid="uid://b8w8oc7uqulnc" path="res://scenes/knuckles.tscn" id="1_6corl"]
 [ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
+[ext_resource type="PackedScene" uid="uid://bdhyd4atmlgnw" path="res://scenes/sonic.tscn" id="1_u55kl"]
 [ext_resource type="Texture2D" uid="uid://dw6spjk6ljqga" path="res://assets/sprites/green-hill-cut.png" id="2_56hce"]
 [ext_resource type="Texture2D" uid="uid://s55crfthdsxn" path="res://assets/new-sprites/tileset.png" id="2_b706e"]
 [ext_resource type="PackedScene" uid="uid://chf50o0g8iy0n" path="res://scenes/death_plane.tscn" id="3_56hce"]
 [ext_resource type="PackedScene" uid="uid://bl1sbg37ug2k2" path="res://scenes/enemy.tscn" id="4_mxsot"]
 [ext_resource type="PackedScene" uid="uid://ctppqqs3ogg4e" path="res://scenes/ring.tscn" id="5_e80yk"]
+[ext_resource type="PackedScene" uid="uid://c3bgk8acf8j8w" path="res://scenes/cannon.tscn" id="8_txlg8"]
+[ext_resource type="Script" uid="uid://8s4ys5ugfd27" path="res://scripts/cannon_path.gd" id="9_u55kl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6corl"]
 texture = ExtResource("2_b706e")
@@ -1172,12 +1174,24 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_mxsot")
 
+[sub_resource type="Curve2D" id="Curve2D_u55kl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -13, 0, 0, 0, 0, 14, -62, 0, 0, 0, 0, 48, -105, 0, 0, 0, 0, 100, -92, 0, 0, 0, 0, 141, -66, 0, 0, 0, 0, 195, -16, 0, 0, 0, 0, 257, -82, 0, 0, 0, 0, 290, -141, 0, 0, 0, 0, 330, -131, 0, 0, 0, 0, 349, -80)
+}
+point_count = 10
+
+[sub_resource type="Curve2D" id="Curve2D_2uqr4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1, -13, 0, 0, 0, 0, 1, -50, 0, 0, 0, 0, 13, -100, 0, 0, 0, 0, -25, -168, 0, 0, 0, 0, -44, -213, 0, 0, 0, 0, -65, -244, 0, 0, 0, 0, -108, -251, 0, 0, 0, 0, -174, -232, 0, 0, 0, 0, -184, -204)
+}
+point_count = 9
+
 [node name="seaside-hill" type="Node2D"]
 
-[node name="knuckles" parent="." instance=ExtResource("1_6corl")]
+[node name="Sonic" parent="." instance=ExtResource("1_u55kl")]
 z_index = 1
 
-[node name="Camera2D" type="Camera2D" parent="knuckles"]
+[node name="Camera2D" type="Camera2D" parent="Sonic"]
 zoom = Vector2(2, 2)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1200,7 +1214,7 @@ text = "Rings: 0"
 
 [node name="seaside-hill-ground" type="TileMapLayer" parent="tile-map"]
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AADu/wIAAAAAAAAAAADy/wIAAAAAAAAAAAD2/wIAAAAAAAAAAAD6/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAACAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAKAAIAAAAAAAAAAADq/wIAAAAAAAAAAADm/wIAAAAAAAAAAADi/wIAAAAAAAAAAADe/wIAAAAAAAAAAADa/wIAAAAAAAAAAAAOAAIAAAAAAAAAAAASAAIAAAAAAAAAAAAWAAIAAAAAAAAAAAAaAAIAAAAAAAAAAAAeAAIAAAAAAAAAAAAiAAIAAAAAAAAAAAAmAAIAAAAEAAAAAAAqAAIAAAAEAAAAAAAuAAIAAAAEAAAAAAAyAAIAAAAEAAAAAAA2AAIAAAAEAAAAAAA6AAIAAAAEAAAAAAA=")
+tile_map_data = PackedByteArray("AADu/wIAAAAAAAAAAADy/wIAAAAAAAAAAAD2/wIAAAAAAAAAAAD6/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAACAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAKAAIAAAAAAAAAAADq/wIAAAAAAAAAAADm/wIAAAAAAAAAAADi/wIAAAAAAAAAAADe/wIAAAAAAAAAAADa/wIAAAAAAAAAAAAOAAIAAAAAAAAAAAASAAIAAAAAAAAAAAAWAAIAAAAAAAAAAAAaAAIAAAAAAAAAAAAeAAIAAAAAAAAAAAAiAAIAAAAAAAAAAAAmAAIAAAAEAAAAAAAqAAIAAAAEAAAAAAAuAAIAAAAEAAAAAAAyAAIAAAAEAAAAAAA2AAIAAAAEAAAAAAA6AAIAAAAEAAAAAAARAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_txlg8")
 
 [node name="solid-ground" type="TileMapLayer" parent="tile-map"]
@@ -1211,35 +1225,77 @@ position = Vector2(3, 583)
 
 [node name="rings" type="Node" parent="."]
 
-[node name="ring" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(93, 65)
+[node name="ring12" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(311, 65)
 
-[node name="ring2" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(113, 65)
+[node name="ring13" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(330, 53)
 
-[node name="ring3" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(133, 65)
+[node name="ring14" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(349, 38)
 
-[node name="ring4" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(153, 65)
+[node name="ring15" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(238, 65)
 
-[node name="ring5" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(174, 65)
+[node name="ring16" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(263, 65)
 
-[node name="ring6" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(193, 65)
+[node name="ring17" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(288, 65)
 
-[node name="ring7" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(213, 65)
+[node name="ring18" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(164, 65)
 
-[node name="ring8" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(233, 65)
+[node name="ring19" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(188, 65)
 
-[node name="ring9" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(253, 65)
+[node name="ring20" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(214, 65)
 
-[node name="ring10" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(274, 65)
+[node name="ring21" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(91, 65)
+
+[node name="ring22" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(115, 65)
+
+[node name="ring23" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(141, 65)
+
+[node name="ring24" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(477, -102)
+
+[node name="ring25" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(500, -102)
+
+[node name="ring26" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(654, 65)
+
+[node name="ring27" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(409, -100)
+
+[node name="ring28" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(431, -101)
+
+[node name="ring29" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(454, -102)
+
+[node name="ring30" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(363, -52)
+
+[node name="ring31" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(375, -70)
+
+[node name="ring32" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(389, -89)
+
+[node name="ring33" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(356, 14)
+
+[node name="ring34" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(356, -9)
+
+[node name="ring35" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(356, -32)
 
 [node name="enemies" type="Node" parent="."]
 
@@ -1254,3 +1310,37 @@ hp = 2
 [node name="enemy2" parent="enemies" instance=ExtResource("4_mxsot")]
 position = Vector2(-155, -24)
 hp = 3
+
+[node name="cannons" type="Node" parent="."]
+
+[node name="cannon" parent="cannons" instance=ExtResource("8_txlg8")]
+position = Vector2(939, 56)
+
+[node name="Path2D" type="Path2D" parent="cannons/cannon"]
+curve = SubResource("Curve2D_u55kl")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon/Path2D"]
+position = Vector2(0, -13)
+rotation = -1.2924967
+loop = false
+script = ExtResource("9_u55kl")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon/Path2D/PathFollow2D"]
+update_rotation = false
+update_scale = false
+
+[node name="cannon2" parent="cannons" instance=ExtResource("8_txlg8")]
+position = Vector2(852, 59)
+
+[node name="Path2D" type="Path2D" parent="cannons/cannon2"]
+curve = SubResource("Curve2D_2uqr4")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon2/Path2D"]
+position = Vector2(-1, -13)
+rotation = -1.5167948
+loop = false
+script = ExtResource("9_u55kl")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon2/Path2D/PathFollow2D"]
+update_rotation = false
+update_scale = false

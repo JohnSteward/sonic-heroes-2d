@@ -11,50 +11,40 @@ var start_pos_y: float
 var backlog = []
 @onready var hitbox: Area2D = $hitbox
 @onready var radius: Area2D = $radius
-@onready var animated_sprite_2d: AnimatedSprite2D = $hitbox/AnimatedSprite2D
-@onready var cooldown: Timer = $hitbox/cooldown
+@onready var animated_sprite_2d: AnimatedSprite2D = $ball/AnimatedSprite2D
+@onready var cooldown: Timer = $cooldown
+@onready var ball: RigidBody2D = $ball
 
 @export var idle_state: State
 @export var run_state: State
+@export var cannon_state: State
 
 
-#func check_enemies() -> void:
-	#for enemy in objects_inside:
-		#if !closest_enemy:
-			#closest_enemy = enemy
-		#else:
-			#if abs(enemy.global_position - parent.global_position) < abs(closest_enemy.global_position - parent.global_position):
-				#closest_enemy = enemy
-	#if closest_enemy:
-		#x_distance = abs(closest_enemy.global_position.x - start_pos_x)
-		#y_distance = abs(closest_enemy.global_position.y - start_pos_y)
-		#checked = true
-		
 func enter() -> void:
 	hit = false
 	parent.velocity.x = 0
-	hitbox.get_node("hitbox_shape").disabled = false
-	radius.get_node("range").disabled = false
-	animated_sprite_2d.visible = true
+	ball.get_node("hitbox").get_node("hitbox_shape").disabled = false
+	ball.get_node("radius").get_node("range").disabled = false
+	ball.get_node("AnimatedSprite2D").visible = true
 	super()
-	hitbox.position = parent.position
+	ball.position = parent.position
 	start_pos_x = parent.position.x
 	start_pos_y = parent.position.y
 	if parent.animated_sprite_2d.flip_h:
 		direction = -1
 	else:
 		direction = 1
-	radius.position = parent.position
+	ball.get_node("radius").position = parent.position
 	
 	closest_enemy = null
 	
 	
 func exit() -> void:
 	animated_sprite_2d.visible = false
-	radius.get_node("range").disabled = true
+	ball.get_node("radius").get_node("range").disabled = true
 	closest_enemy = null
 	hit = false
-	hitbox.get_node("hitbox_shape").disabled = true
+	ball.get_node("hitbox").get_node("hitbox_shape").disabled = true
 	backlog = []
 	
 	
@@ -67,55 +57,60 @@ func exit() -> void:
 			#return idle_state
 	#return null
 	
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
+
 func process_physics(delta: float) -> State:
 	parent.velocity.y += gravity * delta
 	if hit:
 		if closest_enemy and cooldown.is_stopped():
-			hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, 15)
-			hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, 15)
+			ball.position.x = move_toward(ball.position.x, closest_enemy.position.x, 15)
+			ball.position.y = move_toward(ball.position.y, closest_enemy.position.y - 5, 15)
 		elif !cooldown.is_stopped():
 			pass
 		else:
-			hitbox.position.x = move_toward(hitbox.position.x, parent.position.x, 30)
-			hitbox.position.y = move_toward(hitbox.position.y, parent.position.y, 30)
-			if hitbox.position == parent.position:
+			ball.position.x = move_toward(ball.position.x, parent.position.x, 30)
+			ball.position.y = move_toward(ball.position.y, parent.position.y, 30)
+			if ball.position == parent.position:
 				return idle_state
 	elif closest_enemy:
-		hitbox.position.x = move_toward(hitbox.position.x, closest_enemy.position.x, 15)
-		hitbox.position.y = move_toward(hitbox.position.y, closest_enemy.position.y - 5, 15)
+		ball.position.x = move_toward(ball.position.x, closest_enemy.position.x, 15)
+		ball.position.y = move_toward(ball.position.y, closest_enemy.position.y - 5, 15)
 	else:
-		hitbox.position.x = move_toward(hitbox.position.x, (start_pos_x + (190*direction)), 50)
-		if hitbox.position.x >= (start_pos_x + (180*direction)) and direction == 1:
+		ball.position.x = move_toward(ball.position.x, (start_pos_x + (190*direction)), 50)
+		if ball.position.x >= (start_pos_x + (180*direction)) and direction == 1:
 			hit = true
-		elif hitbox.position.x <= (start_pos_x + (180*direction)) and direction == -1:
+		elif ball.position.x <= (start_pos_x + (180*direction)) and direction == -1:
 			hit = true
 	parent.move_and_slide()
 	return null
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	start_pos_x = hitbox.position.x
-	start_pos_y = hitbox.position.y
-	radius.position = area.get_parent().position
-	hitbox.position.x = area.get_parent().position.x
+	start_pos_x = ball.position.x
+	start_pos_y = ball.position.y
+	ball.get_node("radius").position = area.get_parent().position
+	ball.position.x = area.get_parent().position.x
 	area.get_parent().is_damaged(parent.damage)
 	area.get_parent().stunned = true
 	hit = true
 	cooldown.start()
 	if backlog != []:
-		backlog.sort_custom(func(a, b): return abs(a.global_position - radius.global_position) < abs(b.global_position - radius.global_position))
+		backlog.sort_custom(func(a, b): return abs(a.global_position - ball.get_node("radius").global_position) < abs(b.global_position - ball.get_node("radius").global_position))
 		closest_enemy = backlog[0]
 		backlog.remove_at(0)
 	else:
 		closest_enemy = null
 
 func _on_radius_body_entered(body: Node2D) -> void:
-	if body.is_in_group("enemy") and body.position != radius.position:
-		if !closest_enemy and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
+	if body.is_in_group("enemy") and body.position != ball.get_node("radius").position:
+		if !closest_enemy and ((ball.get_node("radius").position.x < body.position.x and direction == 1) or (ball.get_node("radius").position.x > body.position.x and direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
-		elif closest_enemy and (abs(body.global_position - radius.global_position) < abs(closest_enemy.global_position - radius.global_position)) and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
+		elif closest_enemy and (abs(body.global_position - ball.get_node("radius").global_position) < abs(closest_enemy.global_position - ball.get_node("radius").global_position)) and ((ball.get_node("radius").position.x < body.position.x and direction == 1) or (ball.get_node("radius").position.x > body.position.x and direction == -1)):
 			backlog.append(closest_enemy)
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)

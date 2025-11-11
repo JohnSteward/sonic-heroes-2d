@@ -14,6 +14,7 @@ var dist_ratio: float
 @export var idle_state: State
 @export var jump_state: State
 @export var run_state: State
+@export var cannon_state: State
 
 
 
@@ -44,6 +45,7 @@ func exit() -> void:
 func process_input() -> State:
 	var input = Input.get_axis("move_left", "move_right")
 	if hit:
+		parent.velocity.x = 0
 		return jump_state
 	if parent.is_on_floor():
 		if input:
@@ -51,7 +53,12 @@ func process_input() -> State:
 		else:
 			return idle_state
 	return null
-	
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
+
 func process_physics(delta: float) -> State:
 	hitbox.position = parent.position
 	#Horrible if statement to check whether the player is above and facing the enemy

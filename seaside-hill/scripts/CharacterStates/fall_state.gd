@@ -5,6 +5,7 @@ extends State
 @export var change_dir_state: State
 @export var fly_state: State
 @export var action_state: State
+@export var cannon_state: State
 
 var direction
 var movement
@@ -18,7 +19,12 @@ func process_input() -> State:
 	if Input.is_action_just_pressed("action"):
 		return action_state
 	return null
-	
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
+
 func process_physics(delta: float) -> State:
 	parent.velocity.y += fall_grav * delta
 	direction = Input.get_axis("move_left", "move_right")

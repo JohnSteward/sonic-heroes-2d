@@ -2,6 +2,7 @@ extends State
 
 @export var idle_state: State
 @export var fall_state: State
+@export var cannon_state: State
 var closest_enemy: CharacterBody2D
 var x_distance: float
 var y_distance: float
@@ -41,6 +42,11 @@ func exit() -> void:
 	fireball.get_node("hitbox").get_node("AnimatedSprite2D").visible = false
 	hit = false
 	closest_enemy = null
+
+func process_frame(delta: float) -> State:
+	if parent.is_in_cannon:
+		return cannon_state
+	return null
 
 func process_physics(delta: float) -> State:
 	if !delay.is_stopped():

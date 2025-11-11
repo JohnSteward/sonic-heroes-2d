@@ -1,4 +1,4 @@
-[gd_scene load_steps=108 format=3 uid="uid://b8w8oc7uqulnc"]
+[gd_scene load_steps=109 format=3 uid="uid://b8w8oc7uqulnc"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_5r1mh"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_x6f1m"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://8dfsieok0hfb" path="res://scripts/CharacterStates/KnucklesStates/combo_3.gd" id="19_yo8ic"]
 [ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="22_1nn1e"]
 [ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="22_3kxmf"]
+[ext_resource type="Script" uid="uid://c2tmafe3vr7v0" path="res://scripts/CharacterStates/cannon.gd" id="23_robi5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("1_5r1mh")
@@ -638,43 +639,47 @@ shape = SubResource("CapsuleShape2D_0i175")
 script = ExtResource("7_t3kig")
 start_state = NodePath("idle")
 
-[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state")]
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state")]
 script = ExtResource("8_n4qkp")
 run_state = NodePath("../run")
 jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 action_state = NodePath("../combo_1")
+cannon_state = NodePath("../cannon")
 anim_name = "idle"
 
-[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state")]
+[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state", "cannon_state")]
 script = ExtResource("9_74d33")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
 change_dir_state = NodePath("../change_direction")
 action_state = NodePath("../combo_1")
+cannon_state = NodePath("../cannon")
 anim_name = "run"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state")]
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state", "cannon_state")]
 script = ExtResource("10_c3qrs")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
 action_state = NodePath("../air_combo")
 change_dir_state = NodePath("../change_direction")
+cannon_state = NodePath("../cannon")
 jump_vel = 500.0
 anim_name = "jump"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state", "cannon_state")]
 script = ExtResource("11_hv5g0")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../glide")
 action_state = NodePath("../air_combo")
+cannon_state = NodePath("../cannon")
 anim_name = "jump"
 
-[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state", "action_state")]
+[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state", "action_state", "air_action_state", "cannon_state")]
 script = ExtResource("13_pv8y7")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
@@ -682,14 +687,17 @@ jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 fly_state = NodePath("../glide")
 action_state = NodePath("../combo_1")
+air_action_state = NodePath("../air_combo")
+cannon_state = NodePath("../cannon")
 anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="combo_1" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "combo_2_state")]
+[node name="combo_1" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "combo_2_state", "cannon_state")]
 script = ExtResource("16_p1u2g")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 combo_2_state = NodePath("../combo_2")
+cannon_state = NodePath("../cannon")
 anim_name = "punch_1"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
@@ -715,11 +723,12 @@ one_shot = true
 wait_time = 0.25
 one_shot = true
 
-[node name="combo_2" type="Node" parent="StateMachine" node_paths=PackedStringArray("combo_3_state", "run_state", "idle_state")]
+[node name="combo_2" type="Node" parent="StateMachine" node_paths=PackedStringArray("combo_3_state", "run_state", "idle_state", "cannon_state")]
 script = ExtResource("18_id0b6")
 combo_3_state = NodePath("../combo_3")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
+cannon_state = NodePath("../cannon")
 anim_name = "punch_2"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
@@ -746,10 +755,11 @@ one_shot = true
 wait_time = 0.25
 one_shot = true
 
-[node name="combo_3" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state")]
+[node name="combo_3" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "cannon_state")]
 script = ExtResource("19_yo8ic")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
+cannon_state = NodePath("../cannon")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="punch_3_left" type="Area2D" parent="StateMachine/combo_3"]
@@ -789,20 +799,22 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
-[node name="glide" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "run_state", "change_dir_state")]
+[node name="glide" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "run_state", "change_dir_state", "cannon_state")]
 script = ExtResource("17_bnfs7")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
+cannon_state = NodePath("../cannon")
 glide_grav = 50.0
 friction = 25.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="air_combo" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "fall_state")]
+[node name="air_combo" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "fall_state", "cannon_state")]
 script = ExtResource("19_lch8e")
 idle_state = NodePath("../idle")
 fall_state = NodePath("../fall")
+cannon_state = NodePath("../cannon")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="delay" type="Timer" parent="StateMachine/air_combo"]
@@ -834,6 +846,11 @@ disabled = true
 
 [node name="collision" type="CollisionShape2D" parent="StateMachine/air_combo/fireball"]
 shape = SubResource("CircleShape2D_robi5")
+
+[node name="cannon" type="Node" parent="StateMachine"]
+script = ExtResource("23_robi5")
+anim_name = "jump"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7

@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3bgk8acf8j8w"]
+
+[ext_resource type="Script" uid="uid://bjg7epjs381bg" path="res://scripts/cannon.gd" id="1_xuqfy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1ne2b"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xuqfy"]
+
+[node name="cannon" type="RigidBody2D"]
+collision_layer = 2
+script = ExtResource("1_xuqfy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_1ne2b")
+
+[node name="entry" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="entry"]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_xuqfy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[connection signal="body_entered" from="entry" to="." method="_on_entry_body_entered"]

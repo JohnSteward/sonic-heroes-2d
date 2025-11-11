@@ -7,6 +7,8 @@ extends State
 @export var roll_state: State
 @export var fly_state: State
 @export var action_state: State
+@export var air_action_state: State
+@export var cannon_state: State
 
 var direction
 
@@ -21,6 +23,8 @@ func exit() -> void:
 func process_frame(delta: float) -> State:
 	if parent.is_on_floor() and !(parent.animated_sprite_2d.animation == "change_dir"):
 		parent.animated_sprite_2d.play("change_dir")
+	if parent.is_in_cannon:
+		return cannon_state
 	return null
 
 
@@ -37,6 +41,8 @@ func process_input() -> State:
 	if parent.is_on_floor() and Input.is_action_just_pressed("action"):
 		parent.animated_sprite_2d.flip_h = !parent.animated_sprite_2d.flip_h
 		return action_state
+	if !parent.is_on_floor() and Input.is_action_just_pressed("action"):
+		return air_action_state
 	return null
 
 func process_physics(delta: float) -> State:
