@@ -1,11 +1,13 @@
 class_name Player
 extends CharacterBody2D
 
+@onready var ui: Control = %UI
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: Node = $StateMachine
 @onready var i_frames: Timer = $"i-frames"
 @onready var hurtbox: Area2D = $hurtbox
 @export var knockback_state: State
+@onready var damage_sound: AudioStreamPlayer2D = $damage_sound
 
 var speed: int = 0
 var damage: int = 1
@@ -31,11 +33,13 @@ func knockback():
 	state_machine.change_state(knockback_state)
 
 func _physics_process(delta: float) -> void:
+	ui.update_rings(rings)
 	state_machine.process_input()
 	state_machine.process_frame(delta)
 	state_machine.process_physics(delta)
 	
 func is_damaged() -> void:
+	damage_sound.play()
 	if i_frames.is_stopped():
 		if rings == 0:
 			get_tree().reload_current_scene()

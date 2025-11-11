@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://cdcjpwqjw2nar"]
+[gd_scene load_steps=65 format=3 uid="uid://cdcjpwqjw2nar"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_fo6i8"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_r0q7k"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dfdi4mjrkeoxf" path="res://scripts/CharacterStates/TailsStates/fly_state.gd" id="14_wm8an"]
 [ext_resource type="Script" uid="uid://cbosfixpqr4cg" path="res://scripts/CharacterStates/TailsStates/thunder_shoot_state.gd" id="15_r0q7k"]
 [ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="16_0bhdd"]
+[ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="17_422et"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("1_fo6i8")
@@ -408,11 +409,12 @@ action_state = NodePath("../thunder_shoot")
 anim_name = "run"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state")]
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state")]
 script = ExtResource("10_o5pt2")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
+action_state = NodePath("../thunder_shoot")
 change_dir_state = NodePath("../change_direction")
 jump_vel = 500.0
 anim_name = "jump"
@@ -458,6 +460,7 @@ anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="hitbox" type="Area2D" parent="StateMachine/thunder_shoot"]
+z_index = 1
 collision_layer = 8
 collision_mask = 16
 
@@ -483,6 +486,10 @@ disabled = true
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7
 one_shot = true
+
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_422et")
+bus = &"SFX"
 
 [connection signal="area_entered" from="StateMachine/thunder_shoot/hitbox" to="StateMachine/thunder_shoot" method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="StateMachine/thunder_shoot/radius" to="StateMachine/thunder_shoot" method="_on_radius_body_entered"]

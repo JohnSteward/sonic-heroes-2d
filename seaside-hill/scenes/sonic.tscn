@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://bdhyd4atmlgnw"]
+[gd_scene load_steps=64 format=3 uid="uid://bdhyd4atmlgnw"]
 
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_35lpn"]
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="2_hpha1"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://ciyuweuecypq" path="res://scripts/CharacterStates/SonicStates/rocket_accel.gd" id="10_rocmk"]
 [ext_resource type="Script" uid="uid://4aytnk07ni42" path="res://scripts/CharacterStates/SonicStates/homing_state.gd" id="16_hgjo6"]
 [ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="17_qrl6y"]
+[ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="18_m14wf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("2_hpha1")
@@ -348,10 +349,9 @@ radius = 183.00273
 [sub_resource type="CircleShape2D" id="CircleShape2D_m14wf"]
 radius = 17.0
 
-[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("idle_state") groups=["player"]]
+[node name="Sonic" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_35lpn")
-idle_state = NodePath("StateMachine/fall")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
@@ -467,6 +467,10 @@ disabled = true
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7
 one_shot = true
+
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("18_m14wf")
+bus = &"SFX"
 
 [connection signal="body_entered" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_entered"]
 [connection signal="body_exited" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_exited"]

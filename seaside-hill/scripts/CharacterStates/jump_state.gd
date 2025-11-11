@@ -3,6 +3,7 @@ extends State
 @export var idle_state: State
 @export var run_state: State
 @export var fall_state: State
+@export var action_state: State
 @export var change_dir_state: State
 
 @export var jump_vel: float = 200
@@ -18,6 +19,8 @@ func process_input() -> State:
 	direction = Input.get_axis("move_left", "move_right")
 	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
 		return change_dir_state
+	if Input.is_action_just_pressed("action"):
+		return action_state
 	return null
 	
 func process_physics(delta: float) -> State:

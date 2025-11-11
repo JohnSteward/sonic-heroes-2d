@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=12 format=4 uid="uid://5oja1aeqsqg7"]
 
+[ext_resource type="PackedScene" uid="uid://b8w8oc7uqulnc" path="res://scenes/knuckles.tscn" id="1_6corl"]
+[ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
 [ext_resource type="Texture2D" uid="uid://dw6spjk6ljqga" path="res://assets/sprites/green-hill-cut.png" id="2_56hce"]
 [ext_resource type="Texture2D" uid="uid://s55crfthdsxn" path="res://assets/new-sprites/tileset.png" id="2_b706e"]
 [ext_resource type="PackedScene" uid="uid://chf50o0g8iy0n" path="res://scenes/death_plane.tscn" id="3_56hce"]
-[ext_resource type="PackedScene" uid="uid://b8w8oc7uqulnc" path="res://scenes/knuckles.tscn" id="4_e80yk"]
 [ext_resource type="PackedScene" uid="uid://bl1sbg37ug2k2" path="res://scenes/enemy.tscn" id="4_mxsot"]
 [ext_resource type="PackedScene" uid="uid://ctppqqs3ogg4e" path="res://scenes/ring.tscn" id="5_e80yk"]
 
@@ -1173,40 +1174,81 @@ sources/0 = SubResource("TileSetAtlasSource_mxsot")
 
 [node name="seaside-hill" type="Node2D"]
 
+[node name="knuckles" parent="." instance=ExtResource("1_6corl")]
+z_index = 1
+
+[node name="Camera2D" type="Camera2D" parent="knuckles"]
+zoom = Vector2(2, 2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_txlg8")
+
+[node name="Rings" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Rings: 0"
+
 [node name="tile-map" type="Node" parent="."]
 
 [node name="seaside-hill-ground" type="TileMapLayer" parent="tile-map"]
+scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AADu/wIAAAAAAAAAAADy/wIAAAAAAAAAAAD2/wIAAAAAAAAAAAD6/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAACAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAKAAIAAAAAAAAAAADq/wIAAAAAAAAAAADm/wIAAAAAAAAAAADi/wIAAAAAAAAAAADe/wIAAAAAAAAAAADa/wIAAAAAAAAAAAAOAAIAAAAAAAAAAAASAAIAAAAAAAAAAAAWAAIAAAAAAAAAAAAaAAIAAAAAAAAAAAAeAAIAAAAAAAAAAAAiAAIAAAAAAAAAAAAmAAIAAAAEAAAAAAAqAAIAAAAEAAAAAAAuAAIAAAAEAAAAAAAyAAIAAAAEAAAAAAA2AAIAAAAEAAAAAAA6AAIAAAAEAAAAAAA=")
 tile_set = SubResource("TileSet_txlg8")
 
 [node name="solid-ground" type="TileMapLayer" parent="tile-map"]
 tile_set = SubResource("TileSet_e80yk")
 
-[node name="knuckles" parent="." instance=ExtResource("4_e80yk")]
-z_index = 1
-position = Vector2(21.655884, -20.896255)
-
-[node name="Camera2D" type="Camera2D" parent="knuckles"]
-zoom = Vector2(2, 2)
-
 [node name="death_plane" parent="." instance=ExtResource("3_56hce")]
-position = Vector2(-1, 162)
+position = Vector2(3, 583)
 
 [node name="rings" type="Node" parent="."]
 
 [node name="ring" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(95, 2)
+position = Vector2(93, 65)
 
 [node name="ring2" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(117, 2)
+position = Vector2(113, 65)
 
 [node name="ring3" parent="rings" instance=ExtResource("5_e80yk")]
-position = Vector2(138, 2)
+position = Vector2(133, 65)
+
+[node name="ring4" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(153, 65)
+
+[node name="ring5" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(174, 65)
+
+[node name="ring6" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(193, 65)
+
+[node name="ring7" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(213, 65)
+
+[node name="ring8" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(233, 65)
+
+[node name="ring9" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(253, 65)
+
+[node name="ring10" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(274, 65)
 
 [node name="enemies" type="Node" parent="."]
 
 [node name="enemy" parent="enemies" instance=ExtResource("4_mxsot")]
 position = Vector2(-181, -23)
+hp = 2
+
+[node name="enemy3" parent="enemies" instance=ExtResource("4_mxsot")]
+position = Vector2(-203, -24)
 hp = 2
 
 [node name="enemy2" parent="enemies" instance=ExtResource("4_mxsot")]

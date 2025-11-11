@@ -116,6 +116,7 @@ func _on_radius_body_entered(body: Node2D) -> void:
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
 		elif closest_enemy and (abs(body.global_position - radius.global_position) < abs(closest_enemy.global_position - radius.global_position)) and ((radius.position.x < body.position.x and direction == 1) or (radius.position.x > body.position.x and direction == -1)):
+			backlog.append(closest_enemy)
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
