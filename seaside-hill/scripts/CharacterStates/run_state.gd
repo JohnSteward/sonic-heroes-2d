@@ -7,6 +7,7 @@ extends State
 @export var change_dir_state: State
 @export var action_state: State
 @export var cannon_state: State
+@export var light_dash_state: State
 
 var movement: float
 var direction;
@@ -27,6 +28,8 @@ func process_input() -> State:
 		return roll_state
 	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
 		return change_dir_state
+	if parent.light_dash and Input.is_action_just_pressed("action"):
+		return light_dash_state
 	if Input.is_action_just_pressed("action"):
 		return action_state
 	return null

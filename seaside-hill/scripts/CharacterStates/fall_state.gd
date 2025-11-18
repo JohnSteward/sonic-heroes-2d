@@ -6,6 +6,7 @@ extends State
 @export var fly_state: State
 @export var action_state: State
 @export var cannon_state: State
+@export var light_dash_state: State
 
 var direction
 var movement
@@ -16,6 +17,8 @@ func process_input() -> State:
 		return change_dir_state
 	if Input.is_action_just_pressed("jump"):
 		return fly_state
+	if parent.light_dash and Input.is_action_just_pressed("action"):
+		return light_dash_state
 	if Input.is_action_just_pressed("action"):
 		return action_state
 	return null

@@ -397,7 +397,7 @@ cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "idle"
 
-[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "roll_state", "change_dir_state", "action_state", "cannon_state")]
+[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "roll_state", "change_dir_state", "action_state", "cannon_state", "light_dash_state")]
 script = ExtResource("5_ht774")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
@@ -406,28 +406,31 @@ roll_state = NodePath("../roll")
 change_dir_state = NodePath("../change_direction")
 action_state = NodePath("../rocket_accel")
 cannon_state = NodePath("../cannon")
+light_dash_state = NodePath("../light_dash")
 anim_name = "run"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state", "cannon_state")]
+[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
 script = ExtResource("6_a5tbb")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 fall_state = NodePath("../fall")
 change_dir_state = NodePath("../change_direction")
 cannon_state = NodePath("../cannon")
+light_dash_state = NodePath("../light_dash")
 jump_vel = 500.0
 anim_name = "jump"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "cannon_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "cannon_state", "light_dash_state")]
 script = ExtResource("7_qm650")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../homing")
 cannon_state = NodePath("../cannon")
+light_dash_state = NodePath("../light_dash")
 anim_name = "jump"
 
-[node name="roll" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "fall_state", "change_dir_state", "cannon_state")]
+[node name="roll" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
 script = ExtResource("8_a5tbb")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -435,11 +438,12 @@ jump_state = NodePath("../jump")
 fall_state = NodePath("../fall")
 change_dir_state = NodePath("../change_direction")
 cannon_state = NodePath("../cannon")
+light_dash_state = NodePath("../light_dash")
 anim_name = "roll"
 friction = 2.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "roll_state", "fly_state", "cannon_state")]
+[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "roll_state", "fly_state", "cannon_state", "light_dash_state")]
 script = ExtResource("9_qm650")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
@@ -448,6 +452,7 @@ fall_state = NodePath("../fall")
 roll_state = NodePath("../roll")
 fly_state = NodePath("../homing")
 cannon_state = NodePath("../cannon")
+light_dash_state = NodePath("../light_dash")
 anim_name = "change_dir"
 friction = 20.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"

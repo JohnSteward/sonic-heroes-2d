@@ -507,11 +507,6 @@ script = ExtResource("17_311sm")
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="StateMachine/cannon"]
-unique_name_in_owner = true
-update_rotation = false
-update_scale = false
-
 [node name="i-frames" type="Timer" parent="."]
 wait_time = 0.7
 one_shot = true

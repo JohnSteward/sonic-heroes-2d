@@ -21,10 +21,10 @@ func check_input() -> void:
 func _process(delta: float) -> void:
 	if !shoot:
 		if player:
-			if !player.position == entry.global_position:
-				player.position.x = move_toward(player.position.x, entry.global_position.x, 5)
-			player.position.y = move_toward(player.position.y, entry.global_position.y, 5)
-			if player.position == entry.global_position:
+			if !player.position == entry.get_node("CollisionShape2D").global_position:
+				player.position.x = entry.get_node("CollisionShape2D").global_position.x
+				player.position.y = entry.get_node("CollisionShape2D").global_position.y
+			else:#if player.position == entry.get_node("CollisionShape2D").global_position:
 				check_input()
 				#sprite_2d.rotation = rotate_toward(sprite_2d.rotation, angle, rotation_speed)
 			#if sprite_2d.rotation == angle:

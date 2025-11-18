@@ -46,6 +46,7 @@ func process_input() -> State:
 	var input = Input.get_axis("move_left", "move_right")
 	if hit:
 		parent.velocity.x = 0
+		parent.speed = 0
 		return jump_state
 	if parent.is_on_floor():
 		if input:

@@ -1,25 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3bgk8acf8j8w"]
+[gd_scene load_steps=7 format=3 uid="uid://c3bgk8acf8j8w"]
 
 [ext_resource type="Script" uid="uid://bjg7epjs381bg" path="res://scripts/cannon.gd" id="1_xuqfy"]
+[ext_resource type="Texture2D" uid="uid://deimoc2jkqeej" path="res://assets/new-sprites/cannon.png" id="2_pxhkx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjxeu"]
+atlas = ExtResource("2_pxhkx")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfr8q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjxeu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1ne2b"]
+radius = 14.0
+height = 50.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xuqfy"]
+radius = 14.0
 
 [node name="cannon" type="RigidBody2D"]
+z_index = 2
 collision_layer = 2
 script = ExtResource("1_xuqfy")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_jfr8q")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
 shape = SubResource("CapsuleShape2D_1ne2b")
 
 [node name="entry" type="Area2D" parent="."]
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="entry"]
-position = Vector2(0, -12)
+position = Vector2(0, -19)
 shape = SubResource("CircleShape2D_xuqfy")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
 
 [connection signal="body_entered" from="entry" to="." method="_on_entry_body_entered"]

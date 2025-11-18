@@ -9,6 +9,7 @@ extends State
 @export var action_state: State
 @export var air_action_state: State
 @export var cannon_state: State
+@export var light_dash_state: State
 
 var direction
 
@@ -38,6 +39,8 @@ func process_input() -> State:
 		return roll_state
 	if !parent.is_on_floor() and Input.is_action_just_pressed("jump"):
 		return fly_state
+	if parent.light_dash and Input.is_action_just_pressed("action"):
+		return light_dash_state
 	if parent.is_on_floor() and Input.is_action_just_pressed("action"):
 		parent.animated_sprite_2d.flip_h = !parent.animated_sprite_2d.flip_h
 		return action_state

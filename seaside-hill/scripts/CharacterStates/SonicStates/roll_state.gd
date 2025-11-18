@@ -6,6 +6,7 @@ extends State
 @export var fall_state: State
 @export var change_dir_state: State
 @export var cannon_state: State
+@export var light_dash_state: State
 
 var direction: int
 
@@ -18,6 +19,8 @@ func exit() -> void:
 
 func process_input() -> State:
 	direction = Input.get_axis("move_left", "move_right")
+	if parent.light_dash and Input.is_action_just_pressed("action"):
+		return light_dash_state
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
 		return jump_state
 	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
