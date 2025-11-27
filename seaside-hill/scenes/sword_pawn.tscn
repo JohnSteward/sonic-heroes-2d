@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://ewgiedj08vrd"]
+
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="1_h33ve"]
+[ext_resource type="Script" uid="uid://ceae8g8t1uin3" path="res://scripts/enemy.gd" id="1_qfndr"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="2_qfndr"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="3_q6a6f"]
+[ext_resource type="Script" uid="uid://d4lhjeo7o4pfj" path="res://scripts/CharacterStates/base_state.gd" id="4_1i4dl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bmku"]
+size = Vector2(28, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qsg4e"]
+size = Vector2(28, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7kj6o"]
+size = Vector2(28, 29)
+
+[node name="sword_pawn" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_qfndr")
+
+[node name="hitbox" parent="." instance=ExtResource("1_h33ve")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_1bmku")
+
+[node name="hurtbox" parent="." instance=ExtResource("2_qfndr")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_qsg4e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_7kj6o")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("3_q6a6f")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="asleep" type="Node" parent="StateMachine"]
+script = ExtResource("4_1i4dl")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_1i4dl")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="charge" type="Node" parent="StateMachine"]
+script = ExtResource("4_1i4dl")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="return" type="Node" parent="StateMachine"]
+script = ExtResource("4_1i4dl")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine"]
+script = ExtResource("4_1i4dl")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true

@@ -2,6 +2,7 @@ extends State
 
 @export var idle_state: State
 @export var run_state: State
+@export var jump_state: State
 @export var change_dir_state: State
 @export var fly_state: State
 @export var action_state: State
@@ -26,6 +27,8 @@ func process_input() -> State:
 func process_frame(delta: float) -> State:
 	if parent.is_in_cannon:
 		return cannon_state
+	if parent.hit:
+		return jump_state
 	return null
 
 func process_physics(delta: float) -> State:

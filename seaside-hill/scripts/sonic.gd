@@ -6,10 +6,13 @@ extends CharacterBody2D
 @onready var state_machine: Node = $StateMachine
 @onready var i_frames: Timer = $"i-frames"
 @onready var hurtbox: Area2D = $hurtbox
+@onready var hitbox: Area2D = $hitbox
+
 @export var knockback_state: State
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
 @onready var remote_transform_2d: RemoteTransform2D = %RemoteTransform2D
 
+var hit: bool = false
 var speed: int = 0
 var damage: int = 1
 var rings: int = 3
@@ -32,7 +35,6 @@ func knockback():
 	else:
 		direction = 1
 	velocity.x = 200 * direction * -1
-	print(velocity.x)
 	velocity.y = -400
 	move_and_slide()
 	state_machine.change_state(knockback_state)

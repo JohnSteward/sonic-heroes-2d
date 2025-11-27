@@ -14,6 +14,9 @@ var movement
 var direction
 func enter() -> void:
 	super()
+	parent.hit = false
+	parent.hitbox.get_node("hitbox_shape").disabled = false
+	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	parent.velocity.y = -jump_vel
 
 	
@@ -30,6 +33,9 @@ func process_input() -> State:
 func process_frame(delta: float) -> State:
 	if parent.is_in_cannon:
 		return cannon_state
+	if parent.hit:
+		parent.velocity.y = -jump_vel
+		parent.hit = false
 	return null
 
 func process_physics(delta: float) -> State:

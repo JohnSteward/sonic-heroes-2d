@@ -18,24 +18,24 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1ne2b"]
-radius = 14.0
-height = 50.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pxhkx"]
+size = Vector2(36, 53)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xuqfy"]
 radius = 14.0
 
 [node name="cannon" type="RigidBody2D"]
 z_index = 2
-collision_layer = 2
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_xuqfy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_jfr8q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 7)
-shape = SubResource("CapsuleShape2D_1ne2b")
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_pxhkx")
 
 [node name="entry" type="Area2D" parent="."]
 collision_mask = 2

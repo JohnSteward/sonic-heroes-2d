@@ -9,6 +9,7 @@ func enter() -> void:
 
 func process_input() -> State:
 	if !Input.is_action_pressed("action"):
+		parent.hitbox.get_node("hitbox_shape").disabled = false
 		parent.velocity.x = parent.speed
 		return roll_state
 	return null

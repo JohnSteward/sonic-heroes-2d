@@ -14,7 +14,10 @@ var direction;
 
 func enter() -> void:
 	super()
+	parent.hitbox.get_node("hitbox_shape").disabled = false
 	parent.can_fly = true
+	if parent.hurtbox.get_node("CollisionShape2D").disabled == true:
+		parent.hurtbox.get_node("CollisionShape2D").disabled = false
 	parent.hurtbox.get_node("CollisionShape2D").disabled = false
 
 #func exit() -> void:

@@ -342,6 +342,9 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mce4r"]
 height = 32.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_m14wf"]
+radius = 17.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6utbv"]
 height = 24.0
 
@@ -350,9 +353,6 @@ radius = 24.020824
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgjo6"]
 radius = 183.00273
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_m14wf"]
-radius = 17.0
 
 [node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state") groups=["player"]]
 collision_layer = 2
@@ -367,6 +367,16 @@ animation = &"idle"
 [node name="physics_box" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_mce4r")
+
+[node name="hitbox" parent="." instance=ExtResource("17_qrl6y")]
+collision_layer = 8
+collision_mask = 16
+script = null
+
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_m14wf")
+disabled = true
 
 [node name="hurtbox" parent="." instance=ExtResource("7_m14wf")]
 visible = false
@@ -420,10 +430,11 @@ light_dash_state = NodePath("../light_dash")
 jump_vel = 500.0
 anim_name = "jump"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "cannon_state", "light_dash_state")]
+[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "change_dir_state", "fly_state", "cannon_state", "light_dash_state")]
 script = ExtResource("7_qm650")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
+jump_state = NodePath("../jump")
 change_dir_state = NodePath("../change_direction")
 fly_state = NodePath("../homing")
 cannon_state = NodePath("../cannon")
@@ -480,16 +491,6 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_hgjo6")
 disabled = true
 
-[node name="hitbox" parent="StateMachine/homing" instance=ExtResource("17_qrl6y")]
-collision_layer = 8
-collision_mask = 16
-script = null
-
-[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/homing/hitbox"]
-position = Vector2(0, -5)
-shape = SubResource("CircleShape2D_m14wf")
-disabled = true
-
 [node name="cannon" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("18_6utbv")
 idle_state = NodePath("../idle")
@@ -510,9 +511,9 @@ one_shot = true
 stream = ExtResource("18_m14wf")
 bus = &"SFX"
 
+[connection signal="area_entered" from="hitbox" to="StateMachine/homing" method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="light_dash_radius" to="." method="_on_light_dash_radius_area_entered"]
 [connection signal="area_exited" from="light_dash_radius" to="." method="_on_light_dash_radius_area_exited"]
 [connection signal="body_entered" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_entered"]
 [connection signal="body_exited" from="StateMachine/homing/radius" to="StateMachine/homing" method="_on_radius_body_exited"]
-[connection signal="area_entered" from="StateMachine/homing/hitbox" to="StateMachine/homing" method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="i-frames" to="." method="_on_iframes_timeout"]

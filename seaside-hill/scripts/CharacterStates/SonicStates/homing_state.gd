@@ -4,12 +4,10 @@ var closest_enemy: CharacterBody2D
 var x_distance: float
 var y_distance: float
 var direction
-var hit: bool = false
 var start_pos_x: float
 var start_pos_y: float
 var dist_ratio: float
 @onready var radius: Area2D = $radius
-@onready var hitbox: Area2D = $hitbox
 
 @export var idle_state: State
 @export var jump_state: State
@@ -19,11 +17,11 @@ var dist_ratio: float
 
 
 func enter() -> void:
-	hitbox.get_node("hitbox_shape").disabled = false
+	parent.hitbox.get_node("hitbox_shape").disabled = false
 	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	radius.get_node("range").disabled = false
 	super()
-	hitbox.position = parent.position
+	#parent.hitbox.position = parent.position
 	start_pos_x = parent.position.x
 	start_pos_y = parent.position.y
 	if parent.animated_sprite_2d.flip_h:
@@ -38,13 +36,12 @@ func enter() -> void:
 func exit() -> void:
 	radius.get_node("range").disabled = true
 	closest_enemy = null
-	hit = false
-	parent.hurtbox.get_node("CollisionShape2D").disabled = false
-	hitbox.get_node("hitbox_shape").disabled = true
+	parent.hit = false
+	parent.hitbox.get_node("hitbox_shape").disabled = true
 	
 func process_input() -> State:
 	var input = Input.get_axis("move_left", "move_right")
-	if hit:
+	if parent.hit:
 		parent.velocity.x = 0
 		parent.speed = 0
 		return jump_state
@@ -61,7 +58,7 @@ func process_frame(delta: float) -> State:
 	return null
 
 func process_physics(delta: float) -> State:
-	hitbox.position = parent.position
+	#hitbox.position = parent.position
 	#Horrible if statement to check whether the player is above and facing the enemy
 	if closest_enemy:
 		parent.velocity = Vector2(0,0)
@@ -71,7 +68,7 @@ func process_physics(delta: float) -> State:
 		parent.velocity.x = 600 * direction
 		parent.velocity.y += gravity * delta
 	parent.move_and_slide()
-	hitbox.position = parent.position
+	#hitbox.position = parent.position
 	return null
 
 
@@ -92,5 +89,5 @@ func _on_radius_body_entered(body: Node2D) -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	area.get_parent().is_damaged(parent.damage)
-	hit = true
-	
+	area.get_parent().stunned = true
+	parent.hit = true

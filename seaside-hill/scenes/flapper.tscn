@@ -1,0 +1,94 @@
+[gd_scene load_steps=15 format=3 uid="uid://bl1sbg37ug2k2"]
+
+[ext_resource type="Script" uid="uid://ceae8g8t1uin3" path="res://scripts/enemy.gd" id="1_4ra3w"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="2_5uy6h"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="2_md0e3"]
+[ext_resource type="Texture2D" uid="uid://b33vfke0jkgak" path="res://assets/new-sprites/flapper.png" id="3_yjgwh"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_xqn4p"]
+[ext_resource type="Script" uid="uid://cmbbmfww4u1ad" path="res://scripts/CharacterStates/enemy_states/flapper/idle.gd" id="6_ycu6p"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/flapper/stun.gd" id="7_2n1tk"]
+[ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="8_saq7f"]
+[ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="9_o6f5g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4w8v"]
+size = Vector2(32.666668, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7p1mj"]
+size = Vector2(32.666668, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqn4p"]
+atlas = ExtResource("3_yjgwh")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4ra3w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqn4p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ra3w"]
+size = Vector2(32.5, 26)
+
+[node name="flapper" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 2
+script = ExtResource("1_4ra3w")
+
+[node name="hurtbox" parent="." instance=ExtResource("2_5uy6h")]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(1.666666, -9)
+shape = SubResource("RectangleShape2D_c4w8v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.666666, -9)
+shape = SubResource("RectangleShape2D_7p1mj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -12)
+sprite_frames = SubResource("SpriteFrames_4ra3w")
+
+[node name="hitbox" parent="." instance=ExtResource("2_md0e3")]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(1.75, -9)
+shape = SubResource("RectangleShape2D_4ra3w")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("5_xqn4p")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state")]
+script = ExtResource("6_ycu6p")
+stun_state = NodePath("../stun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("unstun_state")]
+script = ExtResource("7_2n1tk")
+unstun_state = NodePath("../unstun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
+
+[node name="unstun" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("8_saq7f")
+idle_state = NodePath("../idle")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_effect" parent="." instance=ExtResource("9_o6f5g")]
+visible = false
+position = Vector2(2, -8)
+scale = Vector2(1.2343749, 0.90625)
+
+[connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]

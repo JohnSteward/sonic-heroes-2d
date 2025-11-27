@@ -13,7 +13,6 @@ func _process(delta: float) -> void:
 
 func MoveAlongPath(player: CharacterBody2D) -> void:
 	progress += 10
-	print(progress_ratio)
 	if progress_ratio >= 1:
 		player_in.out_cannon = true
 		player_in.is_in_cannon = false

@@ -1,0 +1,150 @@
+[gd_scene load_steps=21 format=3 uid="uid://b01yaaagfn71k"]
+
+[ext_resource type="Script" uid="uid://ceae8g8t1uin3" path="res://scripts/enemy.gd" id="1_3oips"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="1_iwx57"]
+[ext_resource type="Texture2D" uid="uid://5qup531gr4ta" path="res://assets/new-sprites/cannon_flapper.png" id="1_qltyt"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="2_jpkkp"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="3_lyfsw"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/flapper/stun.gd" id="5_qltyt"]
+[ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="6_3oips"]
+[ext_resource type="Script" uid="uid://dcf1kf14ulq44" path="res://scripts/CharacterStates/enemy_states/flapper/cannon_flapper/idle.gd" id="6_dnp2u"]
+[ext_resource type="Script" uid="uid://by8rqocujg75b" path="res://scripts/CharacterStates/enemy_states/shoot.gd" id="9_dnp2u"]
+[ext_resource type="Texture2D" uid="uid://by01wjyksj4kq" path="res://assets/new-sprites/bullet.png" id="10_3f6ly"]
+[ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="10_7wfbo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3oips"]
+atlas = ExtResource("1_qltyt")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7wfbo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3oips")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dnp2u"]
+radius = 155.0516
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqrgv"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vy3wj"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lyfsw"]
+size = Vector2(32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnp2u"]
+atlas = ExtResource("10_3f6ly")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3f6ly"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnp2u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h2u0o"]
+radius = 3.0
+
+[node name="cannon_flapper" type="CharacterBody2D" groups=["enemy"]]
+z_index = 1
+collision_layer = 2
+script = ExtResource("1_3oips")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2.3841858e-07, 3)
+sprite_frames = SubResource("SpriteFrames_7wfbo")
+
+[node name="sight" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="radius" type="CollisionShape2D" parent="sight"]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("CircleShape2D_dnp2u")
+
+[node name="hitbox" parent="." instance=ExtResource("1_iwx57")]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(-2.3841858e-07, 3)
+shape = SubResource("RectangleShape2D_hqrgv")
+
+[node name="hurtbox" parent="." instance=ExtResource("2_jpkkp")]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(-2.3841858e-07, 3)
+shape = SubResource("RectangleShape2D_vy3wj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_lyfsw")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("3_lyfsw")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "shoot_state")]
+script = ExtResource("6_dnp2u")
+stun_state = NodePath("../stun")
+shoot_state = NodePath("../shoot")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("unstun_state")]
+script = ExtResource("5_qltyt")
+unstun_state = NodePath("../unstun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
+
+[node name="unstun" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("6_3oips")
+idle_state = NodePath("../idle")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "stun_state")]
+script = ExtResource("9_dnp2u")
+idle_state = NodePath("../idle")
+stun_state = NodePath("../stun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="delay" type="Timer" parent="StateMachine/shoot"]
+one_shot = true
+
+[node name="bullet" type="Area2D" parent="StateMachine/shoot"]
+scale = Vector2(1.2, 1.2)
+collision_layer = 32
+collision_mask = 4
+
+[node name="bullet_sprite" type="AnimatedSprite2D" parent="StateMachine/shoot/bullet"]
+position = Vector2(-9, 15)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_3f6ly")
+
+[node name="hitbox" type="CollisionShape2D" parent="StateMachine/shoot/bullet"]
+position = Vector2(-12, 15)
+shape = SubResource("CircleShape2D_h2u0o")
+
+[node name="stun_effect" parent="." instance=ExtResource("10_7wfbo")]
+visible = false
+position = Vector2(0, 2)
+
+[connection signal="body_entered" from="sight" to="StateMachine/shoot" method="_on_sight_body_entered"]
+[connection signal="body_exited" from="sight" to="StateMachine/shoot" method="_on_sight_body_exited"]
+[connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]

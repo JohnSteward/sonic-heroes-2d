@@ -1,0 +1,90 @@
+[gd_scene load_steps=14 format=3 uid="uid://n4cjdsdgbb5f"]
+
+[ext_resource type="Script" uid="uid://ceae8g8t1uin3" path="res://scripts/enemy.gd" id="1_w27gx"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="2_e2ylv"]
+[ext_resource type="Texture2D" uid="uid://8hy04br1g0ak" path="res://assets/new-sprites/egg_pawn.png" id="3_e2ylv"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="4_0id7y"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_8ropw"]
+[ext_resource type="Script" uid="uid://d0o5n4w0dcpwj" path="res://scripts/CharacterStates/enemy_states/asleep.gd" id="6_0id7y"]
+[ext_resource type="Script" uid="uid://bnseq2l8fykgt" path="res://scripts/CharacterStates/enemy_states/pawn/idle.gd" id="6_ktuw6"]
+[ext_resource type="Script" uid="uid://d4lhjeo7o4pfj" path="res://scripts/CharacterStates/base_state.gd" id="8_8ropw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8j8ui"]
+size = Vector2(28, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tttpq"]
+atlas = ExtResource("3_e2ylv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cqv3d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tttpq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kc4nq"]
+size = Vector2(28, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4jao"]
+size = Vector2(28, 29)
+
+[node name="egg_pawn" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_w27gx")
+
+[node name="hitbox" parent="." instance=ExtResource("2_e2ylv")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_8j8ui")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cqv3d")
+animation = &"idle"
+
+[node name="hurtbox" parent="." instance=ExtResource("4_0id7y")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_kc4nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_r4jao")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("5_8ropw")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="asleep" type="Node" parent="StateMachine"]
+script = ExtResource("6_0id7y")
+anim_name = "asleep"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_ktuw6")
+anim_name = "idle"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="charge" type="Node" parent="StateMachine"]
+script = ExtResource("8_8ropw")
+anim_name = "charge"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="search" type="Node" parent="StateMachine"]
+script = ExtResource("8_8ropw")
+anim_name = "search"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine"]
+script = ExtResource("8_8ropw")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
