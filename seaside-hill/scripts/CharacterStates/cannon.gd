@@ -6,9 +6,10 @@ extends State
 func enter() -> void:
 	super()
 	parent.velocity = Vector2(0, 0)
+	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	
 func exit() -> void:
-	pass
+	parent.hurtbox.get_node("CollisionShape2D").disabled = false
 
 func process_frame(delta: float) -> State:
 	if parent.out_cannon:

@@ -6,8 +6,8 @@ extends State
 
 
 func enter() -> void:
-	print("stunned")
 	parent.stun_effect.visible = true
+	parent.velocity.x = 0
 	stun_time.start()
 
 func exit() -> void:
@@ -16,7 +16,6 @@ func exit() -> void:
 	
 func process_frame(delta: float) -> State:
 	if !parent.stunned:
-		print("go back to idle")
 		return unstun_state
 	return null
 	
@@ -26,5 +25,4 @@ func process_physics(delta: float) -> State:
 	return null
 
 func _on_stun_time_timeout() -> void:
-	print("not stunned")
 	parent.stunned = false

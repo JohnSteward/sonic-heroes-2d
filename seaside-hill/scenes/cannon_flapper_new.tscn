@@ -1,0 +1,339 @@
+[gd_scene load_steps=30 format=3 uid="uid://bhv6pi2ltr4oa"]
+
+[ext_resource type="Script" uid="uid://df0tt78s6lwb8" path="res://scripts/cannon_flapper_new.gd" id="1_p05wx"]
+[ext_resource type="Texture2D" uid="uid://5qup531gr4ta" path="res://assets/new-sprites/cannon_flapper.png" id="2_a5dix"]
+[ext_resource type="Texture2D" uid="uid://bvrbl74d3na2o" path="res://assets/new-sprites/gun.png" id="3_a5dix"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="3_xiqj3"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="4_d6i2o"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_0fhdg"]
+[ext_resource type="Script" uid="uid://dcf1kf14ulq44" path="res://scripts/CharacterStates/enemy_states/flapper/cannon_flapper/idle.gd" id="6_ouc26"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/stun.gd" id="7_u6tat"]
+[ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="8_usogx"]
+[ext_resource type="Script" uid="uid://by8rqocujg75b" path="res://scripts/CharacterStates/enemy_states/shoot.gd" id="9_bsomn"]
+[ext_resource type="Texture2D" uid="uid://by01wjyksj4kq" path="res://assets/new-sprites/bullet.png" id="10_0jop2"]
+[ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="11_2cvhe"]
+[ext_resource type="AudioStream" uid="uid://clxrayn8i32c" path="res://assets/sounds/pop.wav" id="13_xiqj3"]
+[ext_resource type="AudioStream" uid="uid://cx3ge8o5y0s5r" path="res://assets/sounds/explode.wav" id="14_d6i2o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3oips"]
+atlas = ExtResource("2_a5dix")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jw45t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3oips")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xiqj3"]
+size = Vector2(20, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6i2o"]
+atlas = ExtResource("3_a5dix")
+region = Rect2(0, 0, 20, 7)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0fhdg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6i2o")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_83opj"]
+radius = 155.0516
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sijeg"]
+size = Vector2(32, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l3tj5"]
+size = Vector2(32, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gd0yi"]
+size = Vector2(32, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnp2u"]
+atlas = ExtResource("10_0jop2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nawnh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnp2u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_153s0"]
+radius = 3.0
+
+[sub_resource type="Animation" id="Animation_d6i2o"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.96666664),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("hitbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0fhdg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hitbox/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ouc26"]
+_data = {
+&"RESET": SubResource("Animation_0fhdg"),
+&"death": SubResource("Animation_d6i2o")
+}
+
+[node name="cannon_flapper_new" type="CharacterBody2D" groups=["enemy"]]
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+script = ExtResource("1_p05wx")
+hp = 3
+metadata/_custom_type_script = "uid://ceae8g8t1uin3"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -0.6666667)
+sprite_frames = SubResource("SpriteFrames_jw45t")
+
+[node name="gun" type="Area2D" parent="."]
+position = Vector2(3.3333335, 9.333333)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gun"]
+visible = false
+shape = SubResource("RectangleShape2D_xiqj3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="gun"]
+position = Vector2(0, 4)
+sprite_frames = SubResource("SpriteFrames_0fhdg")
+
+[node name="barrel_left" type="Node2D" parent="gun/AnimatedSprite2D"]
+position = Vector2(-8, 0)
+
+[node name="barrel_right" type="Node2D" parent="gun/AnimatedSprite2D"]
+position = Vector2(8.000002, 0)
+
+[node name="sight" type="Area2D" parent="."]
+visible = false
+collision_mask = 2
+
+[node name="radius" type="CollisionShape2D" parent="sight"]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("CircleShape2D_83opj")
+
+[node name="hitbox" parent="." instance=ExtResource("3_xiqj3")]
+visible = false
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(-2.3841858e-07, -0.5)
+shape = SubResource("RectangleShape2D_sijeg")
+
+[node name="hurtbox" parent="." instance=ExtResource("4_d6i2o")]
+visible = false
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(-2.3841858e-07, -0.5)
+shape = SubResource("RectangleShape2D_l3tj5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_gd0yi")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("5_0fhdg")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state", "shoot_state")]
+script = ExtResource("6_ouc26")
+stun_state = NodePath("../stun")
+shoot_state = NodePath("../shoot")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("unstun_state")]
+script = ExtResource("7_u6tat")
+unstun_state = NodePath("../unstun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
+
+[node name="unstun" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("8_usogx")
+idle_state = NodePath("../idle")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "stun_state")]
+script = ExtResource("9_bsomn")
+idle_state = NodePath("../idle")
+stun_state = NodePath("../stun")
+bullet_speed = 150.0
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="delay" type="Timer" parent="StateMachine/shoot"]
+one_shot = true
+
+[node name="shoot_time" type="Timer" parent="StateMachine/shoot"]
+wait_time = 3.0
+one_shot = true
+
+[node name="bullet" type="Area2D" parent="StateMachine/shoot"]
+visible = false
+position = Vector2(-60, 34)
+scale = Vector2(1.2, 1.2)
+collision_layer = 32
+collision_mask = 68
+
+[node name="bullet_sprite" type="AnimatedSprite2D" parent="StateMachine/shoot/bullet"]
+position = Vector2(3.000001, 0.50000095)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_nawnh")
+
+[node name="hitbox" type="CollisionShape2D" parent="StateMachine/shoot/bullet"]
+position = Vector2(9.536743e-07, 0.50000095)
+shape = SubResource("CircleShape2D_153s0")
+
+[node name="stun_effect" parent="." instance=ExtResource("11_2cvhe")]
+visible = false
+position = Vector2(0, 2)
+
+[node name="hurt_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_xiqj3")
+volume_db = 4.0
+bus = &"SFX"
+
+[node name="death" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ouc26")
+}
+
+[node name="death_sound" type="AudioStreamPlayer2D" parent="death"]
+scale = Vector2(1.5, 1.5)
+stream = ExtResource("14_d6i2o")
+volume_db = 20.0
+
+[connection signal="body_entered" from="sight" to="StateMachine/shoot" method="_on_sight_body_entered"]
+[connection signal="body_exited" from="sight" to="StateMachine/shoot" method="_on_sight_body_exited"]
+[connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]
+[connection signal="area_entered" from="StateMachine/shoot/bullet" to="StateMachine/shoot" method="_on_bullet_area_entered"]

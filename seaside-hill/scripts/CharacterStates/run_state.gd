@@ -14,11 +14,10 @@ var direction;
 
 func enter() -> void:
 	super()
+	parent.hurtbox.set_collision_layer_value(3, true)
+	parent.hurtbox.set_collision_layer_value(7, false)
 	parent.hitbox.get_node("hitbox_shape").disabled = false
 	parent.can_fly = true
-	if parent.hurtbox.get_node("CollisionShape2D").disabled == true:
-		parent.hurtbox.get_node("CollisionShape2D").disabled = false
-	parent.hurtbox.get_node("CollisionShape2D").disabled = false
 
 #func exit() -> void:
 	#speed = 0
@@ -40,6 +39,8 @@ func process_input() -> State:
 func process_frame(delta: float) -> State:
 	if parent.speed >= MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
 		parent.animated_sprite_2d.play("sprint")
+	elif parent.speed < MAX_SPEED and (!parent.animated_sprite_2d.animation == "run"):
+		parent.animated_sprite_2d.play("run")
 	if parent.is_in_cannon:
 		return cannon_state
 	return null

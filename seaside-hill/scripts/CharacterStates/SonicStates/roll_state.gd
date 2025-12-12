@@ -12,10 +12,14 @@ var direction: int
 
 func enter() -> void:
 	super()
+	parent.hurtbox.set_collision_layer_value(3, false)
+	parent.hurtbox.set_collision_layer_value(7, true)
 	
 	
 func exit() -> void:
 	friction = 2
+	parent.hurtbox.set_collision_layer_value(3, true)
+	parent.hurtbox.set_collision_layer_value(7, false)
 
 func process_input() -> State:
 	direction = Input.get_axis("move_left", "move_right")

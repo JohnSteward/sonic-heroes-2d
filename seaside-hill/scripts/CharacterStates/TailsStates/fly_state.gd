@@ -10,6 +10,8 @@ var boost: bool = false
 func enter() -> void:
 	super()
 	parent.start_fly_y = parent.position.y
+	parent.hurtbox.set_collision_layer_value(3, true)
+	parent.hurtbox.set_collision_layer_value(7, false)
 	
 func exit() -> void:
 	flight_duration = 500

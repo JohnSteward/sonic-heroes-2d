@@ -10,10 +10,9 @@ extends State
 
 func enter() -> void:
 	super()
+	parent.hurtbox.set_collision_layer_value(3, true)
+	parent.hurtbox.set_collision_layer_value(7, false)
 	parent.hitbox.get_node("hitbox_shape").disabled = true
-	if parent.hurtbox.get_node("CollisionShape2D").disabled == true:
-		parent.hurtbox.get_node("CollisionShape2D").disabled = false
-	parent.hurtbox.get_node("CollisionShape2D").disabled = false
 	parent.can_fly = true
 	parent.velocity.x = 0
 	parent.speed = 0

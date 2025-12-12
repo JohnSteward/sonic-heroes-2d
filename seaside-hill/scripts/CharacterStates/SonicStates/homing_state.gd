@@ -7,7 +7,10 @@ var direction
 var start_pos_x: float
 var start_pos_y: float
 var dist_ratio: float
+var enemy: CharacterBody2D
 @onready var radius: Area2D = $radius
+@onready var freeze: Timer = $freeze
+@onready var homing_sound: AudioStreamPlayer2D = $homing_sound
 
 @export var idle_state: State
 @export var jump_state: State
@@ -17,8 +20,10 @@ var dist_ratio: float
 
 
 func enter() -> void:
+	homing_sound.play()
+	parent.hurtbox.set_collision_layer_value(3, false)
+	parent.hurtbox.set_collision_layer_value(7, true)
 	parent.hitbox.get_node("hitbox_shape").disabled = false
-	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	radius.get_node("range").disabled = false
 	super()
 	#parent.hitbox.position = parent.position
@@ -88,6 +93,15 @@ func _on_radius_body_entered(body: Node2D) -> void:
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	area.get_parent().is_damaged(parent.damage)
-	area.get_parent().stunned = true
+	enemy = area.get_parent()
+	freeze.start()
+	Engine.time_scale = 0.0
+	if parent.level == 3:
+		area.get_parent().stunned = true
 	parent.hit = true
+	enemy = area.get_parent()
+
+
+func _on_freeze_timeout() -> void:
+	Engine.time_scale = 1.0
+	enemy.is_damaged(parent.damage)

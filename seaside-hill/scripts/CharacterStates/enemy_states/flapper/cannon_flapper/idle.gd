@@ -20,11 +20,11 @@ func process_physics(delta: float) -> State:
 	parent.sight.get_node("radius").disabled = false
 	if up:
 		parent.velocity.y = -5
-		if parent.position.y <= (parent.start_pos - 3):
+		if parent.position.y <= (parent.start_pos[1] - 3):
 			up = false
 	else:
 		parent.velocity.y = 5
-		if parent.position.y >= parent.start_pos + 3:
+		if parent.position.y >= parent.start_pos[1] + 3:
 			up = true
 	parent.move_and_slide()
 		

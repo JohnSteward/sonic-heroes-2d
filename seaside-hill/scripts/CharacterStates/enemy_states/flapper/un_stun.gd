@@ -7,7 +7,7 @@ func enter() -> void:
 	parent.velocity.y = -30
 	
 func process_frame(delta: float) -> State:
-	if parent.position.y <= parent.start_pos:
+	if parent.position.y <= parent.start_pos[1]:
 		return idle_state
 	return null
 

@@ -1,0 +1,230 @@
+[gd_scene load_steps=22 format=3 uid="uid://dxewmqwff58uu"]
+
+[ext_resource type="Script" uid="uid://byoam7h6kriwv" path="res://scripts/egg_pawn_new.gd" id="1_8enrn"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="2_3rxs7"]
+[ext_resource type="Texture2D" uid="uid://8hy04br1g0ak" path="res://assets/new-sprites/egg_pawn.png" id="3_4fwmj"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="4_6j24b"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_xi7h3"]
+[ext_resource type="Script" uid="uid://d0o5n4w0dcpwj" path="res://scripts/CharacterStates/enemy_states/pawn/asleep.gd" id="6_sog63"]
+[ext_resource type="Script" uid="uid://bnseq2l8fykgt" path="res://scripts/CharacterStates/enemy_states/pawn/idle.gd" id="7_7gye1"]
+[ext_resource type="Script" uid="uid://btsn6sfdfjdyw" path="res://scripts/CharacterStates/enemy_states/pawn/charge.gd" id="8_3rxs7"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/stun.gd" id="9_4fwmj"]
+[ext_resource type="Script" uid="uid://2q1fn814jogq" path="res://scripts/CharacterStates/enemy_states/pawn/search.gd" id="10_4fwmj"]
+[ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="11_6j24b"]
+[ext_resource type="AudioStream" uid="uid://clxrayn8i32c" path="res://assets/sounds/pop.wav" id="12_xi7h3"]
+[ext_resource type="AudioStream" uid="uid://cx3ge8o5y0s5r" path="res://assets/sounds/explode.wav" id="13_sog63"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tecqq"]
+size = Vector2(29.333334, 29.666668)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tttpq"]
+atlas = ExtResource("3_4fwmj")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7pde1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tttpq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_74wki"]
+size = Vector2(29.333334, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oj1tg"]
+size = Vector2(29.333334, 29)
+
+[sub_resource type="Animation" id="Animation_d6i2o"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.96666664),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_0fhdg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ouc26"]
+_data = {
+&"RESET": SubResource("Animation_0fhdg"),
+&"death": SubResource("Animation_d6i2o")
+}
+
+[node name="egg_pawn_new" type="CharacterBody2D" groups=["enemy"]]
+z_index = 1
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+script = ExtResource("1_8enrn")
+hp = 3
+run_speed = 60.0
+walk_speed = 20.0
+metadata/_custom_type_script = "uid://ceae8g8t1uin3"
+
+[node name="left_sight" type="RayCast2D" parent="."]
+target_position = Vector2(-140.66667, 0)
+collision_mask = 2
+
+[node name="right_sight" type="RayCast2D" parent="."]
+rotation = 3.1415927
+target_position = Vector2(-140.66667, 0)
+collision_mask = 2
+
+[node name="hitbox" parent="." instance=ExtResource("2_3rxs7")]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_tecqq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_7pde1")
+animation = &"idle"
+
+[node name="hurtbox" parent="." instance=ExtResource("4_6j24b")]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_74wki")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.6666667)
+shape = SubResource("RectangleShape2D_oj1tg")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("5_xi7h3")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="asleep" type="Node" parent="StateMachine"]
+script = ExtResource("6_sog63")
+anim_name = "asleep"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("charge_state", "stun_state")]
+script = ExtResource("7_7gye1")
+charge_state = NodePath("../charge")
+stun_state = NodePath("../stun")
+anim_name = "idle"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="delay" type="Timer" parent="StateMachine/idle"]
+one_shot = true
+
+[node name="charge" type="Node" parent="StateMachine" node_paths=PackedStringArray("search_state", "stun_state")]
+script = ExtResource("8_3rxs7")
+search_state = NodePath("../search")
+stun_state = NodePath("../stun")
+anim_name = "charge"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="delay" type="Timer" parent="StateMachine/charge"]
+one_shot = true
+
+[node name="charge_time" type="Timer" parent="StateMachine/charge"]
+wait_time = 2.0
+one_shot = true
+
+[node name="stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("unstun_state")]
+script = ExtResource("9_4fwmj")
+unstun_state = NodePath("../idle")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
+
+[node name="search" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "stun_state")]
+script = ExtResource("10_4fwmj")
+idle_state = NodePath("../idle")
+stun_state = NodePath("../stun")
+anim_name = "search"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="search_time" type="Timer" parent="StateMachine/search"]
+one_shot = true
+
+[node name="stun_effect" parent="." instance=ExtResource("11_6j24b")]
+visible = false
+position = Vector2(0, 2)
+
+[node name="hurt_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_xi7h3")
+volume_db = 4.0
+
+[node name="death" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ouc26")
+}
+
+[node name="death_sound" type="AudioStreamPlayer2D" parent="death"]
+scale = Vector2(1.5, 1.5)
+stream = ExtResource("13_sog63")
+
+[connection signal="timeout" from="StateMachine/idle/delay" to="StateMachine/idle" method="_on_delay_timeout"]
+[connection signal="timeout" from="StateMachine/charge/charge_time" to="StateMachine/charge" method="_on_charge_time_timeout"]
+[connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]

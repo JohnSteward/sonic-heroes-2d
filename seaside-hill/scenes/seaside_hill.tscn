@@ -1,11 +1,13 @@
-[gd_scene load_steps=13 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=15 format=4 uid="uid://5oja1aeqsqg7"]
 
+[ext_resource type="Script" uid="uid://berm88a2plbeq" path="res://scripts/game_manager.gd" id="1_2uqr4"]
 [ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
 [ext_resource type="PackedScene" uid="uid://bdhyd4atmlgnw" path="res://scenes/sonic.tscn" id="1_u55kl"]
 [ext_resource type="Texture2D" uid="uid://s55crfthdsxn" path="res://assets/new-sprites/tileset.png" id="2_b706e"]
 [ext_resource type="PackedScene" uid="uid://chf50o0g8iy0n" path="res://scenes/death_plane.tscn" id="3_56hce"]
 [ext_resource type="PackedScene" uid="uid://ctppqqs3ogg4e" path="res://scenes/ring.tscn" id="5_e80yk"]
-[ext_resource type="PackedScene" uid="uid://b01yaaagfn71k" path="res://scenes/cannon_flapper.tscn" id="8_2uqr4"]
+[ext_resource type="PackedScene" uid="uid://bhv6pi2ltr4oa" path="res://scenes/cannon_flapper_new.tscn" id="6_txlg8"]
+[ext_resource type="PackedScene" uid="uid://dkrx487vnxt77" path="res://scenes/cannon_pawn_new.tscn" id="7_u55kl"]
 [ext_resource type="PackedScene" uid="uid://c3bgk8acf8j8w" path="res://scenes/cannon.tscn" id="8_txlg8"]
 [ext_resource type="Script" uid="uid://8s4ys5ugfd27" path="res://scripts/cannon_path.gd" id="9_u55kl"]
 
@@ -17,6 +19,9 @@ texture = ExtResource("2_b706e")
 4:0/size_in_atlas = Vector2i(4, 4)
 4:0/0 = 0
 4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 2, 32, 2, 32, 32, -32, 32)
+8:0/size_in_atlas = Vector2i(4, 4)
+8:0/0 = 0
+8:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32.5, 2, 32, 2, 32, 32, 24, 32, -32, 32, -32, 13, -32, 7.5)
 
 [sub_resource type="TileSet" id="TileSet_txlg8"]
 physics_layer_0/collision_layer = 1
@@ -37,12 +42,15 @@ point_count = 9
 
 [node name="seaside-hill" type="Node2D"]
 
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_2uqr4")
+
 [node name="Sonic" parent="." instance=ExtResource("1_u55kl")]
-z_index = 1
-position = Vector2(-500, -22)
+position = Vector2(-1166, 51)
 
 [node name="Camera2D" type="Camera2D" parent="Sonic"]
-zoom = Vector2(2, 2)
+zoom = Vector2(1.5, 1.5)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -64,7 +72,7 @@ text = "Rings: 0"
 
 [node name="seaside-hill-ground" type="TileMapLayer" parent="tile-map"]
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AADu/wIAAAAAAAAAAADy/wIAAAAAAAAAAAD2/wIAAAAAAAAAAAD6/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAACAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAKAAIAAAAAAAAAAADq/wIAAAAAAAAAAADm/wIAAAAAAAAAAADi/wIAAAAAAAAAAADe/wIAAAAAAAAAAADa/wIAAAAAAAAAAAAOAAIAAAAAAAAAAAASAAIAAAAAAAAAAAAWAAIAAAAAAAAAAAAaAAIAAAAAAAAAAAAeAAIAAAAAAAAAAAAiAAIAAAAAAAAAAAAmAAIAAAAEAAAAAAAqAAIAAAAEAAAAAAAuAAIAAAAEAAAAAAAyAAIAAAAEAAAAAAA2AAIAAAAEAAAAAAA6AAIAAAAEAAAAAAARAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AADu/wIAAAAEAAAAAADy/wIAAAAEAAAAAAD2/wIAAAAEAAAAAAD6/wIAAAAEAAAAAAD+/wIAAAAEAAAAAAACAAIAAAAEAAAAAAAGAAIAAAAEAAAAAAAKAAIAAAAEAAAAAADq/wIAAAAEAAAAAADm/wIAAAAEAAAAAADi/wIAAAAEAAAAAADe/wIAAAAAAAAAAADa/wIAAAAAAAAAAAAOAAIAAAAEAAAAAAASAAIAAAAEAAAAAAAWAAIAAAAEAAAAAAAaAAIAAAAEAAAAAAAeAAIAAAAEAAAAAAAiAAIAAAAEAAAAAAAmAAIAAAAEAAAAAAAqAAIAAAAEAAAAAAAuAAIAAAAEAAAAAAAyAAIAAAAEAAAAAAA2AAIAAAAEAAAAAAA6AAIAAAAEAAAAAAARAP3/AAAEAAAAAAAVAP3/AAAEAAAAAAA+AAIAAAAIAAAAAABCAAIAAAAIAAAAAAA=")
 tile_set = SubResource("TileSet_txlg8")
 
 [node name="death_plane" parent="." instance=ExtResource("3_56hce")]
@@ -148,10 +156,15 @@ position = Vector2(356, -32)
 
 [node name="flappers" type="Node" parent="enemies"]
 
-[node name="cannon_flapper" parent="enemies/flappers" instance=ExtResource("8_2uqr4")]
-position = Vector2(-55, -37)
+[node name="cannon_flapper_new" parent="enemies/flappers" instance=ExtResource("6_txlg8")]
+position = Vector2(-481, 10)
+hp = 6
+
+[node name="pawns" type="Node" parent="enemies"]
+
+[node name="cannon_pawn_new" parent="enemies/pawns" instance=ExtResource("7_u55kl")]
+position = Vector2(9, 52)
 scale = Vector2(1.5, 1.5)
-hp = 3
 
 [node name="cannons" type="Node" parent="."]
 

@@ -49,6 +49,9 @@ func process_input() -> State:
 	return null
 
 func process_physics(delta: float) -> State:
+	if parent.is_on_floor():
+		parent.hurtbox.set_collision_layer_value(3, true)
+		parent.hurtbox.set_collision_layer_value(7, false)
 	if !parent.is_on_floor() and !Input.is_action_pressed("jump"):
 		parent.velocity.y += fall_grav * delta
 	else:

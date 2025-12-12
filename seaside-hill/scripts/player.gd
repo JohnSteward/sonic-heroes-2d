@@ -12,10 +12,11 @@ extends CharacterBody2D
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
 @onready var remote_transform_2d: RemoteTransform2D = %RemoteTransform2D
 
+var level: int = 0
 var hit: bool = false
 var speed: int = 0
 var damage: int = 1
-var rings: int = 3
+var rings: int = 0
 var can_fly: bool = false
 var start_fly_x: float
 var start_fly_y: float
@@ -55,6 +56,10 @@ func is_damaged() -> void:
 			knockback()
 			i_frames.start()
 
+
+func level_up() -> void:
+	level += 1
+	damage += 1
 
 func _on_light_dash_radius_area_entered(area: Area2D) -> void:
 	if area.is_in_group("ring"):

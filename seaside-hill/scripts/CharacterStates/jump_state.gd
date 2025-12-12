@@ -15,8 +15,9 @@ var direction
 func enter() -> void:
 	super()
 	parent.hit = false
+	parent.hurtbox.set_collision_layer_value(3, false)
+	parent.hurtbox.set_collision_layer_value(7, true)
 	parent.hitbox.get_node("hitbox_shape").disabled = false
-	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	parent.velocity.y = -jump_vel
 
 	

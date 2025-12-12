@@ -8,12 +8,14 @@ var player = null
 @onready var entry: Area2D = $entry
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var path_2d: Path2D = $Path2D
+@onready var shoot_sound: AudioStreamPlayer2D = $shoot
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 func check_input() -> void:
 	if Input.is_action_just_pressed("jump"):
+		shoot_sound.play()
 		shoot = true
 		path_2d.get_node("PathFollow2D").player_in = player
 		path_2d.get_node("PathFollow2D").MoveAlongPath(player)

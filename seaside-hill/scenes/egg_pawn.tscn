@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://n4cjdsdgbb5f"]
 
-[ext_resource type="Script" uid="uid://ceae8g8t1uin3" path="res://scripts/enemy.gd" id="1_w27gx"]
+[ext_resource type="Script" uid="uid://d0314vpmc1wku" path="res://scripts/egg_pawn.gd" id="1_0id7y"]
 [ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="2_e2ylv"]
 [ext_resource type="Texture2D" uid="uid://8hy04br1g0ak" path="res://assets/new-sprites/egg_pawn.png" id="3_e2ylv"]
 [ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="4_0id7y"]
 [ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_8ropw"]
-[ext_resource type="Script" uid="uid://d0o5n4w0dcpwj" path="res://scripts/CharacterStates/enemy_states/asleep.gd" id="6_0id7y"]
+[ext_resource type="Script" uid="uid://d0o5n4w0dcpwj" path="res://scripts/CharacterStates/enemy_states/pawn/asleep.gd" id="6_0id7y"]
 [ext_resource type="Script" uid="uid://bnseq2l8fykgt" path="res://scripts/CharacterStates/enemy_states/pawn/idle.gd" id="6_ktuw6"]
 [ext_resource type="Script" uid="uid://d4lhjeo7o4pfj" path="res://scripts/CharacterStates/base_state.gd" id="8_8ropw"]
 
@@ -34,7 +34,14 @@ size = Vector2(28, 29)
 size = Vector2(28, 29)
 
 [node name="egg_pawn" type="CharacterBody2D" groups=["enemy"]]
-script = ExtResource("1_w27gx")
+script = ExtResource("1_0id7y")
+
+[node name="left_sight" type="RayCast2D" parent="."]
+target_position = Vector2(-78, 0)
+
+[node name="right_sight" type="RayCast2D" parent="."]
+rotation = -3.1415925
+target_position = Vector2(-78, 0)
 
 [node name="hitbox" parent="." instance=ExtResource("2_e2ylv")]
 

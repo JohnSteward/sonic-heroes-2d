@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://5qup531gr4ta" path="res://assets/new-sprites/cannon_flapper.png" id="1_qltyt"]
 [ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="2_jpkkp"]
 [ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="3_lyfsw"]
-[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/flapper/stun.gd" id="5_qltyt"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/stun.gd" id="5_qltyt"]
 [ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="6_3oips"]
 [ext_resource type="Script" uid="uid://dcf1kf14ulq44" path="res://scripts/CharacterStates/enemy_states/flapper/cannon_flapper/idle.gd" id="6_dnp2u"]
 [ext_resource type="Script" uid="uid://by8rqocujg75b" path="res://scripts/CharacterStates/enemy_states/shoot.gd" id="9_dnp2u"]
@@ -148,3 +148,4 @@ position = Vector2(0, 2)
 [connection signal="body_entered" from="sight" to="StateMachine/shoot" method="_on_sight_body_entered"]
 [connection signal="body_exited" from="sight" to="StateMachine/shoot" method="_on_sight_body_exited"]
 [connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]
+[connection signal="area_entered" from="StateMachine/shoot/bullet" to="StateMachine/shoot" method="_on_bullet_area_entered"]

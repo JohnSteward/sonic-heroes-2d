@@ -1,7 +1,7 @@
-[gd_scene load_steps=109 format=3 uid="uid://b8w8oc7uqulnc"]
+[gd_scene load_steps=110 format=3 uid="uid://b8w8oc7uqulnc"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_5r1mh"]
-[ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/sonic.gd" id="1_x6f1m"]
+[ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/player.gd" id="1_x6f1m"]
 [ext_resource type="Texture2D" uid="uid://bayn4cfdv325i" path="res://assets/new-sprites/sonic-run.png" id="4_3kxmf"]
 [ext_resource type="Texture2D" uid="uid://dqrx5uowokodl" path="res://assets/new-sprites/knuckles.png" id="4_5r1mh"]
 [ext_resource type="Texture2D" uid="uid://b0lbc14gyomrm" path="res://assets/new-sprites/knuckles-idle.png" id="4_lch8e"]
@@ -24,6 +24,7 @@
 [ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="22_1nn1e"]
 [ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="22_3kxmf"]
 [ext_resource type="Script" uid="uid://c2tmafe3vr7v0" path="res://scripts/CharacterStates/cannon.gd" id="23_robi5"]
+[ext_resource type="PackedScene" uid="uid://t8jol6gxn8g6" path="res://scenes/music.tscn" id="25_j8pfo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
 atlas = ExtResource("1_5r1mh")
@@ -847,8 +848,9 @@ disabled = true
 [node name="collision" type="CollisionShape2D" parent="StateMachine/air_combo/fireball"]
 shape = SubResource("CircleShape2D_robi5")
 
-[node name="cannon" type="Node" parent="StateMachine"]
+[node name="cannon" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("23_robi5")
+idle_state = NodePath("../idle")
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
@@ -859,6 +861,8 @@ one_shot = true
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("22_1nn1e")
 bus = &"SFX"
+
+[node name="music" parent="." instance=ExtResource("25_j8pfo")]
 
 [connection signal="area_entered" from="StateMachine/combo_1/punch_1" to="StateMachine/combo_1" method="_on_punch_1_area_entered"]
 [connection signal="timeout" from="StateMachine/combo_1/punch_start" to="StateMachine/combo_1" method="_on_punch_start_timeout"]

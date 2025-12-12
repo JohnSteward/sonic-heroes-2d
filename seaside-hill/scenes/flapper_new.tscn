@@ -1,0 +1,233 @@
+[gd_scene load_steps=20 format=3 uid="uid://en0d0ogwgayb"]
+
+[ext_resource type="Script" uid="uid://cjc7h8cqn3l8i" path="res://scripts/flapper_new.gd" id="1_jnfm3"]
+[ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="2_g355j"]
+[ext_resource type="Texture2D" uid="uid://b33vfke0jkgak" path="res://assets/new-sprites/flapper.png" id="3_3x3mi"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="4_45ap6"]
+[ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_hs62s"]
+[ext_resource type="Script" uid="uid://cmbbmfww4u1ad" path="res://scripts/CharacterStates/enemy_states/flapper/idle.gd" id="6_ci7vi"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/stun.gd" id="7_reji5"]
+[ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="8_h1r8u"]
+[ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="9_8153p"]
+[ext_resource type="AudioStream" uid="uid://clxrayn8i32c" path="res://assets/sounds/pop.wav" id="10_g355j"]
+[ext_resource type="AudioStream" uid="uid://cx3ge8o5y0s5r" path="res://assets/sounds/explode.wav" id="11_3x3mi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qy30q"]
+size = Vector2(32.666668, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7iras"]
+size = Vector2(32.666668, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqn4p"]
+atlas = ExtResource("3_3x3mi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wq4ip"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqn4p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcy5c"]
+size = Vector2(32.5, 26)
+
+[sub_resource type="Animation" id="Animation_d6i2o"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.96666664),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("hitbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0fhdg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("death/death_sound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("hitbox/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ouc26"]
+_data = {
+&"RESET": SubResource("Animation_0fhdg"),
+&"death": SubResource("Animation_d6i2o")
+}
+
+[node name="flapper_new" type="CharacterBody2D" groups=["enemy"]]
+z_index = 1
+script = ExtResource("1_jnfm3")
+hp = 3
+metadata/_custom_type_script = "uid://ceae8g8t1uin3"
+
+[node name="hurtbox" parent="." instance=ExtResource("2_g355j")]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(1.666666, -9)
+shape = SubResource("RectangleShape2D_qy30q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.666666, -9)
+shape = SubResource("RectangleShape2D_7iras")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -12)
+sprite_frames = SubResource("SpriteFrames_wq4ip")
+
+[node name="hitbox" parent="." instance=ExtResource("4_45ap6")]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(1.75, -9)
+shape = SubResource("RectangleShape2D_lcy5c")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+script = ExtResource("5_hs62s")
+start_state = NodePath("idle")
+metadata/_custom_type_script = "uid://dovx0wh3tvcd6"
+
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("stun_state")]
+script = ExtResource("6_ci7vi")
+stun_state = NodePath("../stun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun" type="Node" parent="StateMachine" node_paths=PackedStringArray("unstun_state")]
+script = ExtResource("7_reji5")
+unstun_state = NodePath("../unstun")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_time" type="Timer" parent="StateMachine/stun"]
+wait_time = 3.0
+one_shot = true
+
+[node name="unstun" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("8_h1r8u")
+idle_state = NodePath("../idle")
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="stun_effect" parent="." instance=ExtResource("9_8153p")]
+visible = false
+position = Vector2(2, -8)
+scale = Vector2(1.2343749, 0.90625)
+
+[node name="hurt_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_g355j")
+volume_db = 4.0
+
+[node name="death" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ouc26")
+}
+
+[node name="death_sound" type="AudioStreamPlayer2D" parent="death"]
+scale = Vector2(1.5, 1.5)
+stream = ExtResource("11_3x3mi")
+
+[connection signal="timeout" from="StateMachine/stun/stun_time" to="StateMachine/stun" method="_on_stun_time_timeout"]

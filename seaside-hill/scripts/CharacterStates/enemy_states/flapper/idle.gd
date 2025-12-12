@@ -1,7 +1,4 @@
 extends State
-@onready var sight: Area2D = $sight
-
-
 @export var stun_state: State
 
 var up: bool
@@ -17,14 +14,16 @@ func process_frame(delta: float) -> State:
 	return null
 
 func process_physics(delta: float) -> State:
+	print(parent.start_pos)
+	print(parent.position.y)
 	if up:
 		parent.velocity.y = -5
-		if parent.position.y <= (parent.start_pos - 3):
+		if parent.position.y <= (parent.start_pos[1] - 3):
 			print("not up")
 			up = false
 	else:
 		parent.velocity.y = 5
-		if parent.position.y >= parent.start_pos + 3:
+		if parent.position.y >= parent.start_pos[1] + 3:
 			print("going up")
 			up = true
 	parent.move_and_slide()

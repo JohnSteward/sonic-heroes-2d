@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b33vfke0jkgak" path="res://assets/new-sprites/flapper.png" id="3_yjgwh"]
 [ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="5_xqn4p"]
 [ext_resource type="Script" uid="uid://cmbbmfww4u1ad" path="res://scripts/CharacterStates/enemy_states/flapper/idle.gd" id="6_ycu6p"]
-[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/flapper/stun.gd" id="7_2n1tk"]
+[ext_resource type="Script" uid="uid://dk6rj05rnro2b" path="res://scripts/CharacterStates/enemy_states/stun.gd" id="7_2n1tk"]
 [ext_resource type="Script" uid="uid://dryy2hf8e5xc8" path="res://scripts/CharacterStates/enemy_states/flapper/un_stun.gd" id="8_saq7f"]
 [ext_resource type="PackedScene" uid="uid://dqy362l1svbkt" path="res://scenes/stun_effect.tscn" id="9_o6f5g"]
 
