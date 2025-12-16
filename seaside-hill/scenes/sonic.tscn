@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://bdhyd4atmlgnw"]
+[gd_scene load_steps=71 format=3 uid="uid://bdhyd4atmlgnw"]
 
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/player.gd" id="1_35lpn"]
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="2_hpha1"]
@@ -22,6 +22,7 @@
 [ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="18_m14wf"]
 [ext_resource type="Script" uid="uid://bl8rfb81ea11p" path="res://scripts/CharacterStates/SonicStates/light_dash.gd" id="19_1appv"]
 [ext_resource type="AudioStream" uid="uid://dxy2h1kgcwy45" path="res://assets/sounds/homingattack.wav" id="19_hrynr"]
+[ext_resource type="Script" uid="uid://dbait548yf41w" path="res://scripts/CharacterStates/behind_state.gd" id="22_6glwi"]
 [ext_resource type="PackedScene" uid="uid://t8jol6gxn8g6" path="res://scenes/music.tscn" id="22_tjprp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
@@ -357,11 +358,15 @@ radius = 24.020824
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgjo6"]
 radius = 183.00273
 
-[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state") groups=["player"]]
+[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state", "next_char", "prev_char") groups=["player"]]
 z_index = 1
 collision_layer = 2
 script = ExtResource("1_35lpn")
 knockback_state = NodePath("StateMachine/fall")
+behind_state = NodePath("StateMachine/behind")
+type = "speed"
+next_char = NodePath("")
+prev_char = NodePath("")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
@@ -373,6 +378,7 @@ position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_mce4r")
 
 [node name="hitbox" parent="." instance=ExtResource("17_qrl6y")]
+visible = false
 collision_layer = 8
 collision_mask = 16
 script = null
@@ -513,6 +519,10 @@ metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 script = ExtResource("19_1appv")
 idle_state = NodePath("../idle")
 anim_name = "idle"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="behind" type="Node" parent="StateMachine"]
+script = ExtResource("22_6glwi")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="i-frames" type="Timer" parent="."]

@@ -1,3 +1,2 @@
 extends Node
-
-var front_char
+@export var front_char: CharacterBody2D

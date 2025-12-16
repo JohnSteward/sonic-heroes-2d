@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=17 format=4 uid="uid://5oja1aeqsqg7"]
 
 [ext_resource type="Script" uid="uid://berm88a2plbeq" path="res://scripts/game_manager.gd" id="1_2uqr4"]
 [ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
 [ext_resource type="PackedScene" uid="uid://bdhyd4atmlgnw" path="res://scenes/sonic.tscn" id="1_u55kl"]
 [ext_resource type="Texture2D" uid="uid://s55crfthdsxn" path="res://assets/new-sprites/tileset.png" id="2_b706e"]
+[ext_resource type="PackedScene" uid="uid://cdcjpwqjw2nar" path="res://scenes/tails.tscn" id="3_0cnyu"]
 [ext_resource type="PackedScene" uid="uid://chf50o0g8iy0n" path="res://scenes/death_plane.tscn" id="3_56hce"]
+[ext_resource type="PackedScene" uid="uid://b8w8oc7uqulnc" path="res://scenes/knuckles.tscn" id="4_quvf8"]
 [ext_resource type="PackedScene" uid="uid://ctppqqs3ogg4e" path="res://scenes/ring.tscn" id="5_e80yk"]
 [ext_resource type="PackedScene" uid="uid://bhv6pi2ltr4oa" path="res://scenes/cannon_flapper_new.tscn" id="6_txlg8"]
 [ext_resource type="PackedScene" uid="uid://dkrx487vnxt77" path="res://scenes/cannon_pawn_new.tscn" id="7_u55kl"]
@@ -42,15 +44,30 @@ point_count = 9
 
 [node name="seaside-hill" type="Node2D"]
 
-[node name="GameManager" type="Node" parent="."]
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("front_char")]
 unique_name_in_owner = true
 script = ExtResource("1_2uqr4")
+front_char = NodePath("../Sonic")
 
-[node name="Sonic" parent="." instance=ExtResource("1_u55kl")]
+[node name="Sonic" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("1_u55kl")]
 position = Vector2(-1166, 51)
+next_char = NodePath("../tails")
+prev_char = NodePath("../knuckles")
 
 [node name="Camera2D" type="Camera2D" parent="Sonic"]
 zoom = Vector2(1.5, 1.5)
+
+[node name="tails" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("3_0cnyu")]
+z_index = 1
+position = Vector2(-1220, 49)
+next_char = NodePath("../knuckles")
+prev_char = NodePath("../Sonic")
+
+[node name="knuckles" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("4_quvf8")]
+z_index = 1
+position = Vector2(-1121, 49)
+next_char = NodePath("../Sonic")
+prev_char = NodePath("../tails")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://cdcjpwqjw2nar"]
+[gd_scene load_steps=71 format=3 uid="uid://cdcjpwqjw2nar"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_fo6i8"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/player.gd" id="1_r0q7k"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bayn4cfdv325i" path="res://assets/new-sprites/sonic-run.png" id="4_422et"]
 [ext_resource type="Texture2D" uid="uid://0rgtfxlw01nb" path="res://assets/new-sprites/sonic-sprint.png" id="5_311sm"]
 [ext_resource type="PackedScene" uid="uid://bqj2of68myte6" path="res://scenes/hurtbox.tscn" id="6_iyk3m"]
+[ext_resource type="PackedScene" uid="uid://bvpy5vv8h2po" path="res://scenes/hitbox.tscn" id="7_gvof2"]
 [ext_resource type="Script" uid="uid://dovx0wh3tvcd6" path="res://scripts/CharacterStates/state_machine.gd" id="7_jvq4g"]
 [ext_resource type="Script" uid="uid://bmonvo42c5n76" path="res://scripts/CharacterStates/idle.gd" id="8_gvof2"]
 [ext_resource type="Script" uid="uid://06dlgl4pa6cu" path="res://scripts/CharacterStates/run_state.gd" id="9_1d487"]
@@ -18,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://2gtq7rjuwkvy" path="res://assets/new-sprites/thunder.png" id="16_0bhdd"]
 [ext_resource type="Script" uid="uid://c2tmafe3vr7v0" path="res://scripts/CharacterStates/cannon.gd" id="17_311sm"]
 [ext_resource type="AudioStream" uid="uid://bp4uu1v646h8o" path="res://assets/sounds/damage.mp3" id="17_422et"]
+[ext_resource type="Script" uid="uid://dbait548yf41w" path="res://scripts/CharacterStates/behind_state.gd" id="19_gvof2"]
 [ext_resource type="PackedScene" uid="uid://t8jol6gxn8g6" path="res://scenes/music.tscn" id="19_iyk3m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0y1f0"]
@@ -341,6 +343,9 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nm0c2"]
 height = 32.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_jvq4g"]
+radius = 17.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7u2c3"]
 height = 32.0
 
@@ -367,10 +372,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="tails" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state") groups=["player"]]
+[node name="tails" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_r0q7k")
 knockback_state = NodePath("StateMachine/fall")
+behind_state = NodePath("StateMachine/behind")
+type = "flying"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
@@ -380,6 +387,16 @@ animation = &"sprint"
 [node name="physics_box" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_nm0c2")
+
+[node name="hitbox" parent="." instance=ExtResource("7_gvof2")]
+collision_layer = 8
+collision_mask = 16
+script = null
+
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_jvq4g")
+disabled = true
 
 [node name="hurtbox" parent="." instance=ExtResource("6_iyk3m")]
 position = Vector2(0, -2)
@@ -507,6 +524,10 @@ sprite_frames = SubResource("SpriteFrames_311sm")
 script = ExtResource("17_311sm")
 idle_state = NodePath("../idle")
 anim_name = "jump"
+metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
+
+[node name="behind" type="Node" parent="StateMachine"]
+script = ExtResource("19_gvof2")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="i-frames" type="Timer" parent="."]

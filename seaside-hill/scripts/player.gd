@@ -2,6 +2,7 @@ class_name Player
 extends CharacterBody2D
 
 @onready var ui: Control = %UI
+@onready var game_manager: Node = %GameManager
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: Node = $StateMachine
 @onready var i_frames: Timer = $"i-frames"
@@ -9,6 +10,9 @@ extends CharacterBody2D
 @onready var hitbox: Area2D = $hitbox
 
 @export var knockback_state: State
+@export var behind_state: State
+@export var next_char: CharacterBody2D
+@export var prev_char: CharacterBody2D
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
 @onready var remote_transform_2d: RemoteTransform2D = %RemoteTransform2D
 
@@ -29,6 +33,21 @@ func _ready() -> void:
 	state_machine.init(self)
 
 
+func change_char(current_char, dir) -> void:
+	var parent = get_parent()
+	parent.remove_child(self)
+	if dir > 0:
+		parent.add_child(self.next_char)
+	else:
+		parent.add_child(self.prev_char)
+	#if next_char == 'speed':
+		#parent.remove_child(self)
+		##parent.add_child()
+	#elif next_char == 'flying':
+		#get_tree().change_scene_to_file("res://scenes/tails.tscn")
+	#elif next_char == "power":
+		#get_tree().change_scene_to_file("res://scenes/knuckles.tscn")
+
 func knockback():
 	var direction
 	if animated_sprite_2d.flip_h:
@@ -42,6 +61,8 @@ func knockback():
 
 func _physics_process(delta: float) -> void:
 	ui.update_rings(rings)
+	if !game_manager.front_char == self:
+		state_machine.change_state(behind_state)
 	state_machine.process_input()
 	state_machine.process_frame(delta)
 	state_machine.process_physics(delta)

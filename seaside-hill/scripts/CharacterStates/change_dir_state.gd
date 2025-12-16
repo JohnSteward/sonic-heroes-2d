@@ -46,6 +46,10 @@ func process_input() -> State:
 		return action_state
 	if !parent.is_on_floor() and Input.is_action_just_pressed("action"):
 		return air_action_state
+	if Input.is_action_just_pressed("swap_left") and parent.is_on_floor():
+		parent.change_char(parent, -1)
+	if Input.is_action_just_pressed("swap_right") and parent.is_on_floor():
+		parent.change_char(parent, 1)
 	return null
 
 func process_physics(delta: float) -> State:

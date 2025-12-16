@@ -12,7 +12,7 @@ func enter() -> void:
 	super()
 	parent.hurtbox.set_collision_layer_value(3, true)
 	parent.hurtbox.set_collision_layer_value(7, false)
-	parent.hitbox.get_node("hitbox_shape").disabled = true
+	#parent.hitbox.get_node("hitbox_shape").disabled = true
 	parent.can_fly = true
 	parent.velocity.x = 0
 	parent.speed = 0
@@ -31,6 +31,10 @@ func process_input() -> State:
 		return jump_state
 	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 		return run_state
+	if Input.is_action_just_pressed("swap_left"):
+		parent.change_char(parent, -1)
+	if Input.is_action_just_pressed("swap_right"):
+		parent.change_char(parent, 1)
 	
 	return null
 
