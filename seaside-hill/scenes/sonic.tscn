@@ -358,15 +358,15 @@ radius = 24.020824
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgjo6"]
 radius = 183.00273
 
-[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state", "next_char", "prev_char") groups=["player"]]
+[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
 z_index = 1
 collision_layer = 2
 script = ExtResource("1_35lpn")
 knockback_state = NodePath("StateMachine/fall")
 behind_state = NodePath("StateMachine/behind")
-type = "speed"
-next_char = NodePath("")
-prev_char = NodePath("")
+MAX_SPEED = 500.0
+friction = 5.0
+acc = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
@@ -460,7 +460,6 @@ change_dir_state = NodePath("../change_direction")
 cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "roll"
-friction = 2.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "roll_state", "fly_state", "cannon_state", "light_dash_state")]
@@ -474,15 +473,12 @@ fly_state = NodePath("../homing")
 cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "change_dir"
-friction = 20.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="rocket_accel" type="Node" parent="StateMachine" node_paths=PackedStringArray("roll_state")]
 script = ExtResource("10_rocmk")
 roll_state = NodePath("../roll")
 anim_name = "dash"
-friction = 30.0
-acc = 100.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="homing" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "jump_state", "run_state", "cannon_state")]
@@ -521,8 +517,9 @@ idle_state = NodePath("../idle")
 anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="behind" type="Node" parent="StateMachine"]
+[node name="behind" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("22_6glwi")
+idle_state = NodePath("../idle")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="i-frames" type="Timer" parent="."]

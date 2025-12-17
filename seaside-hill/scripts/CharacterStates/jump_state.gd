@@ -8,7 +8,7 @@ extends State
 @export var cannon_state: State
 @export var light_dash_state: State
 
-@export var jump_vel: float = 200
+@export var jump_vel: float
 
 var movement
 var direction
@@ -49,11 +49,11 @@ func process_physics(delta: float) -> State:
 				parent.speed = move_toward(parent.speed, 0, 10)
 				parent.velocity.x = parent.speed * direction * -1
 			else:
-				parent.speed = move_toward(parent.speed, MAX_SPEED, acc)
+				parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
 				parent.velocity.x = parent.speed * direction
 			parent.animated_sprite_2d.flip_h = (direction < 0)
 		else:
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction)
 			if parent.animated_sprite_2d.flip_h:
 				parent.velocity.x = parent.speed * -1
 			else:

@@ -16,11 +16,14 @@ extends CharacterBody2D
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
 @onready var remote_transform_2d: RemoteTransform2D = %RemoteTransform2D
 
+@export var MAX_SPEED: float
+@export var friction: float
+@export var acc: float
+
 var level: int = 0
 var hit: bool = false
 var speed: int = 0
 var damage: int = 1
-var rings: int = 0
 var can_fly: bool = false
 var start_fly_x: float
 var start_fly_y: float
@@ -34,19 +37,15 @@ func _ready() -> void:
 
 
 func change_char(current_char, dir) -> void:
-	var parent = get_parent()
-	parent.remove_child(self)
+	var game_cam = preload("res://scenes/game_cam.tscn").instantiate()
+	current_char.get_node("Game_Cam").queue_free()
 	if dir > 0:
-		parent.add_child(self.next_char)
+		game_manager.front_char = current_char.next_char
 	else:
-		parent.add_child(self.prev_char)
-	#if next_char == 'speed':
-		#parent.remove_child(self)
-		##parent.add_child()
-	#elif next_char == 'flying':
-		#get_tree().change_scene_to_file("res://scenes/tails.tscn")
-	#elif next_char == "power":
-		#get_tree().change_scene_to_file("res://scenes/knuckles.tscn")
+		game_manager.front_char = current_char.prev_char
+	game_manager.front_char.add_child(game_cam)
+	game_manager.front_char.position = current_char.position
+	
 
 func knockback():
 	var direction
@@ -60,8 +59,8 @@ func knockback():
 	state_machine.change_state(knockback_state)
 
 func _physics_process(delta: float) -> void:
-	ui.update_rings(rings)
-	if !game_manager.front_char == self:
+	ui.update_rings(game_manager.rings)
+	if !game_manager.front_char == self and !state_machine.current_state == behind_state:
 		state_machine.change_state(behind_state)
 	state_machine.process_input()
 	state_machine.process_frame(delta)
@@ -70,10 +69,10 @@ func _physics_process(delta: float) -> void:
 func is_damaged() -> void:
 	damage_sound.play()
 	if i_frames.is_stopped():
-		if rings == 0:
+		if game_manager.rings == 0:
 			get_tree().reload_current_scene()
 		else:
-			rings = 0
+			game_manager.rings = 0
 			knockback()
 			i_frames.start()
 

@@ -2,9 +2,6 @@ class_name State
 extends Node
 
 @export var anim_name: String
-@export var MAX_SPEED: float = 500
-@export var friction: float = 5
-@export var acc: float = 10
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var fall_grav = 2000

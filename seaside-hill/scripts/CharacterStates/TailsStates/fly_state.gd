@@ -51,14 +51,14 @@ func process_physics(delta: float) -> State:
 		else:
 			parent.animated_sprite_2d.flip_h = false
 		if (direction == -1 and parent.velocity.x > 0) or (direction == 1 and parent.velocity.x < 0):
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction)
 			parent.velocity.x = parent.speed * direction * -1
 		else:
-			parent.speed = move_toward(parent.speed, MAX_SPEED, acc)
+			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
 			parent.velocity.x = parent.speed * direction
 	else:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, friction)
-		parent.speed = move_toward(parent.speed, 0, friction)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction)
+		parent.speed = move_toward(parent.speed, 0, parent.friction)
 	parent.move_and_slide()
 	flight_duration -= abs(parent.position.x - prev_pos)
 	#prev_pos = parent.position.x

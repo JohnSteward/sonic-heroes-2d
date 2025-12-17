@@ -17,7 +17,7 @@ func enter() -> void:
 	
 	
 func exit() -> void:
-	friction = 2
+	parent.friction = 2
 	parent.hurtbox.set_collision_layer_value(3, true)
 	parent.hurtbox.set_collision_layer_value(7, false)
 
@@ -28,7 +28,7 @@ func process_input() -> State:
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
 		return jump_state
 	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
-		friction = 10
+		parent.friction = 10
 	return null
 
 func process_frame(delta: float) -> State:
@@ -41,7 +41,7 @@ func process_physics(delta) -> State:
 		direction = -1
 	else:
 		direction = 1
-	parent.speed = move_toward(parent.speed, 0, friction)
+	parent.speed = move_toward(parent.speed, 0, parent.friction)
 	parent.velocity.x = parent.speed * direction
 	parent.move_and_slide()
 	if parent.velocity.x == 0:

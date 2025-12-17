@@ -28,14 +28,14 @@ func process_physics(delta: float) -> State:
 	if parent.i_frames.is_stopped():
 		parent.velocity.y = glide_grav
 		if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
-				parent.speed = move_toward(parent.speed, 0, friction)
+				parent.speed = move_toward(parent.speed, 0, parent.friction)
 				parent.velocity.x = parent.speed * direction * -1
 		elif direction:
-			parent.speed = move_toward(parent.speed, MAX_SPEED, acc)
+			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
 			parent.animated_sprite_2d.flip_h = (direction < 0)
 			parent.velocity.x = parent.speed * direction
 		else:
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction)
 			if parent.velocity.x < 0:
 				parent.velocity.x = parent.speed * -1
 			else:

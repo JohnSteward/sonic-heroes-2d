@@ -18,7 +18,7 @@ func process_physics(delta: float) -> State:
 	parent.velocity.y += gravity * delta
 	if Input.is_action_pressed("action"):
 		if parent.speed < MAX_DASH:
-			parent.speed += acc
+			parent.speed += parent.acc
 		else:
 			parent.speed = MAX_DASH
 	return null

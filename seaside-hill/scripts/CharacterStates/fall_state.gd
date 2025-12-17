@@ -36,11 +36,11 @@ func process_physics(delta: float) -> State:
 	direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
 		if direction:
-			parent.speed = move_toward(parent.speed, MAX_SPEED, acc)
+			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
 			parent.animated_sprite_2d.flip_h = (direction < 0)
 			parent.velocity.x = parent.speed * direction
 		else:
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction)
 			if parent.velocity.x < 0:
 				parent.velocity.x = parent.speed * -1
 			else:

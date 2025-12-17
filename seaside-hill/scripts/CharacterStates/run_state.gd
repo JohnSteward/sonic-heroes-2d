@@ -41,9 +41,9 @@ func process_input() -> State:
 	return null
 	
 func process_frame(delta: float) -> State:
-	if parent.speed >= MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
+	if parent.speed >= parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
 		parent.animated_sprite_2d.play("sprint")
-	elif parent.speed < MAX_SPEED and (!parent.animated_sprite_2d.animation == "run"):
+	elif parent.speed < parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "run"):
 		parent.animated_sprite_2d.play("run")
 	if parent.is_in_cannon:
 		return cannon_state
@@ -52,22 +52,22 @@ func process_frame(delta: float) -> State:
 func process_physics(delta: float) -> State:
 	direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
-		if parent.velocity.x > MAX_SPEED:
+		if parent.velocity.x > parent.MAX_SPEED:
 			parent.animated_sprite_2d.play("sprint")
 			if parent.animated_sprite_2d.flip_h:
 				direction = -1
 			else:
 				direction = 1
-			parent.speed = move_toward(parent.speed, MAX_SPEED, friction)
+			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.friction)
 			parent.velocity.x = parent.speed * direction
 
 		elif direction:
-			parent.speed = move_toward(parent.speed, MAX_SPEED, acc)
+			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
 			movement = direction * parent.speed
 			parent.animated_sprite_2d.flip_h = (direction < 0)
 			parent.velocity.x = movement
 		else:
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction)
 			# Check which direction we are moving in
 			if parent.velocity.x < 0:
 				parent.velocity.x = parent.speed * -1

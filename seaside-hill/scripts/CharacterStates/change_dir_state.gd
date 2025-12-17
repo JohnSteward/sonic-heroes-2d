@@ -16,7 +16,6 @@ var direction
 func enter() -> void:
 	if parent.is_on_floor():
 		parent.animated_sprite_2d.play("change_dir")
-	#parent.animated_sprite_2d.flaip_h = !parent.animated_sprite_2d.flip_h
 
 func exit() -> void:
 	parent.move_and_slide()
@@ -63,7 +62,7 @@ func process_physics(delta: float) -> State:
 	direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
 		if direction:
-			parent.speed = move_toward(parent.speed, 0, friction)
+			parent.speed = move_toward(parent.speed, 0, parent.friction + 10)
 			parent.velocity.x = parent.speed * direction * -1
 		else:
 			return run_state

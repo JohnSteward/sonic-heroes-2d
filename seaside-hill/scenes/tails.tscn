@@ -377,12 +377,14 @@ collision_layer = 2
 script = ExtResource("1_r0q7k")
 knockback_state = NodePath("StateMachine/fall")
 behind_state = NodePath("StateMachine/behind")
-type = "flying"
+MAX_SPEED = 500.0
+friction = 5.0
+acc = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_ke3kr")
-animation = &"sprint"
+animation = &"run"
 
 [node name="physics_box" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
@@ -476,9 +478,6 @@ action_state = NodePath("../thunder_shoot")
 cannon_state = NodePath("../cannon")
 flight_duration = 500.0
 anim_name = "jump"
-MAX_SPEED = 400.0
-friction = 50.0
-acc = 30.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="thunder_shoot" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "cannon_state")]
@@ -526,8 +525,9 @@ idle_state = NodePath("../idle")
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="behind" type="Node" parent="StateMachine"]
+[node name="behind" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("19_gvof2")
+idle_state = NodePath("../idle")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
 [node name="i-frames" type="Timer" parent="."]
