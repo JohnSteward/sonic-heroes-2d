@@ -732,7 +732,7 @@ disabled = true
 debug_color = Color(0.9917123, 0, 0.268039, 0.41960785)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_1/punch_1"]
-visible = false
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_2wple")
 animation = &"punch"
 
@@ -764,7 +764,7 @@ disabled = true
 debug_color = Color(2.695322e-06, 0.57995397, 0.80454975, 0.41960785)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_2/punch_2"]
-visible = false
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_ywvvf")
 animation = &"punch"
 
@@ -794,7 +794,7 @@ disabled = true
 debug_color = Color(0.19722196, 0.64165014, 0, 0.41960785)
 
 [node name="left_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_left"]
-visible = false
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_51fx0")
 animation = &"punch"
 
@@ -808,7 +808,7 @@ disabled = true
 debug_color = Color(0.08681887, 0.6491917, 0, 0.41960785)
 
 [node name="right_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_right"]
-visible = false
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_51fx0")
 animation = &"punch"
 

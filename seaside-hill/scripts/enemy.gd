@@ -11,6 +11,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var stun_effect: AnimatedSprite2D = $stun_effect
 @onready var hurt_sound: AudioStreamPlayer2D = $hurt_sound
 @onready var death: AnimationPlayer = $death
+@onready var hurtbox: Area2D = $hurtbox
+@onready var game_manager = %GameManager
 
 var stunned: bool
 var direction: int = -1
@@ -23,6 +25,11 @@ func _ready() -> void:
 func is_damaged(damage):
 	hp -= damage
 	if hp <=0:
+		var rand = randf_range(0.0, 1.0)
+		if rand > 0.0:
+			var level_up_orb = load("res://scenes/level_up_orb.tscn").instantiate()
+			level_up_orb.initialise(self)
+			get_parent().add_child(level_up_orb) #So the orb isn't deleted when the enemy is
 		death.play("death")
 	else:
 		hurt_sound.play()

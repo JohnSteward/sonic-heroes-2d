@@ -194,7 +194,7 @@ position = Vector2(386, -164)
 
 [node name="cannon_flapper_new" parent="enemies/flappers" instance=ExtResource("6_txlg8")]
 position = Vector2(-449.00003, -3)
-hp = 6
+hp = 2
 
 [node name="pawns" type="Node" parent="enemies"]
 
