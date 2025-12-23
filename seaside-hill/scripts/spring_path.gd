@@ -15,9 +15,8 @@ func _process(delta: float) -> void:
 func MoveAlongPath(player: CharacterBody2D) -> void:
 	progress += speed
 	if progress_ratio >= 1:
-		player_in.out_cannon = true
-		player_in.is_in_cannon = false
-		player_in = null
 		progress_ratio = 0
+		player_in.rotation = 0
+		player_in.velocity.y = -10
+		player_in = null
 		self.get_node("RemoteTransform2D").remote_path = ""
-		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene load_steps=19 format=4 uid="uid://5oja1aeqsqg7"]
 
 [ext_resource type="Script" uid="uid://berm88a2plbeq" path="res://scripts/game_manager.gd" id="1_2uqr4"]
 [ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dkrx487vnxt77" path="res://scenes/cannon_pawn_new.tscn" id="7_u55kl"]
 [ext_resource type="PackedScene" uid="uid://c3bgk8acf8j8w" path="res://scenes/cannon.tscn" id="8_txlg8"]
 [ext_resource type="Script" uid="uid://8s4ys5ugfd27" path="res://scripts/cannon_path.gd" id="9_u55kl"]
+[ext_resource type="PackedScene" uid="uid://cs5brrftayff4" path="res://scenes/triple_spring.tscn" id="14_k5ykm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6corl"]
 texture = ExtResource("2_b706e")
@@ -215,6 +216,7 @@ position = Vector2(0, -13)
 rotation = -1.2924967
 loop = false
 script = ExtResource("9_u55kl")
+speed = 10.0
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon/Path2D/PathFollow2D"]
 update_rotation = false
@@ -231,7 +233,15 @@ position = Vector2(-1, -13)
 rotation = -1.5167948
 loop = false
 script = ExtResource("9_u55kl")
+speed = 10.0
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon2/Path2D/PathFollow2D"]
 update_rotation = false
 update_scale = false
+
+[node name="Springs" type="Node" parent="."]
+
+[node name="triple_spring" parent="Springs" instance=ExtResource("14_k5ykm")]
+z_index = 1
+position = Vector2(451, 40)
+spring_height = 1500.0
