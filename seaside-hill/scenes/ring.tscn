@@ -1,8 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://ctppqqs3ogg4e"]
+[gd_scene load_steps=16 format=3 uid="uid://ctppqqs3ogg4e"]
 
 [ext_resource type="Texture2D" uid="uid://bjlqxjq8gua0j" path="res://assets/new-sprites/ring.png" id="1_03kdj"]
 [ext_resource type="Script" uid="uid://cdrosix55t2k0" path="res://scripts/ring.gd" id="1_f7lrs"]
 [ext_resource type="AudioStream" uid="uid://bc8tpbxgm4rl2" path="res://assets/sounds/ring.mp3" id="3_d05vm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fh10o"]
+radius = 10.049875
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f7lrs"]
 atlas = ExtResource("1_03kdj")
@@ -28,7 +31,7 @@ region = Rect2(128, 0, 32, 32)
 atlas = ExtResource("1_03kdj")
 region = Rect2(160, 0, 32, 32)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_rgaii"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_d05vm"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -54,9 +57,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8fq2r"]
-radius = 9.0
-
 [sub_resource type="Animation" id="Animation_ro388"]
 length = 0.001
 tracks/0/type = "value"
@@ -74,7 +74,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/1/path = NodePath("ring_area/collision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -86,7 +86,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("collision:disabled")
+tracks/2/path = NodePath("ring_area/AudioStreamPlayer2D:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -113,7 +113,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/1/path = NodePath("ring_area/collision:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -125,7 +125,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("collision:disabled")
+tracks/2/path = NodePath("ring_area/AudioStreamPlayer2D:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -141,7 +141,7 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.73333335),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -155,27 +155,37 @@ _data = {
 &"collect": SubResource("Animation_fh10o")
 }
 
-[node name="ring" type="Area2D" groups=["ring"]]
-collision_mask = 2
+[sub_resource type="CircleShape2D" id="CircleShape2D_d05vm"]
+radius = 9.0
+
+[node name="ring" type="RigidBody2D"]
+z_index = 2
+collision_layer = 2
 script = ExtResource("1_f7lrs")
+friction = 20.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_rgaii")
+[node name="ring_area" type="Area2D" parent="." groups=["ring"]]
+collision_mask = 2
+
+[node name="collision" type="CollisionShape2D" parent="ring_area"]
+shape = SubResource("CircleShape2D_fh10o")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ring_area"]
+sprite_frames = SubResource("SpriteFrames_d05vm")
 autoplay = "default"
-frame = 3
-frame_progress = 0.40745637
 
-[node name="collision" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_8fq2r")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="ring_area"]
 stream = ExtResource("3_d05vm")
 volume_db = -10.73
 bus = &"SFX"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ring_area"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_25iib")
 }
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d05vm")
+
+[connection signal="body_entered" from="ring_area" to="." method="_on_ring_area_body_entered"]

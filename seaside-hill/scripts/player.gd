@@ -45,9 +45,19 @@ func change_char(current_char, dir) -> void:
 		game_manager.front_char = current_char.prev_char
 	game_manager.front_char.add_child(game_cam)
 	game_manager.front_char.position = current_char.position
-	
 
-func knockback():
+func spawn_rings(no_rings) -> void:
+	var ring_spawner = preload("res://scenes/ring.tscn")
+	var y_vel = 300
+	for i in range(no_rings):
+		var x_vel = randf_range(-500, 500)
+		var ring = ring_spawner.instantiate()
+		get_parent().add_child(ring)
+		ring.global_position = global_position
+		ring.initialise(x_vel, y_vel, true)
+		
+
+func knockback(no_rings):
 	var direction
 	if animated_sprite_2d.flip_h:
 		direction = -1
@@ -56,7 +66,7 @@ func knockback():
 	velocity.x = 200 * direction * -1
 	velocity.y = -400
 	move_and_slide()
-	state_machine.change_state(knockback_state)
+	spawn_rings(no_rings)
 
 func _physics_process(delta: float) -> void:
 	ui.update_rings(game_manager.rings)
@@ -72,8 +82,9 @@ func is_damaged() -> void:
 		if game_manager.rings == 0:
 			get_tree().reload_current_scene()
 		else:
+			var no_rings = game_manager.rings
 			game_manager.rings = 0
-			knockback()
+			knockback(no_rings)
 			i_frames.start()
 
 
@@ -84,9 +95,9 @@ func level_up() -> void:
 func _on_light_dash_radius_area_entered(area: Area2D) -> void:
 	if area.is_in_group("ring"):
 		light_dash = true
-		ring_position = area.position
+		ring_position = area.get_parent().position
 
 
 func _on_light_dash_radius_area_exited(area: Area2D) -> void:
-	if area.is_in_group("ring") and area.position == ring_position:
+	if area.is_in_group("ring") and area.get_parent().position == ring_position:
 		light_dash = false

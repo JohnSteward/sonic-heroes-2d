@@ -189,6 +189,12 @@ position = Vector2(386, -141)
 [node name="ring35" parent="rings" instance=ExtResource("5_e80yk")]
 position = Vector2(386, -164)
 
+[node name="ring" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(-953, 25)
+
+[node name="ring2" parent="rings" instance=ExtResource("5_e80yk")]
+position = Vector2(-917, 23)
+
 [node name="enemies" type="Node" parent="."]
 
 [node name="flappers" type="Node" parent="enemies"]
