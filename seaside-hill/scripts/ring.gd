@@ -21,3 +21,4 @@ func _physics_process(delta: float) -> void:
 		linear_velocity.x = move_toward(linear_velocity.x, 0, friction)
 	else:
 		linear_velocity = Vector2(0, 0)
+		gravity_scale = 0
