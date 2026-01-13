@@ -159,10 +159,10 @@ _data = {
 radius = 9.0
 
 [node name="ring" type="RigidBody2D"]
-z_index = 1
+z_index = 2
 collision_layer = 2
 script = ExtResource("1_f7lrs")
-friction = 50.0
+friction = 20.0
 
 [node name="ring_area" type="Area2D" parent="." groups=["ring"]]
 collision_mask = 2

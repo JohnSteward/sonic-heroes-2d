@@ -48,15 +48,17 @@ func change_char(current_char, dir) -> void:
 
 func spawn_rings(no_rings) -> void:
 	var ring_spawner = preload("res://scenes/ring.tscn")
-	var y_vel = 100
+	var y_vel = 300
 	for i in range(no_rings):
-		var x_vel = randf_range(-50, 50)
+		var x_vel = randf_range(-500, 500)
 		var ring = ring_spawner.instantiate()
+		get_parent().add_child(ring)
+		ring.global_position = global_position
 		ring.initialise(x_vel, y_vel, true)
+		
 
-func knockback():
+func knockback(no_rings):
 	var direction
-	var no_rings = game_manager.rings
 	if animated_sprite_2d.flip_h:
 		direction = -1
 	else:
@@ -80,8 +82,9 @@ func is_damaged() -> void:
 		if game_manager.rings == 0:
 			get_tree().reload_current_scene()
 		else:
+			var no_rings = game_manager.rings
 			game_manager.rings = 0
-			knockback()
+			knockback(no_rings)
 			i_frames.start()
 
 
