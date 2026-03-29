@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://drql1pd1wqpc1"]
+
+[ext_resource type="Script" uid="uid://cbuix2bgy3d62" path="res://scripts/single_spring.gd" id="1_efwwx"]
+[ext_resource type="Texture2D" uid="uid://c4gxgr62m67tm" path="res://assets/new-sprites/rainbow-ring.png" id="1_qje2l"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_efwwx"]
+radius = 9.0
+height = 34.0
+
+[node name="rainbow_ring" type="Area2D" unique_id=473829147]
+collision_mask = 2
+script = ExtResource("1_efwwx")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=825192705]
+texture = ExtResource("1_qje2l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2050401185]
+shape = SubResource("CapsuleShape2D_efwwx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -2,6 +2,7 @@ extends PathFollow2D
 
 var player_in = null
 @export var speed: float
+@export var end_vel: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -17,6 +18,6 @@ func MoveAlongPath(player: CharacterBody2D) -> void:
 	if progress_ratio >= 1:
 		progress_ratio = 0
 		player_in.rotation = 0
-		player_in.velocity.y = -10
+		player_in.velocity = end_vel
 		player_in = null
 		self.get_node("RemoteTransform2D").remote_path = ""

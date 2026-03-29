@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://ulin7akyf7lj"]
+
+[ext_resource type="Script" uid="uid://du2eriadiv6ou" path="res://scripts/dash_panel.gd" id="1_proyd"]
+[ext_resource type="Texture2D" uid="uid://bxk56m17ikwv5" path="res://assets/new-sprites/dash-panel.png" id="1_pwihi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_proyd"]
+
+[node name="dash-panel" type="Area2D" unique_id=569002676]
+collision_mask = 2
+script = ExtResource("1_proyd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1927014193]
+shape = SubResource("RectangleShape2D_proyd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1877553544]
+texture = ExtResource("1_pwihi")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

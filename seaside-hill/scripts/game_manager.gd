@@ -2,3 +2,4 @@ extends Node
 @export var front_char: CharacterBody2D
 var rings: int = 0
 var orb_position
+var respawn_pos
