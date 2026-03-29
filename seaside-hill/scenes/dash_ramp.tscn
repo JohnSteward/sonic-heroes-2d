@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bmjea5dtjxh8l"]
+
+[ext_resource type="Script" uid="uid://cbuix2bgy3d62" path="res://scripts/single_spring.gd" id="1_jyk57"]
+[ext_resource type="Texture2D" uid="uid://crlkkrktkuptp" path="res://assets/new-sprites/dash-ramp.png" id="1_thq3p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jyk57"]
+size = Vector2(32, 25)
+
+[node name="dash_ramp" type="Area2D" unique_id=772138405]
+script = ExtResource("1_jyk57")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1450732713]
+texture = ExtResource("1_thq3p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=931783335]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_jyk57")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

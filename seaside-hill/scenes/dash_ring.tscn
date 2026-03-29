@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://djmso1hsth1d4"]
+
+[ext_resource type="Script" uid="uid://du2eriadiv6ou" path="res://scripts/dash_panel.gd" id="1_areyq"]
+[ext_resource type="Texture2D" uid="uid://bedaos6f84dlv" path="res://assets/new-sprites/dash-ring.png" id="2_4whgt"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4whgt"]
+radius = 12.0
+height = 36.0
+
+[node name="dash_ring" type="Area2D" unique_id=1829762912]
+collision_mask = 2
+script = ExtResource("1_areyq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1433369674]
+shape = SubResource("CapsuleShape2D_4whgt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1685103903]
+texture = ExtResource("2_4whgt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

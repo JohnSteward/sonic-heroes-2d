@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bdhyd4atmlgnw"]
+[gd_scene format=3 uid="uid://bdhyd4atmlgnw"]
 
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/player.gd" id="1_35lpn"]
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="2_hpha1"]
@@ -358,7 +358,7 @@ radius = 20.09975
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgjo6"]
 radius = 183.00273
 
-[node name="Sonic" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
+[node name="Sonic" type="CharacterBody2D" unique_id=1369851603 node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
 z_index = 1
 collision_layer = 2
 script = ExtResource("1_35lpn")
@@ -368,45 +368,45 @@ MAX_SPEED = 500.0
 friction = 5.0
 acc = 10.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1506509730]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_ba3y2")
 animation = &"jump"
 
-[node name="physics_box" type="CollisionShape2D" parent="."]
+[node name="physics_box" type="CollisionShape2D" parent="." unique_id=695370811]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_mce4r")
 
-[node name="hitbox" parent="." instance=ExtResource("17_qrl6y")]
+[node name="hitbox" parent="." unique_id=492133886 instance=ExtResource("17_qrl6y")]
 visible = false
 collision_layer = 8
 collision_mask = 16
 script = null
 
-[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox"]
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox" unique_id=1825831288]
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_m14wf")
 disabled = true
 
-[node name="hurtbox" parent="." instance=ExtResource("7_m14wf")]
+[node name="hurtbox" parent="." unique_id=1166015151 instance=ExtResource("7_m14wf")]
 collision_layer = 4
 collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=178116804]
 position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_6utbv")
 
-[node name="light_dash_radius" type="Area2D" parent="."]
+[node name="light_dash_radius" type="Area2D" parent="." unique_id=54521429]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="light_dash_radius"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="light_dash_radius" unique_id=633026763]
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_1appv")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+[node name="StateMachine" type="Node" parent="." unique_id=918821088 node_paths=PackedStringArray("start_state")]
 script = ExtResource("3_3fri6")
 start_state = NodePath("idle")
 
-[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state", "light_dash_state")]
+[node name="idle" type="Node" parent="StateMachine" unique_id=2083783963 node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state", "light_dash_state")]
 script = ExtResource("4_7gxf2")
 run_state = NodePath("../run")
 jump_state = NodePath("../jump")
@@ -416,7 +416,7 @@ cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "idle"
 
-[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "roll_state", "change_dir_state", "action_state", "cannon_state", "light_dash_state")]
+[node name="run" type="Node" parent="StateMachine" unique_id=1383569281 node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "roll_state", "change_dir_state", "action_state", "cannon_state", "light_dash_state")]
 script = ExtResource("5_ht774")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
@@ -428,7 +428,7 @@ cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "run"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
+[node name="jump" type="Node" parent="StateMachine" unique_id=1730194125 node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
 script = ExtResource("6_a5tbb")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -439,7 +439,7 @@ light_dash_state = NodePath("../light_dash")
 jump_vel = 500.0
 anim_name = "jump"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "change_dir_state", "fly_state", "cannon_state", "light_dash_state")]
+[node name="fall" type="Node" parent="StateMachine" unique_id=107421609 node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "change_dir_state", "fly_state", "cannon_state", "light_dash_state")]
 script = ExtResource("7_qm650")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -450,7 +450,7 @@ cannon_state = NodePath("../cannon")
 light_dash_state = NodePath("../light_dash")
 anim_name = "jump"
 
-[node name="roll" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
+[node name="roll" type="Node" parent="StateMachine" unique_id=1725110106 node_paths=PackedStringArray("idle_state", "run_state", "jump_state", "fall_state", "change_dir_state", "cannon_state", "light_dash_state")]
 script = ExtResource("8_a5tbb")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -462,7 +462,7 @@ light_dash_state = NodePath("../light_dash")
 anim_name = "roll"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "roll_state", "fly_state", "cannon_state", "light_dash_state")]
+[node name="change_direction" type="Node" parent="StateMachine" unique_id=420332714 node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "roll_state", "fly_state", "cannon_state", "light_dash_state")]
 script = ExtResource("9_qm650")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
@@ -475,13 +475,13 @@ light_dash_state = NodePath("../light_dash")
 anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="rocket_accel" type="Node" parent="StateMachine" node_paths=PackedStringArray("roll_state")]
+[node name="rocket_accel" type="Node" parent="StateMachine" unique_id=307422532 node_paths=PackedStringArray("roll_state")]
 script = ExtResource("10_rocmk")
 roll_state = NodePath("../roll")
 anim_name = "dash"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="homing" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "jump_state", "run_state", "cannon_state")]
+[node name="homing" type="Node" parent="StateMachine" unique_id=854194075 node_paths=PackedStringArray("idle_state", "jump_state", "run_state", "cannon_state")]
 script = ExtResource("16_hgjo6")
 idle_state = NodePath("../idle")
 jump_state = NodePath("../jump")
@@ -489,48 +489,48 @@ run_state = NodePath("../run")
 cannon_state = NodePath("../cannon")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="radius" type="Area2D" parent="StateMachine/homing"]
+[node name="radius" type="Area2D" parent="StateMachine/homing" unique_id=912758249]
 collision_mask = 2
 
-[node name="range" type="CollisionShape2D" parent="StateMachine/homing/radius"]
+[node name="range" type="CollisionShape2D" parent="StateMachine/homing/radius" unique_id=2117500177]
 shape = SubResource("CircleShape2D_hgjo6")
 disabled = true
 
-[node name="freeze" type="Timer" parent="StateMachine/homing"]
+[node name="freeze" type="Timer" parent="StateMachine/homing" unique_id=1679625448]
 wait_time = 0.1
 one_shot = true
 ignore_time_scale = true
 
-[node name="homing_sound" type="AudioStreamPlayer2D" parent="StateMachine/homing"]
+[node name="homing_sound" type="AudioStreamPlayer2D" parent="StateMachine/homing" unique_id=1470467518]
 stream = ExtResource("19_hrynr")
 volume_db = 7.51
 
-[node name="cannon" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="cannon" type="Node" parent="StateMachine" unique_id=1660892083 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("18_6utbv")
 idle_state = NodePath("../idle")
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="light_dash" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="light_dash" type="Node" parent="StateMachine" unique_id=1422362548 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("19_1appv")
 idle_state = NodePath("../idle")
 anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="behind" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="behind" type="Node" parent="StateMachine" unique_id=795097408 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("22_6glwi")
 idle_state = NodePath("../idle")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="i-frames" type="Timer" parent="."]
+[node name="i-frames" type="Timer" parent="." unique_id=2024398837]
 wait_time = 0.7
 one_shot = true
 
-[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=2059714607]
 stream = ExtResource("18_m14wf")
 bus = &"SFX"
 
-[node name="music" parent="." instance=ExtResource("22_tjprp")]
+[node name="music" parent="." unique_id=1562503578 instance=ExtResource("22_tjprp")]
 volume_db = -2.66
 
 [connection signal="area_entered" from="hitbox" to="StateMachine/homing" method="_on_hitbox_area_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://5oja1aeqsqg7"]
+[gd_scene format=4 uid="uid://5oja1aeqsqg7"]
 
 [ext_resource type="Script" uid="uid://berm88a2plbeq" path="res://scripts/game_manager.gd" id="1_2uqr4"]
 [ext_resource type="Script" uid="uid://ptdq2ff5vy0i" path="res://scripts/ui.gd" id="1_txlg8"]
@@ -14,6 +14,9 @@
 [ext_resource type="PackedScene" uid="uid://c3bgk8acf8j8w" path="res://scenes/cannon.tscn" id="8_txlg8"]
 [ext_resource type="Script" uid="uid://8s4ys5ugfd27" path="res://scripts/cannon_path.gd" id="9_u55kl"]
 [ext_resource type="PackedScene" uid="uid://cs5brrftayff4" path="res://scenes/triple_spring.tscn" id="14_k5ykm"]
+[ext_resource type="PackedScene" uid="uid://drql1pd1wqpc1" path="res://scenes/rainbow_ring.tscn" id="15_qy8h3"]
+[ext_resource type="Script" uid="uid://c1ghtw85ocpax" path="res://scripts/spring_path.gd" id="16_a6oby"]
+[ext_resource type="PackedScene" uid="uid://djmso1hsth1d4" path="res://scenes/dash_ring.tscn" id="17_a6oby"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6corl"]
 texture = ExtResource("2_b706e")
@@ -45,35 +48,41 @@ _data = {
 }
 point_count = 9
 
-[node name="seaside-hill" type="Node2D"]
+[sub_resource type="Curve2D" id="Curve2D_jral2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1, -0.5, 0, 0, 0, 0, 12.5, -20, 0, 0, 0, 0, 21.5, -33.5, 0, 0, 0, 0, 35, -50.5, 0, 0, 0, 0, 55.5, -68.5, 0, 0, 0, 0, 90, -88, 0, 0, 0, 0, 117, -106, 0, 0, 0, 0, 140, -110.5, 0, 0, 0, 0, 164.5, -115, 0, 0, 0, 0, 185, -116.5, 0, 0, 0, 0, 215, -115.5, 0, 0, 0, 0, 239.5, -112, 0, 0, 0, 0, 252, -108.5, 0, 0, 0, 0, 268, -102, 0, 0, 0, 0, 278, -95.5, 0, 0, 0, 0, 293.5, -83, 0, 0, 0, 0, 301, -72.5, 0, 0, 0, 0, 315, -54.5, 0, 0, 0, 0, 326, -40.5, 0, 0, 0, 0, 338, -18, 0, 0, 0, 0, 348, 4, 0, 0, 0, 0, 356, 23.5, 0, 0, 0, 0, 364, 41.5)
+}
+point_count = 23
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("front_char")]
+[node name="seaside-hill" type="Node2D" unique_id=1303147848]
+
+[node name="GameManager" type="Node" parent="." unique_id=2114438527 node_paths=PackedStringArray("front_char")]
 unique_name_in_owner = true
 script = ExtResource("1_2uqr4")
 front_char = NodePath("../Sonic")
 
-[node name="Sonic" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("1_u55kl")]
+[node name="Sonic" parent="." unique_id=642544668 node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("1_u55kl")]
 position = Vector2(-1166, 51)
 next_char = NodePath("../tails")
 prev_char = NodePath("../knuckles")
 
-[node name="Game_Cam" parent="Sonic" instance=ExtResource("3_quvf8")]
+[node name="Game_Cam" parent="Sonic" unique_id=1715726099 instance=ExtResource("3_quvf8")]
 
-[node name="tails" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("3_0cnyu")]
+[node name="tails" parent="." unique_id=1386946818 node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("3_0cnyu")]
 z_index = 1
 position = Vector2(-1220, 49)
 next_char = NodePath("../knuckles")
 prev_char = NodePath("../Sonic")
 
-[node name="knuckles" parent="." node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("4_quvf8")]
+[node name="knuckles" parent="." unique_id=1842948702 node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("4_quvf8")]
 z_index = 1
 position = Vector2(-1121, 49)
 next_char = NodePath("../Sonic")
 prev_char = NodePath("../tails")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1671848670]
 
-[node name="UI" type="Control" parent="CanvasLayer"]
+[node name="UI" type="Control" parent="CanvasLayer" unique_id=1502596350]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
@@ -81,173 +90,194 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_txlg8")
 
-[node name="Rings" type="Label" parent="CanvasLayer/UI"]
+[node name="Rings" type="Label" parent="CanvasLayer/UI" unique_id=1986924014]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Rings: 0"
 
-[node name="tile-map" type="Node" parent="."]
+[node name="tile-map" type="Node" parent="." unique_id=2022494605]
 
-[node name="seaside-hill-ground" type="TileMapLayer" parent="tile-map"]
+[node name="seaside-hill-ground" type="TileMapLayer" parent="tile-map" unique_id=204641993]
 scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AAD2/wAAAAAAAAAAAAD3/wAAAAAAAAAAAAD4/wAAAAAEAAAAAAD5/wAAAAAEAAAAAAD6/wAAAAAEAAAAAAD7/wAAAAAEAAAAAAD8/wAAAAAEAAAAAAD9/wAAAAAEAAAAAAD+/wAAAAAEAAAAAAD//wAAAAAEAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAEAP7/AAAEAAAAAAAFAP7/AAAEAAAAAAA=")
 tile_set = SubResource("TileSet_txlg8")
 
-[node name="death_plane" parent="." instance=ExtResource("3_56hce")]
+[node name="death_plane" parent="." unique_id=1761545192 instance=ExtResource("3_56hce")]
 position = Vector2(3, 583)
 
-[node name="rings" type="Node" parent="."]
+[node name="rings" type="Node" parent="." unique_id=946420045]
 
-[node name="ring12" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring12" parent="rings" unique_id=585730883 instance=ExtResource("5_e80yk")]
 position = Vector2(311, 65)
 
-[node name="ring13" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring13" parent="rings" unique_id=894734762 instance=ExtResource("5_e80yk")]
 position = Vector2(330, 53)
 
-[node name="ring14" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring14" parent="rings" unique_id=620365856 instance=ExtResource("5_e80yk")]
 position = Vector2(349, 38)
 
-[node name="ring36" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring36" parent="rings" unique_id=141263098 instance=ExtResource("5_e80yk")]
 position = Vector2(363, 23)
 
-[node name="ring37" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring37" parent="rings" unique_id=1111643696 instance=ExtResource("5_e80yk")]
 position = Vector2(373, 0)
 
-[node name="ring38" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring38" parent="rings" unique_id=736550949 instance=ExtResource("5_e80yk")]
 position = Vector2(381, -24)
 
-[node name="ring39" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring39" parent="rings" unique_id=659810860 instance=ExtResource("5_e80yk")]
 position = Vector2(385, -53)
 
-[node name="ring40" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring40" parent="rings" unique_id=18846868 instance=ExtResource("5_e80yk")]
 position = Vector2(386, -77)
 
-[node name="ring41" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring41" parent="rings" unique_id=1542130055 instance=ExtResource("5_e80yk")]
 position = Vector2(386, -99)
 
-[node name="ring15" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring15" parent="rings" unique_id=2087221217 instance=ExtResource("5_e80yk")]
 position = Vector2(238, 65)
 
-[node name="ring16" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring16" parent="rings" unique_id=2013577084 instance=ExtResource("5_e80yk")]
 position = Vector2(263, 65)
 
-[node name="ring17" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring17" parent="rings" unique_id=318300227 instance=ExtResource("5_e80yk")]
 position = Vector2(288, 65)
 
-[node name="ring18" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring18" parent="rings" unique_id=1085177290 instance=ExtResource("5_e80yk")]
 position = Vector2(164, 65)
 
-[node name="ring19" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring19" parent="rings" unique_id=39396164 instance=ExtResource("5_e80yk")]
 position = Vector2(188, 65)
 
-[node name="ring20" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring20" parent="rings" unique_id=1389698019 instance=ExtResource("5_e80yk")]
 position = Vector2(214, 65)
 
-[node name="ring21" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring21" parent="rings" unique_id=281206202 instance=ExtResource("5_e80yk")]
 position = Vector2(91, 65)
 
-[node name="ring22" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring22" parent="rings" unique_id=1367146521 instance=ExtResource("5_e80yk")]
 position = Vector2(115, 65)
 
-[node name="ring23" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring23" parent="rings" unique_id=386711218 instance=ExtResource("5_e80yk")]
 position = Vector2(141, 65)
 
-[node name="ring24" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring24" parent="rings" unique_id=1540899342 instance=ExtResource("5_e80yk")]
 position = Vector2(507, -234)
 
-[node name="ring25" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring25" parent="rings" unique_id=615962356 instance=ExtResource("5_e80yk")]
 position = Vector2(530, -234)
 
-[node name="ring26" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring26" parent="rings" unique_id=865082129 instance=ExtResource("5_e80yk")]
 position = Vector2(654, 65)
 
-[node name="ring27" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring27" parent="rings" unique_id=852964310 instance=ExtResource("5_e80yk")]
 position = Vector2(439, -232)
 
-[node name="ring28" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring28" parent="rings" unique_id=2095911485 instance=ExtResource("5_e80yk")]
 position = Vector2(461, -233)
 
-[node name="ring29" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring29" parent="rings" unique_id=2141533854 instance=ExtResource("5_e80yk")]
 position = Vector2(484, -234)
 
-[node name="ring30" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring30" parent="rings" unique_id=1775837091 instance=ExtResource("5_e80yk")]
 position = Vector2(393, -184)
 
-[node name="ring31" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring31" parent="rings" unique_id=2078334913 instance=ExtResource("5_e80yk")]
 position = Vector2(405, -202)
 
-[node name="ring32" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring32" parent="rings" unique_id=1380428986 instance=ExtResource("5_e80yk")]
 position = Vector2(419, -221)
 
-[node name="ring33" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring33" parent="rings" unique_id=1931533000 instance=ExtResource("5_e80yk")]
 position = Vector2(386, -118)
 
-[node name="ring34" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring34" parent="rings" unique_id=113587328 instance=ExtResource("5_e80yk")]
 position = Vector2(386, -141)
 
-[node name="ring35" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring35" parent="rings" unique_id=1540253388 instance=ExtResource("5_e80yk")]
 position = Vector2(386, -164)
 
-[node name="ring" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring" parent="rings" unique_id=2012069155 instance=ExtResource("5_e80yk")]
 position = Vector2(-953, 25)
 
-[node name="ring2" parent="rings" instance=ExtResource("5_e80yk")]
+[node name="ring2" parent="rings" unique_id=249556781 instance=ExtResource("5_e80yk")]
 position = Vector2(-917, 23)
 
-[node name="enemies" type="Node" parent="."]
+[node name="enemies" type="Node" parent="." unique_id=1495088112]
 
-[node name="flappers" type="Node" parent="enemies"]
+[node name="flappers" type="Node" parent="enemies" unique_id=896818556]
 
-[node name="cannon_flapper_new" parent="enemies/flappers" instance=ExtResource("6_txlg8")]
+[node name="cannon_flapper_new" parent="enemies/flappers" unique_id=1974124217 instance=ExtResource("6_txlg8")]
+z_index = 1
 position = Vector2(-449.00003, -3)
 hp = 2
 
-[node name="pawns" type="Node" parent="enemies"]
+[node name="pawns" type="Node" parent="enemies" unique_id=1256788672]
 
-[node name="cannon_pawn_new" parent="enemies/pawns" instance=ExtResource("7_u55kl")]
+[node name="cannon_pawn_new" parent="enemies/pawns" unique_id=760533441 instance=ExtResource("7_u55kl")]
 position = Vector2(11, 37)
 scale = Vector2(1.5, 1.5)
 
-[node name="cannons" type="Node" parent="."]
+[node name="cannons" type="Node" parent="." unique_id=1122121742]
 
-[node name="cannon" parent="cannons" instance=ExtResource("8_txlg8")]
+[node name="cannon" parent="cannons" unique_id=1387107942 instance=ExtResource("8_txlg8")]
 position = Vector2(936, 36)
 
-[node name="Path2D" type="Path2D" parent="cannons/cannon"]
+[node name="Path2D" type="Path2D" parent="cannons/cannon" unique_id=1111964006]
 curve = SubResource("Curve2D_u55kl")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon/Path2D"]
+[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon/Path2D" unique_id=1882351499]
 position = Vector2(0, -13)
 rotation = -1.2924967
 loop = false
 script = ExtResource("9_u55kl")
 speed = 10.0
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon/Path2D/PathFollow2D"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon/Path2D/PathFollow2D" unique_id=678361154]
 update_rotation = false
 update_scale = false
 
-[node name="cannon2" parent="cannons" instance=ExtResource("8_txlg8")]
+[node name="cannon2" parent="cannons" unique_id=253062948 instance=ExtResource("8_txlg8")]
 position = Vector2(852, 40)
 
-[node name="Path2D" type="Path2D" parent="cannons/cannon2"]
+[node name="Path2D" type="Path2D" parent="cannons/cannon2" unique_id=1790882258]
 curve = SubResource("Curve2D_2uqr4")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon2/Path2D"]
+[node name="PathFollow2D" type="PathFollow2D" parent="cannons/cannon2/Path2D" unique_id=768755305]
 position = Vector2(-1, -13)
 rotation = -1.5167948
 loop = false
 script = ExtResource("9_u55kl")
 speed = 10.0
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon2/Path2D/PathFollow2D"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="cannons/cannon2/Path2D/PathFollow2D" unique_id=183230293]
 update_rotation = false
 update_scale = false
 
-[node name="Springs" type="Node" parent="."]
+[node name="Springs" type="Node" parent="." unique_id=1100605128]
 
-[node name="triple_spring" parent="Springs" instance=ExtResource("14_k5ykm")]
+[node name="triple_spring" parent="Springs" unique_id=1035226802 instance=ExtResource("14_k5ykm")]
 z_index = 1
 position = Vector2(451, 40)
 spring_height = 1500.0
+
+[node name="rainbow_ring" parent="." unique_id=473829147 instance=ExtResource("15_qy8h3")]
+position = Vector2(-348, -83)
+
+[node name="Path2D" type="Path2D" parent="rainbow_ring" unique_id=1631984235]
+curve = SubResource("Curve2D_jral2")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="rainbow_ring/Path2D" unique_id=908147346]
+position = Vector2(-1, -0.5)
+rotation = -0.9652516
+loop = false
+script = ExtResource("16_a6oby")
+speed = 20.0
+end_vel = Vector2(10, 1000)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="rainbow_ring/Path2D/PathFollow2D" unique_id=875466301]
+
+[node name="dash_ring" parent="." unique_id=1829762912 instance=ExtResource("17_a6oby")]
+position = Vector2(-935, -31)
+vel = Vector2(600, -100)

@@ -2,6 +2,7 @@ extends RigidBody2D
 @export var angle: int
 var rotation_speed: float = 0.1
 var shoot: bool = false
+@onready var game_manager: Node = %GameManager
 @export var vel_y: float
 @export var vel_x: float
 var player = null
@@ -12,6 +13,7 @@ var player = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
+	self.freeze = true
 
 func check_input() -> void:
 	if Input.is_action_just_pressed("jump"):
@@ -38,7 +40,7 @@ func _process(delta: float) -> void:
 
 
 func _on_entry_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and game_manager.front_char == body:
 		player = body
 		path_2d.get_node("PathFollow2D/RemoteTransform2D").remote_path = player.get_path()
 		player.is_in_cannon = true
