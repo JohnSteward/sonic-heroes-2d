@@ -12,33 +12,31 @@ extends State
 @onready var animated_sprite_2d: AnimatedSprite2D = $punch_1/AnimatedSprite2D
 
 var end_combo: bool = false
-var direction: int
 var input: int
 
 func enter() -> void:
 	super()
-	var input = Input.get_axis("move_left", "move_right")
+	#var input = Input.get_axis("move_left", "move_right")
 	parent.hurtbox.get_node("CollisionShape2D").disabled = true
 	end_combo = false
 	punch_start.start()
 	punch_1.get_node("hitbox").disabled = false
-	if input:
-		direction = input
-		punch_1.position.x = parent.position.x + (10*direction)
-		if direction == 1:
-			parent.animated_sprite_2d.flip_h = false
-			animated_sprite_2d.flip_h = false
-		elif direction == -1:
-			parent.animated_sprite_2d.flip_h = true
-			animated_sprite_2d.flip_h = true
-	elif parent.animated_sprite_2d.flip_h:
-		punch_1.position.x = parent.position.x - 10
-		animated_sprite_2d.flip_h = true
-		direction = -1
-	else:
-		direction = 1
-		punch_1.position.x = parent.position.x + 10
+
+	punch_1.position.x = parent.position.x + (10*parent.direction)
+	if parent.direction == 1:
+		parent.animated_sprite_2d.flip_h = false
 		animated_sprite_2d.flip_h = false
+	elif parent.direction == -1:
+		parent.animated_sprite_2d.flip_h = true
+		animated_sprite_2d.flip_h = true
+	#elif parent.animated_sprite_2d.flip_h:
+		#punch_1.position.x = parent.position.x - 10
+		#animated_sprite_2d.flip_h = true
+		#direction = -1
+	#else:
+		#direction = 1
+		#punch_1.position.x = parent.position.x + 10
+		#animated_sprite_2d.flip_h = false
 	punch_1.position.y = parent.position.y - 5
 	animated_sprite_2d.visible = true
 	animated_sprite_2d.play("punch")
@@ -59,9 +57,8 @@ func process_frame(delta: float) -> State:
 	return null
 
 func process_physics(delta: float) -> State:
-	input = Input.get_axis("move_left", "move_right")
-	parent.velocity.x = 240 * direction
-	punch_1.position.x += 4  * direction
+	parent.velocity.x = 240 * parent.direction
+	punch_1.position.x += 4  * parent.direction
 	if end_combo and !input:
 		return idle_state
 	elif end_combo and input:

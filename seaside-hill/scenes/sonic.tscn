@@ -367,6 +367,7 @@ behind_state = NodePath("StateMachine/behind")
 MAX_SPEED = 500.0
 friction = 5.0
 acc = 10.0
+stop_speed = 20.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1506509730]
 position = Vector2(0, -5)

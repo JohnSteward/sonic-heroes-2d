@@ -6,7 +6,6 @@ extends State
 var closest_enemy: CharacterBody2D
 var x_distance: float
 var y_distance: float
-var direction
 var checked: bool = false
 var hit: bool = false
 var start_pos_x: float
@@ -28,10 +27,6 @@ func enter() -> void:
 	start_pos_y = parent.position.y
 	delay.start()
 	fireball.position = parent.position
-	if parent.animated_sprite_2d.flip_h:
-		direction = -1
-	else:
-		direction = 1
 	fireball.get_node("radius").position = parent.position
 	parent.velocity = Vector2(0,0)
 	parent.speed = 0
@@ -65,9 +60,9 @@ func process_physics(delta: float) -> State:
 			fireball.position.y = move_toward(fireball.position.y, closest_enemy.position.y, 15/dist_ratio)
 		else:
 			#hitbox.position.move_toward(Vector2(parent.position.x + (200*direction), parent.position.y + 200), 40)
-			fireball.position.x = move_toward(fireball.position.x, parent.position.x + (200*direction), 15)
+			fireball.position.x = move_toward(fireball.position.x, parent.position.x + (200*parent.direction), 15)
 			fireball.position.y = move_toward(fireball.position.y, parent.position.y + 200, 15)
-			if fireball.position == Vector2(parent.position.x + (200*direction), parent.position.y + 200) or fireball.linear_velocity.y == 0:
+			if fireball.position == Vector2(parent.position.x + (200*parent.direction), parent.position.y + 200) or fireball.linear_velocity.y == 0:
 				hit = true
 	return null
 
@@ -75,12 +70,12 @@ func process_physics(delta: float) -> State:
 
 func _on_radius_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
-		if !closest_enemy and (parent.position.y < body.position.y) and ((parent.position.x < body.position.x and direction == 1) or (parent.position.x > body.position.x and direction == -1)):
+		if !closest_enemy and (parent.position.y < body.position.y) and ((parent.position.x < body.position.x and parent.direction == 1) or (parent.position.x > body.position.x and parent.direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
 			dist_ratio = x_distance/y_distance
-		elif closest_enemy and (abs(body.global_position - parent.global_position) < abs(closest_enemy.global_position - parent.global_position)) and (parent.position.y < body.position.y) and ((parent.position.x < body.position.x and direction == 1) or (parent.position.x > body.position.x and direction == -1)):
+		elif closest_enemy and (abs(body.global_position - parent.global_position) < abs(closest_enemy.global_position - parent.global_position)) and (parent.position.y < body.position.y) and ((parent.position.x < body.position.x and parent.direction == 1) or (parent.position.x > body.position.x and parent.direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)

@@ -19,6 +19,7 @@ extends CharacterBody2D
 @export var MAX_SPEED: float
 @export var friction: float
 @export var acc: float
+@export var stop_speed: float
 
 var level: int = 0
 var hit: bool = false
@@ -31,6 +32,8 @@ var is_in_cannon: bool = false
 var out_cannon: bool = false
 var light_dash: bool = false
 var ring_position
+var direction: int = 0
+var moving: bool
 
 func _ready() -> void:
 	state_machine.init(self)
@@ -58,11 +61,11 @@ func spawn_rings(no_rings) -> void:
 		
 
 func knockback(no_rings):
-	var direction
-	if animated_sprite_2d.flip_h:
-		direction = -1
-	else:
-		direction = 1
+	#var direction
+	#if animated_sprite_2d.flip_h:
+		#direction = -1
+	#else:
+		#direction = 1
 	velocity.x = 200 * direction * -1
 	velocity.y = -400
 	move_and_slide()
@@ -70,6 +73,7 @@ func knockback(no_rings):
 
 func _physics_process(delta: float) -> void:
 	ui.update_rings(game_manager.rings)
+	moving = (Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"))
 	if !game_manager.front_char == self and !state_machine.current_state == behind_state:
 		state_machine.change_state(behind_state)
 	state_machine.process_input()

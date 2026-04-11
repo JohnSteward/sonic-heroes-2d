@@ -3,7 +3,6 @@ var objects_inside = []
 var closest_enemy: CharacterBody2D
 var x_distance: float
 var y_distance: float
-var direction
 var checked: bool = false
 var hit: bool = false
 var start_pos_x: float
@@ -30,10 +29,10 @@ func enter() -> void:
 	ball.position = parent.position
 	start_pos_x = parent.position.x
 	start_pos_y = parent.position.y
-	if parent.animated_sprite_2d.flip_h:
-		direction = -1
-	else:
-		direction = 1
+	#if parent.animated_sprite_2d.flip_h:
+		#direction = -1
+	#else:
+		#direction = 1
 	ball.get_node("radius").position = parent.position
 	
 	closest_enemy = null
@@ -79,10 +78,10 @@ func process_physics(delta: float) -> State:
 		ball.position.x = move_toward(ball.position.x, closest_enemy.position.x, 15)
 		ball.position.y = move_toward(ball.position.y, closest_enemy.position.y - 5, 15)
 	else:
-		ball.position.x = move_toward(ball.position.x, (start_pos_x + (190*direction)), 50)
-		if ball.position.x >= (start_pos_x + (180*direction)) and direction == 1:
+		ball.position.x = move_toward(ball.position.x, (start_pos_x + (190*parent.direction)), 50)
+		if ball.position.x >= (start_pos_x + (180*parent.direction)) and parent.direction == 1:
 			hit = true
-		elif ball.position.x <= (start_pos_x + (180*direction)) and direction == -1:
+		elif ball.position.x <= (start_pos_x + (180*parent.direction)) and parent.direction == -1:
 			hit = true
 	parent.move_and_slide()
 	return null
@@ -106,11 +105,11 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_radius_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy") and body.position != ball.get_node("radius").position:
-		if !closest_enemy and ((ball.get_node("radius").position.x < body.position.x and direction == 1) or (ball.get_node("radius").position.x > body.position.x and direction == -1)):
+		if !closest_enemy and ((ball.get_node("radius").position.x < body.position.x and parent.direction == 1) or (ball.get_node("radius").position.x > body.position.x and parent.direction == -1)):
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)
 			y_distance = abs(closest_enemy.global_position.y - start_pos_y)
-		elif closest_enemy and (abs(body.global_position - ball.get_node("radius").global_position) < abs(closest_enemy.global_position - ball.get_node("radius").global_position)) and ((ball.get_node("radius").position.x < body.position.x and direction == 1) or (ball.get_node("radius").position.x > body.position.x and direction == -1)):
+		elif closest_enemy and (abs(body.global_position - ball.get_node("radius").global_position) < abs(closest_enemy.global_position - ball.get_node("radius").global_position)) and ((ball.get_node("radius").position.x < body.position.x and parent.direction == 1) or (ball.get_node("radius").position.x > body.position.x and parent.direction == -1)):
 			backlog.append(closest_enemy)
 			closest_enemy = body
 			x_distance = abs(closest_enemy.global_position.x - start_pos_x)

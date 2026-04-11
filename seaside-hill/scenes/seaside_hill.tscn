@@ -73,12 +73,14 @@ z_index = 1
 position = Vector2(-1220, 49)
 next_char = NodePath("../knuckles")
 prev_char = NodePath("../Sonic")
+stop_speed = 15.0
 
 [node name="knuckles" parent="." unique_id=1842948702 node_paths=PackedStringArray("next_char", "prev_char") instance=ExtResource("4_quvf8")]
 z_index = 1
 position = Vector2(-1121, 49)
 next_char = NodePath("../Sonic")
 prev_char = NodePath("../tails")
+stop_speed = 15.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1671848670]
 

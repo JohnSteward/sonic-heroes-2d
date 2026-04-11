@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=3 uid="uid://b8w8oc7uqulnc"]
+[gd_scene format=3 uid="uid://b8w8oc7uqulnc"]
 
 [ext_resource type="Texture2D" uid="uid://bsguh5x5xh4px" path="res://assets/new-sprites/sonic-change-dir.png" id="1_5r1mh"]
 [ext_resource type="Script" uid="uid://bh4xf0xs8vek4" path="res://scripts/player.gd" id="1_x6f1m"]
@@ -619,7 +619,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_robi5"]
 
-[node name="knuckles" type="CharacterBody2D" node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
+[node name="knuckles" type="CharacterBody2D" unique_id=924426079 node_paths=PackedStringArray("knockback_state", "behind_state") groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_x6f1m")
 knockback_state = NodePath("StateMachine/fall")
@@ -628,39 +628,39 @@ MAX_SPEED = 500.0
 friction = 5.0
 acc = 10.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=26150143]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_x0y6k")
 animation = &"run"
 
-[node name="physics_box" type="CollisionShape2D" parent="."]
+[node name="physics_box" type="CollisionShape2D" parent="." unique_id=413675782]
 position = Vector2(-2, -5)
 shape = SubResource("CapsuleShape2D_bsbg2")
 
-[node name="hitbox" parent="." instance=ExtResource("9_t3kig")]
+[node name="hitbox" parent="." unique_id=194430131 instance=ExtResource("9_t3kig")]
 collision_layer = 8
 collision_mask = 16
 script = null
 
-[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox"]
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox" unique_id=1151137302]
 visible = false
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_t3kig")
 disabled = true
 
-[node name="hurtbox" parent="." instance=ExtResource("6_j8pfo")]
+[node name="hurtbox" parent="." unique_id=974847259 instance=ExtResource("6_j8pfo")]
 collision_layer = 4
 collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1034581604]
 position = Vector2(-2, -5)
 shape = SubResource("CapsuleShape2D_0i175")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("start_state")]
+[node name="StateMachine" type="Node" parent="." unique_id=910205965 node_paths=PackedStringArray("start_state")]
 script = ExtResource("7_t3kig")
 start_state = NodePath("idle")
 
-[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state")]
+[node name="idle" type="Node" parent="StateMachine" unique_id=1497287187 node_paths=PackedStringArray("run_state", "jump_state", "fall_state", "action_state", "cannon_state")]
 script = ExtResource("8_n4qkp")
 run_state = NodePath("../run")
 jump_state = NodePath("../jump")
@@ -669,7 +669,7 @@ action_state = NodePath("../combo_1")
 cannon_state = NodePath("../cannon")
 anim_name = "idle"
 
-[node name="run" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state", "cannon_state")]
+[node name="run" type="Node" parent="StateMachine" unique_id=1336896627 node_paths=PackedStringArray("fall_state", "idle_state", "jump_state", "change_dir_state", "action_state", "cannon_state")]
 script = ExtResource("9_74d33")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
@@ -679,7 +679,7 @@ action_state = NodePath("../combo_1")
 cannon_state = NodePath("../cannon")
 anim_name = "run"
 
-[node name="jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state", "cannon_state")]
+[node name="jump" type="Node" parent="StateMachine" unique_id=1397021305 node_paths=PackedStringArray("idle_state", "run_state", "fall_state", "action_state", "change_dir_state", "cannon_state")]
 script = ExtResource("10_c3qrs")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -690,7 +690,7 @@ cannon_state = NodePath("../cannon")
 jump_vel = 500.0
 anim_name = "jump"
 
-[node name="fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state", "cannon_state")]
+[node name="fall" type="Node" parent="StateMachine" unique_id=1892217988 node_paths=PackedStringArray("idle_state", "run_state", "change_dir_state", "fly_state", "action_state", "cannon_state")]
 script = ExtResource("11_hv5g0")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -700,7 +700,7 @@ action_state = NodePath("../air_combo")
 cannon_state = NodePath("../cannon")
 anim_name = "jump"
 
-[node name="change_direction" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state", "action_state", "air_action_state", "cannon_state")]
+[node name="change_direction" type="Node" parent="StateMachine" unique_id=1294998627 node_paths=PackedStringArray("run_state", "idle_state", "jump_state", "fall_state", "fly_state", "action_state", "air_action_state", "cannon_state")]
 script = ExtResource("13_pv8y7")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
@@ -713,7 +713,7 @@ cannon_state = NodePath("../cannon")
 anim_name = "change_dir"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="combo_1" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "run_state", "combo_2_state", "cannon_state")]
+[node name="combo_1" type="Node" parent="StateMachine" unique_id=1945838208 node_paths=PackedStringArray("idle_state", "run_state", "combo_2_state", "cannon_state")]
 script = ExtResource("16_p1u2g")
 idle_state = NodePath("../idle")
 run_state = NodePath("../run")
@@ -722,29 +722,29 @@ cannon_state = NodePath("../cannon")
 anim_name = "punch_1"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="punch_1" type="Area2D" parent="StateMachine/combo_1"]
+[node name="punch_1" type="Area2D" parent="StateMachine/combo_1" unique_id=1551745655]
 collision_layer = 8
 collision_mask = 16
 
-[node name="hitbox" type="CollisionShape2D" parent="StateMachine/combo_1/punch_1"]
+[node name="hitbox" type="CollisionShape2D" parent="StateMachine/combo_1/punch_1" unique_id=1150364358]
 shape = SubResource("CircleShape2D_nmlcs")
 disabled = true
 debug_color = Color(0.9917123, 0, 0.268039, 0.41960785)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_1/punch_1"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_1/punch_1" unique_id=807683636]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_2wple")
 animation = &"punch"
 
-[node name="punch_start" type="Timer" parent="StateMachine/combo_1"]
+[node name="punch_start" type="Timer" parent="StateMachine/combo_1" unique_id=28747106]
 wait_time = 0.05
 one_shot = true
 
-[node name="punch_end" type="Timer" parent="StateMachine/combo_1"]
+[node name="punch_end" type="Timer" parent="StateMachine/combo_1" unique_id=1445009644]
 wait_time = 0.25
 one_shot = true
 
-[node name="combo_2" type="Node" parent="StateMachine" node_paths=PackedStringArray("combo_3_state", "run_state", "idle_state", "cannon_state")]
+[node name="combo_2" type="Node" parent="StateMachine" unique_id=1169103570 node_paths=PackedStringArray("combo_3_state", "run_state", "idle_state", "cannon_state")]
 script = ExtResource("18_id0b6")
 combo_3_state = NodePath("../combo_3")
 run_state = NodePath("../run")
@@ -753,74 +753,74 @@ cannon_state = NodePath("../cannon")
 anim_name = "punch_2"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="punch_2" type="Area2D" parent="StateMachine/combo_2"]
+[node name="punch_2" type="Area2D" parent="StateMachine/combo_2" unique_id=669382393]
 collision_layer = 8
 collision_mask = 16
 
-[node name="hitbox" type="CollisionShape2D" parent="StateMachine/combo_2/punch_2"]
+[node name="hitbox" type="CollisionShape2D" parent="StateMachine/combo_2/punch_2" unique_id=1761555688]
 position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_22nng")
 disabled = true
 debug_color = Color(2.695322e-06, 0.57995397, 0.80454975, 0.41960785)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_2/punch_2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/combo_2/punch_2" unique_id=594967481]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_ywvvf")
 animation = &"punch"
 
-[node name="punch_start" type="Timer" parent="StateMachine/combo_2"]
+[node name="punch_start" type="Timer" parent="StateMachine/combo_2" unique_id=1952346846]
 wait_time = 0.05
 one_shot = true
 
-[node name="punch_end" type="Timer" parent="StateMachine/combo_2"]
+[node name="punch_end" type="Timer" parent="StateMachine/combo_2" unique_id=874472661]
 wait_time = 0.25
 one_shot = true
 
-[node name="combo_3" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_state", "idle_state", "cannon_state")]
+[node name="combo_3" type="Node" parent="StateMachine" unique_id=1229145468 node_paths=PackedStringArray("run_state", "idle_state", "cannon_state")]
 script = ExtResource("19_yo8ic")
 run_state = NodePath("../run")
 idle_state = NodePath("../idle")
 cannon_state = NodePath("../cannon")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="punch_3_left" type="Area2D" parent="StateMachine/combo_3"]
+[node name="punch_3_left" type="Area2D" parent="StateMachine/combo_3" unique_id=1680718713]
 collision_layer = 8
 collision_mask = 16
 
-[node name="hitbox_left" type="CollisionShape2D" parent="StateMachine/combo_3/punch_3_left"]
+[node name="hitbox_left" type="CollisionShape2D" parent="StateMachine/combo_3/punch_3_left" unique_id=940577902]
 rotation = -1.5707964
 shape = SubResource("CircleShape2D_vtt5f")
 disabled = true
 debug_color = Color(0.19722196, 0.64165014, 0, 0.41960785)
 
-[node name="left_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_left"]
+[node name="left_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_left" unique_id=1713844726]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_51fx0")
 animation = &"punch"
 
-[node name="punch_3_right" type="Area2D" parent="StateMachine/combo_3"]
+[node name="punch_3_right" type="Area2D" parent="StateMachine/combo_3" unique_id=1858287438]
 collision_layer = 8
 collision_mask = 16
 
-[node name="hitbox_right" type="CollisionShape2D" parent="StateMachine/combo_3/punch_3_right"]
+[node name="hitbox_right" type="CollisionShape2D" parent="StateMachine/combo_3/punch_3_right" unique_id=176593328]
 shape = SubResource("CircleShape2D_mkea8")
 disabled = true
 debug_color = Color(0.08681887, 0.6491917, 0, 0.41960785)
 
-[node name="right_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_right"]
+[node name="right_anim" type="AnimatedSprite2D" parent="StateMachine/combo_3/punch_3_right" unique_id=1413431381]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_51fx0")
 animation = &"punch"
 
-[node name="punch_start" type="Timer" parent="StateMachine/combo_3"]
+[node name="punch_start" type="Timer" parent="StateMachine/combo_3" unique_id=1236045481]
 wait_time = 0.05
 one_shot = true
 
-[node name="punch_end" type="Timer" parent="StateMachine/combo_3"]
+[node name="punch_end" type="Timer" parent="StateMachine/combo_3" unique_id=1110504289]
 wait_time = 0.5
 one_shot = true
 
-[node name="glide" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall_state", "idle_state", "run_state", "change_dir_state", "cannon_state")]
+[node name="glide" type="Node" parent="StateMachine" unique_id=386604188 node_paths=PackedStringArray("fall_state", "idle_state", "run_state", "change_dir_state", "cannon_state")]
 script = ExtResource("17_bnfs7")
 fall_state = NodePath("../fall")
 idle_state = NodePath("../idle")
@@ -830,64 +830,64 @@ cannon_state = NodePath("../cannon")
 glide_grav = 50.0
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="air_combo" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "fall_state", "cannon_state")]
+[node name="air_combo" type="Node" parent="StateMachine" unique_id=1559748958 node_paths=PackedStringArray("idle_state", "fall_state", "cannon_state")]
 script = ExtResource("19_lch8e")
 idle_state = NodePath("../idle")
 fall_state = NodePath("../fall")
 cannon_state = NodePath("../cannon")
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="delay" type="Timer" parent="StateMachine/air_combo"]
+[node name="delay" type="Timer" parent="StateMachine/air_combo" unique_id=1752869039]
 wait_time = 0.2
 one_shot = true
 
-[node name="fireball" type="RigidBody2D" parent="StateMachine/air_combo"]
+[node name="fireball" type="RigidBody2D" parent="StateMachine/air_combo" unique_id=1493810276]
 collision_layer = 2
 
-[node name="radius" type="Area2D" parent="StateMachine/air_combo/fireball"]
+[node name="radius" type="Area2D" parent="StateMachine/air_combo/fireball" unique_id=1436868952]
 collision_mask = 2
 
-[node name="range" type="CollisionShape2D" parent="StateMachine/air_combo/fireball/radius"]
+[node name="range" type="CollisionShape2D" parent="StateMachine/air_combo/fireball/radius" unique_id=1415746192]
 shape = SubResource("CircleShape2D_1nn1e")
 disabled = true
 
-[node name="hitbox" type="Area2D" parent="StateMachine/air_combo/fireball"]
+[node name="hitbox" type="Area2D" parent="StateMachine/air_combo/fireball" unique_id=1846585516]
 collision_layer = 8
 collision_mask = 16
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/air_combo/fireball/hitbox"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/air_combo/fireball/hitbox" unique_id=1659414152]
 visible = false
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_qmhsh")
 
-[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/air_combo/fireball/hitbox"]
+[node name="hitbox_shape" type="CollisionShape2D" parent="StateMachine/air_combo/fireball/hitbox" unique_id=2087517036]
 shape = SubResource("CircleShape2D_3kxmf")
 disabled = true
 
-[node name="collision" type="CollisionShape2D" parent="StateMachine/air_combo/fireball"]
+[node name="collision" type="CollisionShape2D" parent="StateMachine/air_combo/fireball" unique_id=2001621477]
 shape = SubResource("CircleShape2D_robi5")
 
-[node name="cannon" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="cannon" type="Node" parent="StateMachine" unique_id=2020242362 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("23_robi5")
 idle_state = NodePath("../idle")
 anim_name = "jump"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="behind" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="behind" type="Node" parent="StateMachine" unique_id=2099122995 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("25_n4qkp")
 idle_state = NodePath("../idle")
 anim_name = "idle"
 metadata/_custom_type_script = "uid://d4lhjeo7o4pfj"
 
-[node name="i-frames" type="Timer" parent="."]
+[node name="i-frames" type="Timer" parent="." unique_id=48248368]
 wait_time = 0.7
 one_shot = true
 
-[node name="damage_sound" type="AudioStreamPlayer2D" parent="."]
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=1901635977]
 stream = ExtResource("22_1nn1e")
 bus = &"SFX"
 
-[node name="music" parent="." instance=ExtResource("25_j8pfo")]
+[node name="music" parent="." unique_id=1219234249 instance=ExtResource("25_j8pfo")]
 
 [connection signal="area_entered" from="StateMachine/combo_1/punch_1" to="StateMachine/combo_1" method="_on_punch_1_area_entered"]
 [connection signal="timeout" from="StateMachine/combo_1/punch_start" to="StateMachine/combo_1" method="_on_punch_start_timeout"]

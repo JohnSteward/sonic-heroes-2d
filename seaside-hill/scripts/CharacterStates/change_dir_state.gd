@@ -29,7 +29,7 @@ func process_frame(delta: float) -> State:
 
 
 func process_input() -> State:
-	direction = Input.get_axis("move_left", "move_right")
+	#direction = Input.get_axis("move_left", "move_right")
 	if parent.is_on_floor() and Input.is_action_just_pressed("jump"):
 		return jump_state
 	if !(parent.velocity.x > 0 and direction == -1) and !(parent.velocity.x < 0 and direction == 1):
@@ -59,7 +59,7 @@ func process_physics(delta: float) -> State:
 		parent.velocity.y += fall_grav * delta
 	else:
 		parent.velocity.y += gravity * delta
-	direction = Input.get_axis("move_left", "move_right")
+	#direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
 		if direction:
 			parent.speed = move_toward(parent.speed, 0, parent.friction + 10)

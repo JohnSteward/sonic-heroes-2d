@@ -11,7 +11,6 @@ extends State
 @export var jump_vel: float
 
 var movement
-var direction
 func enter() -> void:
 	super()
 	parent.hit = false
@@ -22,9 +21,6 @@ func enter() -> void:
 
 	
 func process_input() -> State:
-	direction = Input.get_axis("move_left", "move_right")
-	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
-		return change_dir_state
 	if parent.light_dash and Input.is_action_just_pressed("action"):
 		return light_dash_state
 	if Input.is_action_just_pressed("action"):
@@ -32,6 +28,11 @@ func process_input() -> State:
 	return null
 	
 func process_frame(delta: float) -> State:
+	if parent.velocity.x == 0:
+		if Input.is_action_pressed("move_left"):
+			parent.direction = -1
+		elif Input.is_action_pressed("move_right"):
+			parent.direction = 1
 	if parent.is_in_cannon:
 		return cannon_state
 	if parent.hit:
@@ -42,22 +43,14 @@ func process_frame(delta: float) -> State:
 func process_physics(delta: float) -> State:
 	parent.velocity.y += gravity * delta
 		
-	direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
-		if direction:
-			if (direction > 0 and parent.velocity.x < 0) or (direction < 0 and parent.velocity.x > 0):
-				parent.speed = move_toward(parent.speed, 0, 10)
-				parent.velocity.x = parent.speed * direction * -1
-			else:
-				parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
-				parent.velocity.x = parent.speed * direction
-			parent.animated_sprite_2d.flip_h = (direction < 0)
+		if (Input.is_action_pressed("move_right") and parent.velocity.x < 0) or (Input.is_action_pressed("move_left") and parent.velocity.x > 0):
+			parent.velocity.x = move_toward(parent.velocity.x, 0, parent.stop_speed)
+		elif parent.moving:
+			parent.velocity.x = move_toward(parent.velocity.x, parent.MAX_SPEED * parent.direction, parent.acc)
 		else:
-			parent.speed = move_toward(parent.speed, 0, parent.friction)
-			if parent.animated_sprite_2d.flip_h:
-				parent.velocity.x = parent.speed * -1
-			else:
-				parent.velocity.x = parent.speed
+			parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction)
+		parent.animated_sprite_2d.flip_h = (parent.direction < 0)
 	parent.move_and_slide()
 	if parent.velocity.y > 0 or !Input.is_action_pressed("jump"):
 		return fall_state

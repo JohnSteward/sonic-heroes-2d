@@ -10,7 +10,6 @@ extends State
 @export var light_dash_state: State
 
 var movement: float
-var direction;
 
 func enter() -> void:
 	super()
@@ -23,12 +22,11 @@ func enter() -> void:
 	#speed = 0
 	
 func process_input() -> State:
-	direction = Input.get_axis("move_left", "move_right")
 	if parent.is_on_floor() and Input.is_action_just_pressed("jump"):
 		return jump_state
 	if parent.is_on_floor() and Input.is_action_just_pressed("roll"):
 		return roll_state
-	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
+	if (parent.velocity.x > 0 and parent.direction == -1) or (parent.velocity.x < 0 and parent.direction == 1):
 		return change_dir_state
 	if parent.light_dash and Input.is_action_just_pressed("action"):
 		return light_dash_state
@@ -41,38 +39,38 @@ func process_input() -> State:
 	return null
 	
 func process_frame(delta: float) -> State:
-	if parent.speed >= parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
+	if parent.velocity.x < 0:
+		parent.direction = -1
+	elif parent.velocity.x > 0:
+		parent.direction = 1
+	if abs(parent.velocity.x) >= parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "sprint"):
 		parent.animated_sprite_2d.play("sprint")
-	elif parent.speed < parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "run"):
+	elif abs(parent.velocity.x) < parent.MAX_SPEED and (!parent.animated_sprite_2d.animation == "run"):
 		parent.animated_sprite_2d.play("run")
 	if parent.is_in_cannon:
 		return cannon_state
 	return null
 	
 func process_physics(delta: float) -> State:
-	direction = Input.get_axis("move_left", "move_right")
 	if parent.i_frames.is_stopped():
-		if parent.velocity.x > parent.MAX_SPEED:
+		if abs(parent.velocity.x) > parent.MAX_SPEED:
+			print(parent.MAX_SPEED * parent.direction)
 			parent.animated_sprite_2d.play("sprint")
-			if parent.animated_sprite_2d.flip_h:
-				direction = -1
-			else:
-				direction = 1
-			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.friction)
-			parent.velocity.x = parent.speed * direction
+			parent.velocity.x = move_toward(parent.velocity.x, parent.MAX_SPEED * parent.direction, parent.friction)
 
-		elif direction:
-			parent.speed = move_toward(parent.speed, parent.MAX_SPEED, parent.acc)
-			movement = direction * parent.speed
-			parent.animated_sprite_2d.flip_h = (direction < 0)
-			parent.velocity.x = movement
-		else:
-			parent.speed = move_toward(parent.speed, 0, parent.friction)
-			# Check which direction we are moving in
-			if parent.velocity.x < 0:
-				parent.velocity.x = parent.speed * -1
+		elif Input.is_action_pressed("move_right"):
+			if parent.direction == 1:
+				parent.velocity.x = move_toward(parent.velocity.x, parent.MAX_SPEED, parent.acc)
 			else:
-				parent.velocity.x = parent.speed
+				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.stop_speed)
+		elif Input.is_action_pressed("move_left"):
+			if parent.direction == -1:
+				parent.velocity.x = move_toward(parent.velocity.x, -parent.MAX_SPEED,  parent.acc)
+				print(parent.velocity.x)
+			else:
+				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.stop_speed)
+		else:
+			parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction)
 	elif !parent.i_frames.is_stopped() and parent.is_on_floor():
 		return idle_state
 	parent.move_and_slide()

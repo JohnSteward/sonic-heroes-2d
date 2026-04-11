@@ -12,22 +12,17 @@ extends State
 @onready var right_anim: AnimatedSprite2D = $punch_3_right/right_anim
 
 var end_combo: bool = false
-var direction: int
 var input: int
 
 func enter() -> void:
 	super()
-	if parent.animated_sprite_2d.flip_h:
-		direction = -1
-	else:
-		direction = 1
 	end_combo = false
 	punch_start.start()
 	left_anim.flip_h = true
 	punch_3_left.position.y = parent.position.y
 	punch_3_right.position.y = parent.position.y
 	parent.velocity.y = -200
-	parent.velocity.x = 120 * direction
+	parent.velocity.x = 120 * parent.direction
 	parent.move_and_slide()
 	
 func exit() -> void:
@@ -66,7 +61,7 @@ func process_physics(delta: float) -> State:
 				parent.animated_sprite_2d.flip_h = true
 			parent.velocity.x = 120 * input
 		else:
-			parent.velocity.x = 120 * direction
+			parent.velocity.x = 120 * parent.direction
 		left_anim.visible = false
 		right_anim.visible = false
 	if end_combo and !input:

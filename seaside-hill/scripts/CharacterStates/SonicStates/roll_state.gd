@@ -8,7 +8,6 @@ extends State
 @export var cannon_state: State
 @export var light_dash_state: State
 
-var direction: int
 
 func enter() -> void:
 	super()
@@ -22,12 +21,11 @@ func exit() -> void:
 	parent.hurtbox.set_collision_layer_value(7, false)
 
 func process_input() -> State:
-	direction = Input.get_axis("move_left", "move_right")
 	if parent.light_dash and Input.is_action_just_pressed("action"):
 		return light_dash_state
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
 		return jump_state
-	if (parent.velocity.x > 0 and direction == -1) or (parent.velocity.x < 0 and direction == 1):
+	if (parent.velocity.x > 0 and Input.is_action_pressed("move_left")) or (parent.velocity.x < 0 and Input.is_action_pressed("move_right")):
 		parent.friction = 10
 	return null
 
@@ -37,12 +35,7 @@ func process_frame(delta: float) -> State:
 	return null
 
 func process_physics(delta) -> State:
-	if parent.animated_sprite_2d.flip_h:
-		direction = -1
-	else:
-		direction = 1
-	parent.speed = move_toward(parent.speed, 0, parent.friction)
-	parent.velocity.x = parent.speed * direction
+	parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction)
 	parent.move_and_slide()
 	if parent.velocity.x == 0:
 		return idle_state

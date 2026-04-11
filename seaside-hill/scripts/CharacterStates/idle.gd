@@ -15,7 +15,6 @@ func enter() -> void:
 	#parent.hitbox.get_node("hitbox_shape").disabled = true
 	parent.can_fly = true
 	parent.velocity.x = 0
-	parent.speed = 0
 
 func process_frame(delta: float) -> State:
 	if parent.is_in_cannon:
@@ -29,7 +28,11 @@ func process_input() -> State:
 		return action_state
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
 		return jump_state
-	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_left"):
+		parent.direction = -1
+		return run_state
+	if Input.is_action_pressed("move_right"):
+		parent.direction = 1
 		return run_state
 	if Input.is_action_just_pressed("swap_left"):
 		parent.change_char(parent, -1)
